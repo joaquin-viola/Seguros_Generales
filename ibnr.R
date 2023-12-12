@@ -51,12 +51,15 @@ tail.model <- lm(log(f-1) ~ dev.period)
 abline(tail.model)
 
 
+# estudio de la ibnr para periodos mas largos
 co <- coef(tail.model)
-## extrapolate another 100 dev. period
+## extrapolate another 100 dev. period de los factores de desarrollo
 tail <- exp(co[1] + c(n:(n + 100)) * co[2]) + 1
 f.tail <- prod(tail)
 f.tail
 
+
+# se empieza a estabilizar la tasa a partir de los 10 anios
 
 plot(100*(rev(1/cumprod(rev(c(f, tail[tail>1.0001]))))), t="b",
      main="Expected claims development pattern",
@@ -71,17 +74,23 @@ round(fulltri)
 
 sum(fulltri[ ,11] - getLatestCumulative(tri))
 
-linkratios <- c(attr(ata(tri), "vwtd"), tail = 1.05)
+
+## calcula los ratios sin precisar de un for
+linkratios <- c(attr(ata(tri), "vwtd"), tail = 1)  #se elige cola a discrecion
 round(linkratios, 3) # display to only three decimal places
 
+
+## factores de desarrollo acumulados??
 LDF <- rev(cumprod(rev(linkratios)))
 names(LDF) <- colnames(tri) # so the display matches the triangle
 round(LDF, 3)
 
-currentEval <- getLatestCumulative(tri)
+
+
+currentEval <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
-EstdUlt <- currentEval * rev(LDF) #
+EstdUlt <- currentEval * rev(LDF) #ultima perdida esperada
 # Start with the body of the exhibit
 Exhibit <- data.frame(currentEval, LDF = round(rev(LDF), 3), EstdUlt)
 # Tack on a Total row
