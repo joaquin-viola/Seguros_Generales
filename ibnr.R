@@ -14,21 +14,25 @@ class(RAA)
 dim(RAA)
 
 
-#----- load data
-tri <- as.data.frame(read_excel(path = "seguros_generales/siniestros_IBNR.xlsx", skip = 2))
+#----- load data  / carga de los datos aronica
+tri <- as.data.frame(read_excel(path = "siniestros_IBNR.xlsx", skip = 2))
 rownames(tri) <- tri[,1]
 tri[,1] <- NULL
 colnames(tri) <- 1:10
 
-# triangle class, ready for ChainLadder
+# triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
 tri <- as.triangle(as.matrix(tri))
 
+
+#visualizaciones
 plot(tri/1000,  main = "Claims development by origin year")
 
 plot(tri/1000, lattice=TRUE, main = "Claims development by origin year")
 
 
 # Basic idea
+
+# calculo de los factores de desarrollo
 # Calculate age-to-age factors for tri triangle
 n <- 10
 f <- sapply(1:(n-1),
@@ -38,6 +42,8 @@ f <- sapply(1:(n-1),
 )
 f
 
+
+# modelo lineal de los factores de desarrollo explicado por los anios (log(f-1))
 dev.period <- 1:(n-1)
 plot(log(f-1) ~ dev.period, 
      main="Log-linear extrapolation of age-to-age factors")
