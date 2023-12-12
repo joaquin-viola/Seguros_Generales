@@ -1,0 +1,83 @@
+---
+title: |
+  Incurred But Not Reported (IBNR)
+author: "Ignacio Campón & Joaquín Viola"
+subtitle: "Seguros Generales y Modelos de Riesgo"
+lang: es
+bibliography: references.bib 
+output:
+  pdf_document: 
+    pandoc_args:
+      - "--pdf-engine=xelatex"
+      - "-V"
+      - "linkcolor:blue"
+      - "-V"
+      - "urlcolor:blue"
+      - "-V"
+      - "citecolor:blue"
+    latex_engine: xelatex
+    fig_caption: yes
+    number_sections: yes
+  html_document:
+    df_print: paged
+  word_document: default
+nocite: |
+  @regression_example
+editor_options: 
+  markdown: 
+    wrap: 72
+fontsize: 12pt
+---
+
+\maketitle
+
+```{=latex}
+\thispagestyle{empty} % Hide header and footer on the title page
+\vspace*{\fill} % Pushes content to the bottom of the page
+\begin{center}
+\includegraphics[width=16cm]{imagenes/logo_inst_80.png}\\[1cm] % Adjust image placement
+\end{center}
+```
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+# Introducción 
+
+
+
+
+# Metodología
+
+
+[@huang_nguyen](#bib) 
+
+### P {#cuatro}
+
+```{r, echo = F, out.width="100%", fig.cap = "Función de distribución condicional de una normal bivariada, en negro la distribución real y en rojo la estimada para n=5000."}
+knitr::include_graphics("imagenes/condicional_normal.png")
+```
+[Nadaraya-Watson](#bib).
+
+
+\newpage¨
+
+# Desarrollo
+
+
+# Bibliografía {-#bib}
+
+::: {#refs}
+:::
+
+# Material adicional {-}
+
+La entrega del informe viene acompañado de 2 scripts, que contienen la implementación de cada método presentado junto con las aplicaciones realizadas:
+
+- \texttt{quantile\_regression\_by\_huang-nguyen.R}
+
+- \texttt{quantile\_regression\_by\_yu-jones.R}
+

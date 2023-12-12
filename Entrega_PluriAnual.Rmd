@@ -1,0 +1,455 @@
+---
+title: "Solvencia en períodos Plurianuales"
+author: "Ignacio Campón, Joaquín Viola"
+date: "Diciembre 12 de 2023"
+lang: es
+output:
+  pdf_document: 
+    latex_engine: xelatex
+    fig_caption: yes
+    number_sections: yes
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr)
+library(tidyverse)
+library(xtable)
+```
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+# Introducción
+
+Trabajo prácrico del curso de Solvencia de Aseguradoras del profesor Enrique Arónica, el trabajo consiste en la aplicación de las fórmulas vista en clase para el caso de análisis de solvencia plurianual de una compañía aseguradora durante 5 años.
+
+# Hipótesis del Trabajo
+
+Se asume que las inversiones tienen una tasa de capitalización del 4% constante en todos los períodos
+
+$$
+r_i = (1+i)=1,04
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+tasa_i = 0.04
+ri = 1+tasa_i
+```
+
+
+
+La cartera crece con una tasa anual del 18%, y el número medio de siniestros crece con la misma tasa en todos los períodos.
+
+$$
+r_N = 1,18 \\
+\mathbb{E}_t(N) = r_N . \mathbb{E}_{t-1}(N) \\
+\mathbb{E}_t(N) = r_N^{t-1}. \mathbb{E}_1(N) 
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+rN=1.18
+```
+
+
+La tasa de inflación anual es de un 5\% y es la misma para el costo de los siniestros, la tasa es constante para todos los períodos.
+
+$$
+r_X = 1,05 \\
+\mathbb{E}_t(X) = r_X . \mathbb{E}_{t-1}(X) \\
+\mathbb{E}_t(X) = r_X^{t-1} - \mathbb{E}_1 (X)
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+rX=1.05
+```
+
+
+Y los momentos ordinarios de orden 2 y 3 de X en el momento t es
+
+$$
+M_{2,t} = \mathbb{E}_t (X^2) = r_X ^{t-1} . \mathbb{E}_1 (X^2) \\
+M_{3,t} = \mathbb{E}_t (X^3) = r_X ^{t-1} . \mathbb{E}_1 (X^3)
+$$
+
+Se tiene un recargo de seguridad del 8\% ($\rho = 0.08$) y la prima recargada es
+
+$$
+PR_t=P_t .(1+\rho) = P_t . 1,08
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+rho=0.08
+
+```
+
+
+Las primas están desfasadas respecto a la inflación 1 año y medio
+
+$$
+d=1,5 \\
+P_t = \frac{\mathbb{E}_t(Y)}{r_X ^d} = \frac{\mathbb{E}_t (Y)}{r_X^{1,5}}
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+
+d=1.5
+```
+
+
+En cualquier período las reservas técnicas son equivalentes a $1,25$ veces la prima ($k=1,25$)
+
+$$
+RT_t = 1,25 . P_t
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+k=1.25
+```
+
+
+
+El margen de solvencia al inicio es de $U_0 = 900$ millones y el período que se desea analizar son 5 años ($n=5$)
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+
+U0 = 900
+n=5
+```
+
+
+# Datos de la Compañía
+
+La cuantía individual esperada, medida en millones para el momento 1 es $\mathbb{E}_1 (X) = 0,05$ millones que se ajustá a cada año según la tasa de inflación. Los momentos naturales de órden X son
+
+$$
+M_{2,1} = \mathbb{E}_1 (X^2) = 0,06 \\
+M_{3,1} = \mathbb{E}_1 (X^3) = 1,100
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+E1X=0.05
+
+M21X=0.06
+M31X=1.1
+```
+
+
+La frecuencia siniestras esperada para el primer período y la varianza son:
+
+
+$$
+\mathbb{E}_1(N) = 17.500 \\
+\mathbb{V}_1(N) = 6.300.000
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+E1N = 17500
+V1N = 6300000
+
+```
+
+Por lo que la esperanza de la prima pura anual medida en millones para el primer período es:
+
+$$
+\mathbb{E}(Y_1) = \mathbb{E}_1(N).\mathbb{E}_1(X) = 875
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+EY1=E1N*E1X
+```
+
+
+
+Al final del primer período la compañía tiene una prima pura medida en millones de
+
+$$
+P_1 = 800
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+P1=800
+```
+
+Con el desfasaje de un año y medio en la tasa de inflación (que es de un 5\%) de la relación $P_t = \frac{\mathbb{E}(Y_t)}{r_X ^{1,5} }$, entonces la esperanza del monto total de los siniestros visto desde este lado queda:
+
+$$
+\mathbb{E}(Y_1) = P_1 . r_X^{1,5} = 800 \cdot 1,05^{1,5} = 860.7439
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+EY1prima = P1*(1.05)^d
+``` 
+# Desarrollo
+
+## Cálculo del índice de Riesgo R y parámetro delta
+
+Con la información para el primer período, el índice de Riesgo se cálcula:
+
+$$
+R= \frac{\mathbb{E}(X_1 ^2)}{[\mathbb{E}(X_1)]^2} = 24
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+
+R=M21X/(E1X^2)
+
+```
+Y el parámetro $\delta$ se a partir de la fórmula
+
+$$
+\delta = \frac{\mathbb{E}(N_1)^2}{\mathbb{V}(N_1)-\mathbb{E}(N_1)} = 48.7465
+$$
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+
+delta=(E1N^2)/(V1N-E1N)
+
+```
+
+## Cálculo de los momentos de X y N
+Luego, aplicando las fórmulas para la esperanza de N de X y de los momentos de órden 2 y 3 para X en cada uno de los períodos de tiempo podemos hallar los valores para cada t a partir de las tasas de crecimiento y los datos para el primer período
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+EtN = c(rep(0,n))
+
+for (t in 1:n) {
+  EtN[t] = rN^(t-1)*E1N
+}
+
+```
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+EtX = c(rep(0,n))
+
+for (t in 1:n) {
+  EtX[t] = rX^(t-1)*E1X
+}
+
+
+```
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+M2tX = c(rep(0,n))
+
+for (t in 1:n) {
+  M2tX[t] = rX^(t-1)*M21X
+}
+
+
+
+```
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+M3tX = c(rep(0,n))
+
+for (t in 1:n) {
+  M3tX[t] = rX^(t-1)*M31X
+}
+
+```
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE, fig.pos = "H"}
+tabla_esperanzas <- as.data.frame(cbind(EtN,EtX,M2tX,M3tX))
+
+xtable(tabla_esperanzas, digits=c(0,4,4,4,4), caption="Momentos de X y N en t.")%>% print(comment=FALSE)
+```
+
+## Cálculo de los momentos de Y
+
+Luego, aplicando la fórmula de la esperanza de Y en cada momento igual al producto de las esperanzas de X y N en ese momento, se puede obtener la esperanza del total de los reclamos en cada momento.
+
+$$
+\mathbb{E}(Y_t)= \mathbb{E}(N_t) \cdot \mathbb{E}(X_t) = r_N^{t-1} \cdot  \mathbb{E}(N_1) \cdot r_X^{t-1}\cdot \mathbb{E}(X_1) = \mathbb{E}(N_1)\mathbb{E}(X_1) (r_N \cdot r_X)^{t-1}
+$$
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+EtY= c(rep(0,n))
+
+for (t in 1:n) {
+  EtY[t] = E1N*E1X*((rN*rX)^(t-1))
+}
+
+
+```
+Luego la varianza de Y en cada momento se desprende de la fórmula
+
+$$
+\mathbb{V}(Y_t) = \mathbb{E}(N_t) M_{2,t}(X) + \frac{\mathbb{E}(N_t)^2 \mathbb{E}(X_t)^2}{\delta}
+$$
+
+Que se si se sustituye $\delta$ por su fórmula y $M_{2,t}(X)=E(X^2)$ se obtiene la fórmula de varianza condional para el primer año.
+
+$$
+\mathbb{V}(Y_1) = \mathbb{V}(N_1)\mathbb{E}(X_1)^2 + \mathbb{V}(X_1)\mathbb{E}(N_1)
+$$
+
+Con el delta fijo del principio se cálcula la varianza de Y en cada año según la fórmula anterior
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+
+
+VtY = c(rep(0,n))
+
+
+for (t in 1:n) {
+  VtY[t]=  EtN[t]*M2tX[t] + (EtN[t]^2)*(EtX[t]^2)/delta
+}
+
+```
+Y luego los desvíos de Y en cada momento es la raíz de la varianza
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+dtY = sqrt(VtY)
+```
+
+Luego, los momentos reducidos de órden 3 de Y son calculados según la fórmula
+
+$$
+\gamma_{3}(Y_t) = \frac{\mathbb{E}(Y_t)^3}{\mathbb{D}(Y_t)^3} \left[\frac{M_3(X_t)}{\mathbb{E}_t(N)^2 \mathbb{E}_t(X)^2} + \frac{3M_{2,t}(X)}{\delta \mathbb{E}_t(N)\mathbb{E}_t(X)^2} + \frac{2}{\delta^2} \right] 
+$$
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+gamma3tY = c(rep(0,n))
+
+for (t in 1:n) {
+  gamma3tY[t] = ((EtY[t]^3)/(dtY[t]^3))*((M3tX[t]/((EtN[t]^2) *(EtX[t]^3))) + 3*M2tX[t]/(delta*EtN[t]*((EtX[t])^2)) + 2/(delta^2))
+}
+
+```
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE, fig.pos = "H"}
+tabla_esp_desv_y <- as.data.frame(cbind(EtY,dtY,gamma3tY))
+
+xtable(tabla_esp_desv_y, digits = c(0,4,4,4), caption="Momentos de Y en t.") %>% print(comment=FALSE)
+```
+
+
+Por otro lado, la esperanza de la utilidad en cada año, va a depener de la esperanza inicial, la relación reservas técnicas - primas, y lo que pase durante los años anterios al que se esté midiendo según la fórmula:
+
+$$
+\mathbb{E}(U_t) = U_0 ·r_i^t + \left[ 1+\rho + \frac{i·k}{r_N· r_X} - r_X^d \right]·P_1·\frac{(r_N·r_X)^t - r_i^t}{r_N·r_X-r_i}
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+EtU=c(rep(0,n))
+
+
+
+for (t in 1:n) {
+  EtU[t] = U0*(ri^t) + (1 + rho + ((ri-1)*k)/(rN*rX) - rX^d)*P1*((((rN*rX)^t)-ri^t)/(rN*rX-ri))
+}
+
+```
+Luego, podemos aplicar la siguiente fórmula para el desvío de la utilidad en cada momento
+
+$$
+\mathbb{D}(U_t)= \sqrt{ \sum_{j=1}^t [\mathbb{E}(Y_j)]^2 \left[\frac{R}{\mathbb{E}_j(N)} +\frac{1}{\delta} \right]r_i^{2(t-j)}}
+$$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+tablad <- matrix(0,n,n)
+
+for (t in 1:n) {
+  for (j in 1:t){
+    tablad[t,j] = (EtY[j]^2)*(R/EtN[j] + 1/delta)*ri^(2*(t-j))
+  }
+}
+
+
+
+```
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE, fig.pos = "H"}
+DtU=sqrt(rowSums(tablad))
+
+
+tabladu <- as.data.frame(cbind(tablad,DtU))
+
+colnames(tabladu) <- c("1","2","3","4","5","D(Ut)")
+
+
+xtable(tabladu, digits=c(0,2,2,2,2,2,4), caption="Desvío de U en t.")%>% print(comment=FALSE)
+```
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE, fig.pos = "H"}
+EUDU <- as.data.frame(cbind(EtU,DtU))
+
+rownames(EUDU) <- c("1","2","3","4","5")
+
+
+
+xtable(EUDU, digits=c(0,4,4), caption="Momento primero y desvío de U en t.")%>% print(comment=FALSE)
+
+```
+
+
+
+Por último, para calcular las probabilidad de insolvencia es necesario usar la aproximación Normal-Power, para eso debemos hayar $y^*$ de la forma $y^* = \mathbb{E}(U_t)/\mathbb{D}(U_t)$
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+
+ytast = EtU/DtU
+
+```
+Y luego, la aproximación Normal-Power para poder usar la distribución de la normal dice que:
+
+$$
+z_t \approx \frac{-3}{\gamma_{3,t}(Y)} + \sqrt{ 1 + \frac{9}{[\gamma_{3,t}(Y)]^2} + \frac{6}{\gamma_{3,t}(Y)}·y_t^*}
+$$
+
+
+```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
+zetast = c(rep(0,n))
+
+
+for (t in 1:n) {
+  zetast[t] = -3/gamma3tY[t] + sqrt(1+(9/(gamma3tY[t]^2)) + (6/gamma3tY[t])*ytast[t])
+}
+```
+
+Y luego podemos calcular las probabilidades acumuladas de cada valor de z de una normal estándar, y luego por el opuesto tendremos la probabilidad de insolvencia en cada momento.
+
+```{r, results='asis',echo=FALSE, message=FALSE, warning=FALSE, fig.pos = "H", fig.cap="Momentos de X y N."}
+
+Zacum = c(pnorm(zetast))
+
+
+Ptins = round(1-Zacum,6)
+
+
+tabla_final <- as.data.frame(cbind(ytast,zetast,Zacum,Ptins))
+
+
+colnames(tabla_final) <- c("y*","zt","P(Z<z)","P(Insolvencia)")
+
+xtable(tabla_final, digits = c(0,4,4,5,5), caption="Probabilidad de insolvencia en cada momento t.")%>% print(comment=FALSE)
+
+```
+
+Dichas probabilidades en cada momento suman $0.008195$ lo cual equivale a una probabilidad muy baja de insolvencia en el transcurso de 5 años de esta aseguradora.
+
+```{r, results='asis', eval=FALSE,echo=FALSE,message=FALSE, warning=FALSE}
+Probabilidad_Insolvencia <- sum(Ptins)
+
+Probabilidad_Insolvencia
+
+```
+
+$$
+0.005931 \leq \epsilon_5 \leq 0.008195
+$$
