@@ -48,6 +48,18 @@ fontsize: 12pt
 # Introducción 
 
 
+En este trabajo se pretende abordar distintos métodos para el cálculo de reservas de IBNR.
+El IBNR son los siniestros incurridos y que aún no fueron reclamados. En los seguros de responsabilidad civil, en muchos países, se tiene un período de 10 años para reclamar un seguro luego de que este haya ocurrido.
+
+La idea principal de las reservas de IBNR es poder estar cubierto en el futuro de siniestros que pueden ocurrir en el año corriente (mientras está activa la poliza), pero se reclamaba en los años siguientes.
+
+Para poder  calcular las reservas de IBNR hay varios métodos, y todos utilizan la información de años anteriores para poder predecir cómo se comportan los reclamos en los años siguientes.
+
+Se suele trabajar con 3 matrices triangulares, donde cada fila es un año, y en las columnas tenemos los años transcurridos. En la última fila se encuentra el último año, por lo que tiene datos para una sola columna, el año corriente, y así cada fila va teniendo dato para una columna más, llegando a la primer fila, que es el último año que se tiene en cuenta, y para el cual se tiene información para todos los años transcurridos, así queda explicada la forma de la matriz triangular.
+
+La primer matriz triangular tiene la información de los pagos acumulados de los siniestros ocurridos en cada año, y cuando fueron pagados efectivamente. Para la primer fila, en la primer columna se tienen los pagos de los siniestros ocurridos y pagados hace 10 años, luego en la siguiente columna se tiene los siniestros ocurridos en ese año pero pagados en el siguiente, más los de la columna anterior (por ser pagos acumuados) y así sucesivamente.
+
+La segunda matriz es la matriz de siniestros pendientes de pagos, que tiene para cada año 
 
 
 # Metodología
