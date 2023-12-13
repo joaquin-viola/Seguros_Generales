@@ -347,11 +347,11 @@ $$
 ```{r, results='asis',echo=FALSE,message=FALSE, warning=FALSE}
 EtU=c(rep(0,n))
 
+for (t in 1:n){
+  
+  EtU[t] = U0*(ri^t) + P1*(1 + rho + (((ri-1)*k)/(rN*rX)) - rX^d)*((rN*rX)^t-ri^t)/(rN*rX-ri)
 
-
-for (t in 1:n) {
-  EtU[t] = U0*(ri^t) + (1 + rho + ((ri-1)*k)/(rN*rX) - rX^d)*P1*((((rN*rX)^t)-ri^t)/(rN*rX-ri))
-}
+  }
 
 ```
 Luego, podemos aplicar la siguiente fórmula para el desvío de la utilidad en cada momento
