@@ -76,7 +76,7 @@ sum(fulltri[ ,11] - getLatestCumulative(tri))
 
 
 ## calcula los ratios sin precisar de un for
-linkratios <- c(attr(ata(tri), "vwtd"), tail = 1)  #se elige cola a discrecion
+linkratios <- c(attr(ata(tri), "vwtd"), tail = 1.05)  #se elige cola a discrecion (factor de arranque)
 round(linkratios, 3) # display to only three decimal places
 
 
