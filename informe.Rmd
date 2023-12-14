@@ -45,6 +45,13 @@ fontsize: 12pt
 
 \newpage
 
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+library(ChainLadder)
+```
+
+
 # Introducción 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -119,7 +126,7 @@ QAcum <- round(QAcum, 3)
 ```
 
 
-```{r}
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
 Incurridos_Acumulados <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
@@ -149,16 +156,133 @@ También se puede asignar un valor mayor a 1 para el factor de desarrollo del ú
 
 ## Chain Ladder con regresión
 
-Este modelo permite calcular el factor de desarrollo para $Q_n$ asumiendo una estructura de regresión para los factores de desarrollos (simples) en función de los períodos de desarrollo. Si bien estos no varían mucho a lo largo del tiempo, si se puede observar una estructura de regresión lineal si hacemos el logaritmo de lo que se excede de uno de factores en función de los períodos de desarrollo $L(q-1) \sim \text{períodos de desarrollo}$.
+Este modelo permite calcular el factor de desarrollo para $Q_n$ asumiendo una estructura de regresión para los factores de desarrollos (simples) en función de los períodos de desarrollo. Si bien estos no varían mucho a lo largo del tiempo, si se puede observar una estructura de regresión lineal si hacemos el logaritmo del aumento proporcional ($q-1$) de los siniestros incurridos en función de los períodos de desarrollo $L(q-1) \sim \text{períodos de desarrollo}$.
 
 $$
 L(q_j -1) = \alpha + \beta\times j
 $$
 
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+n <- 10
+q <- sapply(1:(n-1),
+            function(i){
+              sum(tri[c(1:(n-i)),i+1])/sum(tri[c(1:(n-i)),i])
+            }
+)
+q
 
 
-Para esto es necesario haber calculado los factores de desarrollo simple y hacer el modelo correspondiente, previamente chequendo si para el gráfico de dispersión de los datos.
-Luego, se sugiere extrapolar los datos para 100 períodos de desarrollo, y se puede observar que se empieza a estabilizar $L(q_j -1)$ cuando $j$ aumenta, y si tomamos $Q_n$ el factor de desarrollo acumulado para el período que estamos trabajando, podemos calcular $Q_n = \prod_{j>n} \hat{q_{j}}$.
+# modelo lineal de los factores de desarrollo explicado por los anios (log(f-1))
+dev.period <- 1:(n-1)
+tail.model <- lm(log(q-1) ~ dev.period)
+
+plot(log(q-1) ~ dev.period, 
+     main="Extrapolación Log-lineal de los factores año a año") +
+abline(tail.model)
+
+```
+
+
+
+Para esto es necesario haber calculado los factores de desarrollo simple y hacer el modelo correspondiente, previamente chequendo si para el gráfico de dispersión de los datos corresopnde el modelo de regresión lineal.
+Luego, se sugiere extrapolar los datos para 100 períodos de desarrollo, y se puede observar que se empieza a estabilizar $L(q_j -1)$ cuando $j$ aumenta, y si tomamos $Q_n$ el factor de desarrollo acumulado para el período que estamos trabajando, podemos calcular $\hat{Q_n} = \prod_{j\geq n} \hat{q_{j}} = 1.021795$.
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+# estudio de la ibnr para periodos mas largos
+co <- coef(tail.model)
+## extrapolate another 100 dev. period de los factores de desarrollo
+tail <- exp(co[1] + c(n:(n + 100)) * co[2]) + 1
+f.tail <- prod(tail)
+
+plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
+     main="Expected claims development pattern",
+     xlab="Dev. period", ylab="Development % of ultimate loss")
+
+
+```
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+
+Qhat = f.tail
+
+Qhat
+
+```
+
+Nuestros factores de desarrollo serán los obtenidos normalmente hasta el momento $n-1=9$ y se para $q_n=q_{10}$ se le asigna el valor de $\hat{Q_n}$ calculado que ya se mostró que para el último período de desarrollo era válida la equivalencia.
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+qs <- c(q,Qhat)
+
+Qs <- rev(cumprod(rev(qs)))
+names(Qs) <- colnames(tri) # so the display matches the triangle
+Qs <- round(Qs, 3)
+
+```
+
+```{r}
+Incurridos_Acumulados2 <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
+# Reverse the LDFs so the first, least mature factor [1]
+#   is applied to the last origin year (1990)
+Perdida_Esperada2 <- Incurridos_Acumulados2 * rev(Qs) #ultima perdida esperada
+# Start with the body of the exhibit
+
+Reserva_IBNR2 = Perdida_Esperada2 - Incurridos_Acumulados2
+
+Exhibit2 <- data.frame(Incurridos_Acumulados2, Qs = round(rev(Qs), 3), Perdida_Esperada2, Reserva_IBNR2)
+# Tack on a Total row
+
+
+
+Exhibit2 <- rbind(Exhibit2,
+                 data.frame(Incurridos_Acumulados2=sum(Incurridos_Acumulados2), Qs=NA, Perdida_Esperada2=sum(Perdida_Esperada2),
+Reserva_IBNR2 = sum(Reserva_IBNR2),                            
+                            row.names = "Total"))
+
+
+Exhibit2
+
+
+
+```
+## Mach Chain-Ladder
+
+Thomas Mack publica en 1993 un método para obtener estimaciones de los errores estándar de las estimaciones de pérdida esperada, y por consecuencia del IBNR, se basa en la matriz triangular de pérdida agregada pero nosotros lo usaremos sobre la matriz triangular de siniestros incurridos, y se puede predecir el triángulo inferior faltante de la matriz, es decir, los siniestros incurridos a futuro de cada año para cada período de desarrollo.
+
+Para predecir los siniestros incurridos a futuro $X_{i,j}$ con $j>n-i+1$ se asume:
+
+\begin{itemize}
+
+\item $\mathbb{E}(Q_{i,j}|X_{i,1},\ldots,X_{i,j}) = q_j$ con $Q_{i,j} = \frac{X_{i,j+1}}{X_{i,j}}$
+
+\item $\mathbb{V}(Q_{i.j}|X_{i,1},\ldots,X_{i,j}) = \frac{\sigma^2_j}{w_{i,j}X_{i,j}^\alpha} $
+
+\item $\{ X_{i,1},\ldots,X_{i,n} \}, \{X_{k,1},\ldots,X_{k,n}\}$ son independientes del período de origen ($i \neq k$)
+
+\end{itemize}
+
+
+Con $w_{i,j} \in [0;1]$ y $\alpha \in \{0,1,2\}$, se obtienen estimaciones insesgadas de las pérdidas esperadas y de las reservas de IBNR junto a los errores estándar y el coeficiente de variación.
+
+Luego, a partir de la fórmula del error cuadrático medio, $ECM(\hat{X}_{i,n})=\mathbb{E}((\hat{X}_{i,n}-X_{i,n})^2|X_{i,1}\ldots,X_{i,n-i+1})=\mathbb{V}(\hat{X}_{i,n}) + (\mathbb{E}(X_{i,n}|X_{i,1}\ldots,X_{i,n-i+1})-\hat{X}_{i,n})^2$. Para lo cual se necesita una fórmula para la varianza.
+
+Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores de desarrollo $X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo anterior) es inversamente proporcional a $X_{i,j}$.
+
+$$
+\mathbb{V}(X_{i,j+1}|X_{i,1},\ldots,X_{i,j}) = X_{i,j}\cdot \sigma_j^2
+$$
+Donde $\sigma_j^2$ es un parámetro desconocido que debe ser estimado, y es la varianza implicita bajo el método de 'Chain Ladder'. Por lo que la varianza estimada será la suma de los errores al cuadrado ponderados de la estimación de los factores de desarrollo.
+
+$$
+\hat{\sigma_j}^2 = \frac{1}{n-j-1}\cdot \sum_{i=1}^{n-j} X_{i,j}\left( \frac{X_{i,j+1}}{X_{i,j}} - \hat{q_j} \right)^2
+$$
+
+Siendo $\hat{\sigma_j}^2$ un estimador insesgado para $1 \leq j \leq n-2$, obteniendo una estimación del desvío al hacer la raíz. Para estimar $\sigma_{n-1}$ , si se tiene que $\hat{q}_{n-1}=1$ se puede utilizar $\sigma_{n-1}=0$ ya que se asume que el desarrollo de los siniestros termina en el tiempo $n-1$, de lo contrario se puede extrapolar utilizando la reducción exponencial de los desvíos de forma tal que $\hat{\sigma}_{n-1}$ cumpla con la razón.
+
+$$
+\frac{\hat{\sigma}_{n-3}}{\hat{\sigma}_{n-2}} = \frac{\hat{\sigma}_{n-2}}{\hat{\sigma}_{n-1}} \\
+\hat{\sigma}_{n-1} = \frac{\hat{\sigma}_{n-2}^2}{\hat{\sigma}_{n-3}}
+$$
 
 [@huang_nguyen](#bib) 
 
