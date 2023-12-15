@@ -60,6 +60,8 @@ tri <- as.data.frame(read_excel(path = "siniestros_IBNR.xlsx", skip = 2))
 rownames(tri) <- tri[,1]
 tri[,1] <- NULL
 colnames(tri) <- 1:10
+rownames(tri) <- 1999:2008
+
 
 # triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
 tri <- as.triangle(as.matrix(tri))
@@ -264,9 +266,9 @@ Para predecir los siniestros incurridos a futuro $X_{i,j}$ con $j>n-i+1$ se asum
 
 Con $w_{i,j} \in [0;1]$ y $\alpha \in \{0,1,2\}$, se obtienen estimaciones insesgadas de las pérdidas esperadas y de las reservas de IBNR junto a los errores estándar y el coeficiente de variación.
 
-Luego, a partir de la fórmula del error cuadrático medio, $ECM(\hat{X}_{i,n})=\mathbb{E}((\hat{X}_{i,n}-X_{i,n})^2|X_{i,1}\ldots,X_{i,n-i+1})=\mathbb{V}(\hat{X}_{i,n}) + (\mathbb{E}(X_{i,n}|X_{i,1}\ldots,X_{i,n-i+1})-\hat{X}_{i,n})^2$. Para lo cual se necesita una fórmula para la varianza.
+Luego, a partir de la fórmula del error cuadrático medio, $ECM(\hat{X}_{i,n})=\mathbb{E}((\hat{X}_{i,n}-X_{i,n})^2|X_{i,1}\ldots,X_{i,n-i+1})=\mathbb{V}(\hat{X}_{i,n}) + (\mathbb{E}(X_{i,n}|X_{i,1}\ldots,X_{i,n-i+1})-\hat{X}_{i,n})^2$ se podrá calcular el error cuadrático medio como la suma de los errores estocásticos y el error de estimación y se necesitará una fórmila para la varianza.
 
-Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores de desarrollo $X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo anterior) es inversamente proporcional a $X_{i,j}$.
+Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores de desarrollo $X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo j) es inversamente proporcional a $X_{i,j}$.
 
 $$
 \mathbb{V}(X_{i,j+1}|X_{i,1},\ldots,X_{i,j}) = X_{i,j}\cdot \sigma_j^2
@@ -283,6 +285,55 @@ $$
 \frac{\hat{\sigma}_{n-3}}{\hat{\sigma}_{n-2}} = \frac{\hat{\sigma}_{n-2}}{\hat{\sigma}_{n-1}} \\
 \hat{\sigma}_{n-1} = \frac{\hat{\sigma}_{n-2}^2}{\hat{\sigma}_{n-3}}
 $$
+
+Siendo $R_i$ las reservas de IBNR del año $i$, estas son calculadas como $R_i = X_{i,n} - X_{i,n-i+1}$ y estimadas de la forma $\hat{R}_i = \hat{X}_{i,n} - X_{i,n-i+1}$ donde el total de los costos incurridos del año $i$ son estimados a través de los factores de desarrollo, ya sea calculando el total para todos los años de desarrollo con los factores año a año, o a través del factor de desarrollo acumulado $\hat{X}_{i,n} = Q_{n-i+1}\cdot X_{i,n-i+1}$. Luego, como la única parte aleatoria de $\hat{R}_i$ es $\hat{X}_{i,n}$ el $ECM(\hat{R}_i) = ECM(\hat{X}_{i,n})$
+
+
+$$
+\widehat{ECM}(\hat{R}_i) = \hat{X}_{i,n}^2 \sum_{j=n-i+1}^{n-1} \frac{\hat{\sigma_j}^2}{\hat{q}_j}\left( \frac{1}{\hat{X}_{i,j}} - \frac{1}{\sum_{l=1}^{I-j}X_{l,j}} \right)
+$$
+
+La función 'MackChainLadder' del paquete 'ChainLadder' nos da una tabla con las reservas de IBNR para cada año, su desvío y su coeficiente de variación, y las mismas medidas para el total, teniendo especial atentción de que el desvío del total no es igual a la suma del desvío, nos muestra la última pérdida obtenida, la última pérdida esperada, la relación entre estas, la reserva de IBNR, el desvío y el coeficiente de variación.
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+mackTRI <- MackChainLadder(tri)
+
+mackTRI
+
+```
+
+También se puede acceder a los factores mediante acciedendo a 'mackTRI\$f', o a la matriz completa con la estimación de los siniestros incurridos en los años siguientes mediante 'mackTRI\$FullTriangle'.
+
+```{r, message=FALSE,warning=FALSE}
+mackTRI$f
+```
+
+```{r, message=FALSE,warning=FALSE}
+mackTRI$FullTriangle
+```
+
+Y al resumen final separado por año o para el total se accede mediante summary de la manera:
+
+```{r, message=FALSE,warning=FALSE}
+
+resumenMackTRI <- summary(mackTRI)
+
+resumenMackTRI$ByOrigin
+
+```
+
+```{r, message=FALSE,warning=FALSE}
+
+resumenMackTRI$Totals
+
+```
+Y se accede a distintos gráficos con la función plot
+
+```{r}
+plot(mackTRI)
+```
+
 
 [@huang_nguyen](#bib) 
 
