@@ -6,13 +6,14 @@ library(readxl)
 #----- data example
 data(package="ChainLadder")
 
-RAA
+mackRAA <- MackChainLadder(RAA)
+
+plot(mackRAA)
 
 plot(RAA/1000,  main = "Claims development by origin year")
 
 class(RAA)
 dim(RAA)
-
 
 #----- load data  / carga de los datos aronica
 tri <- as.data.frame(read_excel(path = "siniestros_IBNR.xlsx", skip = 2))

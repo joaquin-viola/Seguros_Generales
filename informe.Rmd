@@ -60,7 +60,7 @@ tri <- as.data.frame(read_excel(path = "siniestros_IBNR.xlsx", skip = 2))
 rownames(tri) <- tri[,1]
 tri[,1] <- NULL
 colnames(tri) <- 1:10
-rownames(tri) <- 1999:2008
+rownames(tri) <- 1999:2008  # se simplifica el nombre de los años a años simples para que facilite el uso de algunas funciones
 
 
 # triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
@@ -268,12 +268,12 @@ Con $w_{i,j} \in [0;1]$ y $\alpha \in \{0,1,2\}$, se obtienen estimaciones inses
 
 Luego, a partir de la fórmula del error cuadrático medio, $ECM(\hat{X}_{i,n})=\mathbb{E}((\hat{X}_{i,n}-X_{i,n})^2|X_{i,1}\ldots,X_{i,n-i+1})=\mathbb{V}(\hat{X}_{i,n}) + (\mathbb{E}(X_{i,n}|X_{i,1}\ldots,X_{i,n-i+1})-\hat{X}_{i,n})^2$ se podrá calcular el error cuadrático medio como la suma de los errores estocásticos y el error de estimación y se necesitará una fórmila para la varianza.
 
-Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores de desarrollo $X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo j) es inversamente proporcional a $X_{i,j}$.
+Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores de desarrollo $X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo j) es inversamente proporcional a $X_{i,j}$, donde se asume que todos los siniestros incurridos pesan igual y $\alpha=0$ en las condiciones planteadas anteriormente.
 
 $$
 \mathbb{V}(X_{i,j+1}|X_{i,1},\ldots,X_{i,j}) = X_{i,j}\cdot \sigma_j^2
 $$
-Donde $\sigma_j^2$ es un parámetro desconocido que debe ser estimado, y es la varianza implicita bajo el método de 'Chain Ladder'. Por lo que la varianza estimada será la suma de los errores al cuadrado ponderados de la estimación de los factores de desarrollo.
+Donde $\sigma_j^2$ es un parámetro desconocido que debe ser estimado, y es la varianza implicita bajo el método de 'Chain Ladder'. Por lo que la varianza estimada será la suma de los errores al cuadrado ponderados de la estimación de los factores de desarrollo año a año.
 
 $$
 \hat{\sigma_j}^2 = \frac{1}{n-j-1}\cdot \sum_{i=1}^{n-j} X_{i,j}\left( \frac{X_{i,j+1}}{X_{i,j}} - \hat{q_j} \right)^2
@@ -333,6 +333,85 @@ Y se accede a distintos gráficos con la función plot
 ```{r}
 plot(mackTRI)
 ```
+
+También se puede graficar la predicción del desarrollo de los siniestros incurridos a futuro junto a una medida de la dispersión, separado por cada año de ocurrencia
+
+```{r}
+plot(mackTRI, lattice=TRUE)
+```
+
+
+
+## Munich Chain Ladder
+
+El método de Munich utiliza la correlación positiva entre el triángulo de siniestros incurridos y el triángulo de siniestros pagados acumulados para proyectar los futuros pagos. Para esto es necesario agregarla información los datos de siniestros pagos acumulados.
+
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+acum <- as.data.frame(read_excel(path = "pagos_acumulados_IBNR.xlsx", skip = 2))
+rownames(acum) <- acum[,1]
+acum[,1] <- NULL
+colnames(acum) <- 1:10
+rownames(acum) <- 1999:2008  # se simplifica el nombre de los años a años simples para que facilite el uso de algunas funciones
+
+
+# triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
+acum <- as.triangle(as.matrix(acum))
+
+```
+
+Llamando *I* a la matriz de siniestros incurridos y *P* a la matriz de siniestros pagados, se halla la matriz $P/I$ calculada como la división de celda a celda de la matriz *P* entre la matriz *I*, y representa la fracción de los siniestros incurridos que ya están pago de cada año durante los períodos de desarrollo. Donde se suele observar que a medida que hay más períodos de desarrollo la mayoría de los siniestros han sido pagados.
+
+```{r}
+
+frac <- acum/tri
+
+fracframe <- as.data.frame(frac)
+
+fracframe <- fracframe %>% mutate(
+  devf = as.factor(dev)
+)
+
+
+ggplot(fracframe, aes(x=dev, y=100*value)) + geom_point(alpha=1, size = 2) +
+  geom_line(stat = "summary", fun.y = "mean", color = "red", size = 1) +
+  theme_bw() +
+  ylim(c(10,120))
+
+```
+
+Formalmente, se tiene que $(P/I)_{i,j} = P_{i,j}/I_{i,j}$, luego, mediante los métodos vistos antes de Chain Ladder se puede estimar los valores faltantes de la matriz con los factores de desarrollo año a año a partir de la diagonal inversa.
+
+```{r}
+
+trifull <- mackTRI$FullTriangle
+
+mackACUM <- MackChainLadder(acum)
+
+acumfull <- mackACUM$FullTriangle
+
+
+fracfull <- acumfull/trifull
+
+fracfullframe <- as.data.frame(fracfull)
+
+fracfullframe <- fracfullframe %>% mutate(
+  originn = as.numeric(origin)
+)
+
+fracfullframe <- fracfullframe %>% mutate(
+  Tipo = ifelse(originn+dev>2009, "pred","obs")
+)
+
+
+
+ggplot(fracfullframe, aes(x=dev, y=100*value, alpha = Tipo)) + geom_point(size = 2) +
+  geom_line(stat = "summary", fun.y = "mean", size = 1) + scale_alpha_manual(values = c(1,0.3)) +
+  theme_bw() +
+  ylim(c(10,120))
+```
+
 
 
 [@huang_nguyen](#bib) 
