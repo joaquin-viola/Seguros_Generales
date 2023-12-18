@@ -22,7 +22,7 @@ output:
     df_print: paged
   word_document: default
 nocite: |
-  @regression_example
+  @chain
 editor_options: 
   markdown: 
     wrap: 72
@@ -49,6 +49,7 @@ fontsize: 12pt
 library(tidyverse)
 library(readxl)
 library(ChainLadder)
+library(xtable)
 ```
 
 
@@ -67,9 +68,6 @@ rownames(tri) <- 1999:2008  # se simplifica el nombre de los años a años simpl
 tri <- as.triangle(as.matrix(tri))
 
 ```
-
-
-
 
 
 En este trabajo se pretende abordar distintos métodos para el cálculo de reservas de IBNR.
@@ -91,8 +89,11 @@ La reserva de IBNR es la reserva que debe tener la compañía pasado $n$ años (
 
 Se trabajará con la matriz de siniestros trabajada en el curso de 'Solvencias de Compañías Aseguradoras' brindado por el profesor Enrique Arónica en noviembre de 2023 en la Facultad de Ciencias Económicas, se cuenta con la matriz de pagos acumulados, la matriz de siniestros pendientes de pagos y la de siniestros incurridos, esta última se presenta a continuación, que se encuentra guardada en un objeto de tipo **triangle**.
 
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='long caption', fig.scap='short', tidy=FALSE}
 tri
+
+#print(xtable(tri), type="latex") # , results = 'asis'
+#knitr::kable(tri, format = "latex", booktabs = TRUE)
 ```
 
 Al tener la matriz guardada en un objeto especial, la función plot nos permiete ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo
@@ -222,7 +223,7 @@ Qs <- round(Qs, 3)
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 Incurridos_Acumulados2 <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
@@ -305,17 +306,17 @@ mackTRI
 
 También se puede acceder a los factores mediante acciedendo a 'mackTRI\$f', o a la matriz completa con la estimación de los siniestros incurridos en los años siguientes mediante 'mackTRI\$FullTriangle'.
 
-```{r, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
 mackTRI$f
 ```
 
-```{r, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
 mackTRI$FullTriangle
 ```
 
 Y al resumen final separado por año o para el total se accede mediante summary de la manera:
 
-```{r, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
 
 resumenMackTRI <- summary(mackTRI)
 
@@ -323,20 +324,20 @@ resumenMackTRI$ByOrigin
 
 ```
 
-```{r, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
 
 resumenMackTRI$Totals
 
 ```
 Y se accede a distintos gráficos con la función plot
 
-```{r}
+```{r, echo=FALSE, out.width="100%", fig.cap = ""}
 plot(mackTRI)
 ```
 
 También se puede graficar la predicción del desarrollo de los siniestros incurridos a futuro junto a una medida de la dispersión, separado por cada año de ocurrencia
 
-```{r}
+```{r, echo=FALSE}
 plot(mackTRI, lattice=TRUE)
 ```
 
@@ -347,7 +348,7 @@ plot(mackTRI, lattice=TRUE)
 El método de Munich utiliza la correlación positiva entre el triángulo de siniestros incurridos y el triángulo de siniestros pagados acumulados para proyectar los futuros pagos. Para esto es necesario agregarla información los datos de siniestros pagos acumulados.
 
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 acum <- as.data.frame(read_excel(path = "pagos_acumulados_IBNR.xlsx", skip = 2))
 rownames(acum) <- acum[,1]
@@ -363,7 +364,7 @@ acum <- as.triangle(as.matrix(acum))
 
 Llamando *I* a la matriz de siniestros incurridos y *P* a la matriz de siniestros pagados, se halla la matriz $P/I$ calculada como la división de celda a celda de la matriz *P* entre la matriz *I*, y representa la fracción de los siniestros incurridos que ya están pago de cada año durante los períodos de desarrollo. Donde se suele observar que a medida que hay más períodos de desarrollo la mayoría de los siniestros han sido pagados.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 frac <- acum/tri
 
@@ -373,17 +374,12 @@ fracframe <- fracframe %>% mutate(
   devf = as.factor(dev)
 )
 
-
-ggplot(fracframe, aes(x=dev, y=100*value)) + geom_point(alpha=1, size = 2) +
-  geom_line(stat = "summary", fun.y = "mean", color = "red", size = 1) +
-  theme_bw() +
-  ylim(c(10,120))
-
+# movi el grafico para el siguiente chunk para que salieran juntos
 ```
 
 Formalmente, se tiene que $(P/I)_{i,j} = P_{i,j}/I_{i,j}$, luego, mediante los métodos vistos antes de Chain Ladder se puede estimar los valores faltantes de la matriz con los factores de desarrollo año a año a partir de la diagonal inversa.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%"}
 
 trifull <- mackTRI$FullTriangle
 
@@ -405,6 +401,10 @@ fracfullframe <- fracfullframe %>% mutate(
 )
 
 
+ggplot(fracframe, aes(x=dev, y=100*value)) + geom_point(alpha=1, size = 2) +
+  geom_line(stat = "summary", fun.y = "mean", color = "red", size = 1) +
+  theme_bw() +
+  ylim(c(10,120))
 
 ggplot(fracfullframe, aes(x=dev, y=100*value, alpha = Tipo)) + geom_point(size = 2) +
   geom_line(stat = "summary", fun.y = "mean", size = 1) + scale_alpha_manual(values = c(1,0.3)) +
@@ -414,19 +414,15 @@ ggplot(fracfullframe, aes(x=dev, y=100*value, alpha = Tipo)) + geom_point(size =
 
 
 
-[@huang_nguyen](#bib) 
 
-### P {#cuatro}
+%knitr::include_graphics("imagenes/condicional_normal.png")
 
-```{r, echo = F, out.width="100%", fig.cap = "Función de distribución condicional de una normal bivariada, en negro la distribución real y en rojo la estimada para n=5000."}
-knitr::include_graphics("imagenes/condicional_normal.png")
-```
-[Nadaraya-Watson](#bib).
+%[Nadaraya-Watson](#bib)
 
 
-\newpage¨
 
-# Desarrollo
+\newpage
+
 
 
 # Bibliografía {-#bib}
