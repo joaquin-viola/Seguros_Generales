@@ -202,7 +202,14 @@ plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
      xlab="Dev. period", ylab="Development % of ultimate loss")
 
 
+
+plot(100*(rev(1/cumprod(rev(c(q, tail))))), t="b",
+     main="Expected claims development pattern",
+     xlab="Dev. period", ylab="Development % of ultimate loss")
+
 ```
+
+
 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
 
@@ -248,7 +255,7 @@ Exhibit2
 
 
 ```
-## Mach Chain-Ladder
+## Mack Chain-Ladder
 
 Thomas Mack publica en 1993 un método para obtener estimaciones de los errores estándar de las estimaciones de pérdida esperada, y por consecuencia del IBNR, se basa en la matriz triangular de pérdida agregada pero nosotros lo usaremos sobre la matriz triangular de siniestros incurridos, y se puede predecir el triángulo inferior faltante de la matriz, es decir, los siniestros incurridos a futuro de cada año para cada período de desarrollo.
 
@@ -256,9 +263,9 @@ Para predecir los siniestros incurridos a futuro $X_{i,j}$ con $j>n-i+1$ se asum
 
 \begin{itemize}
 
-\item $\mathbb{E}(Q_{i,j}|X_{i,1},\ldots,X_{i,j}) = q_j$ con $Q_{i,j} = \frac{X_{i,j+1}}{X_{i,j}}$
+\item $\mathbb{E}(q_{i,j}|X_{i,1},\ldots,X_{i,j}) = q_j$ con $q_{i,j} = \frac{X_{i,j+1}}{X_{i,j}}$
 
-\item $\mathbb{V}(Q_{i.j}|X_{i,1},\ldots,X_{i,j}) = \frac{\sigma^2_j}{w_{i,j}X_{i,j}^\alpha} $
+\item $\mathbb{V}(q_{i.j}|X_{i,1},\ldots,X_{i,j}) = \frac{\sigma^2_j}{w_{i,j}X_{i,j}^\alpha} $
 
 \item $\{ X_{i,1},\ldots,X_{i,n} \}, \{X_{k,1},\ldots,X_{k,n}\}$ son independientes del período de origen ($i \neq k$)
 
@@ -269,7 +276,7 @@ Con $w_{i,j} \in [0;1]$ y $\alpha \in \{0,1,2\}$, se obtienen estimaciones inses
 
 Luego, a partir de la fórmula del error cuadrático medio, $ECM(\hat{X}_{i,n})=\mathbb{E}((\hat{X}_{i,n}-X_{i,n})^2|X_{i,1}\ldots,X_{i,n-i+1})=\mathbb{V}(\hat{X}_{i,n}) + (\mathbb{E}(X_{i,n}|X_{i,1}\ldots,X_{i,n-i+1})-\hat{X}_{i,n})^2$ se podrá calcular el error cuadrático medio como la suma de los errores estocásticos y el error de estimación y se necesitará una fórmila para la varianza.
 
-Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores de desarrollo $X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo j) es inversamente proporcional a $X_{i,j}$, donde se asume que todos los siniestros incurridos pesan igual y $\alpha=0$ en las condiciones planteadas anteriormente.
+Se puede notar que el factor de desarrollo $q_j$ es el promedio ponderado de los factores $q_{i,j}=X_{i,j+1}/X_{i,j}$, por lo que la varianza de $X_{i,j+1}/X_{i,j}$ (dado los siniestros hasta el período de desarrollo j) es inversamente proporcional a $X_{i,j}$, donde se asume que todos los siniestros incurridos pesan igual y $\alpha=0$ en las condiciones planteadas anteriormente.
 
 $$
 \mathbb{V}(X_{i,j+1}|X_{i,1},\ldots,X_{i,j}) = X_{i,j}\cdot \sigma_j^2
@@ -277,7 +284,7 @@ $$
 Donde $\sigma_j^2$ es un parámetro desconocido que debe ser estimado, y es la varianza implicita bajo el método de 'Chain Ladder'. Por lo que la varianza estimada será la suma de los errores al cuadrado ponderados de la estimación de los factores de desarrollo año a año.
 
 $$
-\hat{\sigma_j}^2 = \frac{1}{n-j-1}\cdot \sum_{i=1}^{n-j} X_{i,j}\left( \frac{X_{i,j+1}}{X_{i,j}} - \hat{q_j} \right)^2
+\hat{\sigma_j}^2 = \frac{1}{n-j-1}\cdot \sum_{i=1}^{n-j} X_{i,j}\left( \frac{X_{i,j+1}}{X_{i,j}} - \hat{q_j} \right)^2=\frac{1}{n-j-1}\cdot \sum_{i=1}^{n-j} X_{i,j}\left( q_{i,j} - \hat{q_j} \right)^2
 $$
 
 Siendo $\hat{\sigma_j}^2$ un estimador insesgado para $1 \leq j \leq n-2$, obteniendo una estimación del desvío al hacer la raíz. Para estimar $\sigma_{n-1}$ , si se tiene que $\hat{q}_{n-1}=1$ se puede utilizar $\sigma_{n-1}=0$ ya que se asume que el desarrollo de los siniestros termina en el tiempo $n-1$, de lo contrario se puede extrapolar utilizando la reducción exponencial de los desvíos de forma tal que $\hat{\sigma}_{n-1}$ cumpla con la razón.
@@ -377,7 +384,7 @@ fracframe <- fracframe %>% mutate(
 # movi el grafico para el siguiente chunk para que salieran juntos
 ```
 
-Formalmente, se tiene que $(P/I)_{i,j} = P_{i,j}/I_{i,j}$, luego, mediante los métodos vistos antes de Chain Ladder se puede estimar los valores faltantes de la matriz con los factores de desarrollo año a año a partir de la diagonal inversa.
+Formalmente, se tiene que $(P/I)_{i,j} = P_{i,j}/I_{i,j}$, luego, mediante los métodos vistos antes de Chain Ladder se puede estimar los valores faltantes de la matriz con los factores de desarrollo año a año a partir de la diagonal inversa, obteniendo el resultado de los ratios si se hace Chain-Ladder por separado (SCL).
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%"}
 
@@ -411,6 +418,143 @@ ggplot(fracfullframe, aes(x=dev, y=100*value, alpha = Tipo)) + geom_point(size =
   theme_bw() +
   ylim(c(10,120))
 ```
+Se puede notar en la segunda figura que para los valores proyectados a partir de cierto período de desarrollo se tiene que los siniestros pagados significan una proporción mayor a 1 que los siniestros incurridos, este error se da debido a que se aplicó el método de Chain-Ladder por separado a ambos triángulos (SCL) y no se tuvo en cuenta la estructura de correlación entre ambos triángulos.
+
+Para concluir el principal resultado de este método se debe hacer cuentas con los factores de desarrollo y las proyecciones tanto en la matriz de pagos acomulados como la de siniestros incurridos. Para esto define el promedio de los ratios en el tiempo de desarrollo t:
+
+$$
+(P/I)_t := \frac{\sum_{j=1}^n P_{j,t}}{\sum_{j=1}^n I_{j,t}} = \frac{1}{\sum_{j=1}^n I_{j,t}}\cdot \sum_{j=1}^n I_{j,t}\cdot (P/I)_{j,t}
+$$
+
+Y luego, definiendo $c_i:n-i+1$ como el último período de desarrollo del que se tiene información para los siniestros, tanto los pagados acumulados como los incurridos y se puede observas que los pares $(i,c_i)$ son los índices de la diagonal invertida de las matrices. Luego, observando que para el año $i$, los valores de $P_{i,t}$ y $I_{i,t}$ son proyecciones para $t>c_i$ se tiene que el ratio $(P/I)_{i,t}$ se calcula
+
+$$
+(P/I)_{i,t} = \frac{P_{i,t}}{I_{i,t}} = \frac{P_{i,c_i}\cdot q_{c_i}^P \cdot \ldots \cdot q_{t-1}^P}{I_{i,c_i}\cdot q_{c_i}^I \cdot \ldots \cdot q_{t-1}^I}
+$$
+
+A partir de las fórmulas de los factores de desarrollo, se nota que para $t>c_i$:
+
+$$
+(P/I)_{i,t} = \frac{P_{i.c_i}\cdot \frac{\sum_{j=1}^n P_{j,t}}{\sum_{j=1}^n P_{j,c_i}}}{I_{i.c_i}\cdot \frac{\sum_{j=1}^n I_{j,t}}{\sum_{j=1}^n I_{j,c_i}}}
+$$
+Y reordenando se tiene la siguiente relación para los ratios proyectados mediante la aplicación de Chain-Ladder por separado:
+
+$$
+\frac{(P/I)_{i,t}}{(P/I)_t} = \frac{(P/I)_{i,c_i}}{(P/I)_{c_i}}
+$$
+
+Que indica que para cada año de accidente, el ratio de $(P/I)_{i,t}$ con el $(P/I)_t$ promedio en el período de desarrollo t, debe cumplir la misma relación que en el período $c_i$, y esto se ve claramente en la figura 2 cuando se hace Chain-Ladder por separado siendo la principal debilidad del método.
+
+Veamos que la correlación entre los factores de desarrollo para cada año de ocurrencia del primer período de desarrollo de la matriz de pagos acumulados, es decir, el vector de $q_{i,1}^P$ $\forall i = \{1,2,\ldots,10\}$ respecto a los ratios $(P/I)_{1,j}$ es de $-0.7278$.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+qi1p <- c()
+
+fraci1 <- c()
+
+for(i in 1:9){
+  qi1p[i] = acum[i,2]/acum[i,1];
+  fraci1[i] = acum[i,1]/tri[i,1]
+}
+
+correlation=cor(fraci1,qi1p)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data.frame(fraci1, qi1p), aes(x = fraci1, y = qi1p)) +
+  geom_point() +
+  geom_vline(xintercept = mean(fraci1), linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mean(qi1p), linetype = "dashed", color = "blue") +
+  labs(title = paste("Gráfico de Dispersión\nCorrelación: ", round(correlation, 2)),
+       x = "fraci1", y = "qi1I")
+
+
+```
+
+Y por otro lado, haciendo lo mismo para los factores de desarrollo individuales del primer período de la matriz de siniestros incurridos y los ratios del primer período de desarrollo se tiene una correlación positiva más débil de $0.3572$
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+qi1I <- c()
+
+fraci1 <- c()
+
+for(i in 1:9){
+  qi1I[i] = tri[i,2]/tri[i,1];
+  fraci1[i] = acum[i,1]/tri[i,1]
+}
+
+correlation=cor(fraci1,qi1I)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data.frame(fraci1, qi1I), aes(x = fraci1, y = qi1I)) +
+  geom_point() +
+  geom_vline(xintercept = mean(fraci1), linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mean(qi1I), linetype = "dashed", color = "blue") +
+  labs(title = paste("Gráfico de Dispersión\nCorrelación: ", round(correlation, 2)),
+       x = "fraci1", y = "qi1I")
+
+```
+
+Parece ser que uno de los problemas principales es asumir un factor igual para todos los años de ocurrencia, dado un período de desarrollo y se nota que estos factores depende de los ratios $(P/I)$.
+
+También es claro que con el correr de los períodos de desarrollo se tendrán menos puntos en nuestro gráfico, y los resultados serán menos consistentes, y además, los factores de desarrollo individuales para cada año deben ser ajustados tanto para la matriz de pagos acumulados como la de siniestros incurridos, pero la pregunta es en que medida cada uno, esto expresa la idea básica para resolver el problema del método SCL.
+
+Siendo que para cada período de desarrollo se tiene un gráfico de puntos como el anterior, pero cada vez con menos puntos, la idea es hacer una regresión lineal en cada caso, y estimar el factor de desarrollo para cada $(P/I)$, y de esta forma se puede predecir la parte restante de la matriz. Por ejemplo, para el factor de desarrollo individual $q_{1,10}$ que no se tiene valores de la columna siguiente del triángulo para calcularlo, se puede predecir con la regresión a partir del valor $(P/I)_{1,10}$
+
+Algunos problemas que pueden surgir de este método es que no siempre una regresión lineal explica es buena para explicar los factores de desarrollo individuales. Para esto, en caso de que se observe una hipérbole en los datos se sugiere implementar el ratio $(I/P)=\frac{1}{(P/I)}$, para poder ajustar de mejor manera los factor de desarrollo de los pagos acumulados en función de $(P/I)$ por la estructura hiperbólica que parece tener que se observa en la figura
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+qi1p <- c()
+
+fracinvi1 <- c()
+
+for(i in 1:9){
+  qi1p[i] = acum[i,2]/acum[i,1];
+  fracinvi1[i] = tri[i,1]/acum[i,1]
+}
+
+cor(fracinvi1,qi1p)
+
+plot(fracinvi1,qi1p)
+
+```
+
+El segundo problema que se puede observar, es que, con el pasar de los períodos de desarrollo, que se tienen menos datos, las estimaciones son muy volátiles, incluso algunas veces se pueden obtener regresiones con el signo incorrecto en el coeficiente. Y por último, a veces no hay una estructura clara que refleje correlación. O la misma es muy débil.
+
+El método de Munich considera todos los coeficientes de desarrollo juntos, para todos los años y todos los períodos, y también los ratios $(P/I)$ y $(I/P)$ teniendo todos los valores estandarizados, es decir, restando la esperanza y diviendo entre el desvío, obteniendo así datos con media 0 y desvío 1.
+
+Luego, como los datos están estandarizados, se puede graficar todos los datos juntos para los factores de desarrollo individuales estandarizados de los pagos acumulados vs los ratios $(I/P)$ y los factores de desarrollo individuales estandarizados de los siniestros incurridos vs los ratios $(P/I)$, luego se puede hacer la regresión con la nube de puntos que tiene más datos, y calcular la estimación de los factores de desarrollo a partir del modelo lineal. Lo mismo para la estimación de los factores de desarrollo individuales para los estimar la parte de la matriz que falta. Todo este método se puede aplicar a partir de la función 'MunichChainLadder' del paquete ChainLadder, a la que se le debe pasar como argumento los dos triangulos, el de pagos acumulados y el de siniestros incurridos.
+
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+BayernMunich <- MunichChainLadder(acum,tri)
+
+
+BayernMunich
+
+
+```
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+plot(BayernMunich)
+
+```
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+summary(BayernMunich)$ByOrigin
+
+summary(BayernMunich)$Totals
+
+
+```
+
 
 
 
