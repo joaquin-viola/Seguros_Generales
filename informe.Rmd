@@ -7,6 +7,7 @@ lang: es
 bibliography: references.bib 
 output:
   pdf_document: 
+    keep_tex: true
     pandoc_args:
       - "--pdf-engine=xelatex"
       - "-V"
@@ -50,6 +51,7 @@ library(tidyverse)
 library(readxl)
 library(ChainLadder)
 library(xtable)
+library(latex2exp)
 ```
 
 
@@ -73,7 +75,7 @@ tri <- as.triangle(as.matrix(tri))
 
 En este trabajo se pretende abordar distintos métodos para el cálculo de reservas técnicas asociadas al IBNR. El IBNR por sus siglas en inglés, son los siniestros incurridos y que aún no fueron reclamados. En muchos países, los seguros de responsabilidad civil, cuentan con un período de 10 años para el reclamo de un seguro luego de que este haya ocurrido.
 
-La idea principal de las reservas de IBNR es poder estar cubierto en el futuro de siniestros que puedan ocurrir en el año corriente (mientras está activa la poliza), pero el reclamo es efectualdo en los años siguientes.
+La idea principal de las reservas de IBNR es poder estar cubierto en el futuro de siniestros que ocurrieron en el año corriente (mientras está activa la poliza), pero el reclamo es efectuado en los años siguientes.
 
 Para poder calcular las reservas de IBNR hay varios métodos, basados en la utilización de información previa (recolectada en años anteriores), para poder predecir cómo se comportan los reclamos en los años siguientes.
 
@@ -82,7 +84,6 @@ Se suele trabajar con 3 matrices triangulares, donde las filas son años, y las 
 ```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
 
 print(xtable(tri2, type="latex", align="ccccccccccc", digits = 0, caption="Siniestros incurridos acumulados por año y por período transcurrido en pesos.", label = "tabla1"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{8.5pt}{10pt}\\selectfont")
-
 
 ```
 
@@ -98,10 +99,10 @@ Se trabajará con la matriz de siniestros trabajada en el curso de "Solvencias d
 
 La figura \ref{triangle} fue realizada con la función \texttt{plot} de \texttt{R} base, la cual fue aplicada a un objeto (matriz de siniestros incrurridos) de clase \texttt{triangle}. Esta figura nos permite ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo. Cada línea representa los siniestros incurridos en un período, y se ve como va aumentando los pagos acumulados y reservados con el correr de los períodos.
 
-```{r triangle, echo=FALSE, message=FALSE, warning=FALSE, caption = "\\label{triangle} Desarrollo de los reclamos por año y período."}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="\\label{triangle} Desarrollo de los reclamos por año y período.", results='asis'}
 
-#plot(tri/1000, ylab="Siniestros en miles de pesos", xlab="Período de desarrollo")
-knitr::include_graphics("imagenes/triangle.png")
+plot(tri/1000, ylab=TeX("$\\textit{Siniestros en miles de pesos}$"), xlab="Período de desarrollo")
+#knitr::include_graphics("imagenes/triangle.png")
 
 ```
 
