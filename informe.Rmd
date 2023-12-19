@@ -63,6 +63,7 @@ tri[,1] <- NULL
 colnames(tri) <- 1:10
 rownames(tri) <- 1999:2008  # se simplifica el nombre de los años a años simples para que facilite el uso de algunas funciones
 
+tri2 <- tri
 
 # triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
 tri <- as.triangle(as.matrix(tri))
@@ -70,37 +71,40 @@ tri <- as.triangle(as.matrix(tri))
 ```
 
 
-En este trabajo se pretende abordar distintos métodos para el cálculo de reservas de IBNR.
-El IBNR son los siniestros incurridos y que aún no fueron reclamados. En los seguros de responsabilidad civil, en muchos países, se tiene un período de 10 años para reclamar un seguro luego de que este haya ocurrido.
+En este trabajo se pretende abordar distintos métodos para el cálculo de reservas técnicas asociadas al IBNR. El IBNR por sus siglas en inglés, son los siniestros incurridos y que aún no fueron reclamados. En muchos países, los seguros de responsabilidad civil, cuentan con un período de 10 años para el reclamo de un seguro luego de que este haya ocurrido.
 
-La idea principal de las reservas de IBNR es poder estar cubierto en el futuro de siniestros que pueden ocurrir en el año corriente (mientras está activa la poliza), pero se reclamaba en los años siguientes.
+La idea principal de las reservas de IBNR es poder estar cubierto en el futuro de siniestros que puedan ocurrir en el año corriente (mientras está activa la poliza), pero el reclamo es efectualdo en los años siguientes.
 
-Para poder  calcular las reservas de IBNR hay varios métodos, y todos utilizan la información de años anteriores para poder predecir cómo se comportan los reclamos en los años siguientes.
+Para poder calcular las reservas de IBNR hay varios métodos, basados en la utilización de información previa (recolectada en años anteriores), para poder predecir cómo se comportan los reclamos en los años siguientes.
 
-Se suele trabajar con 3 matrices triangulares, donde cada fila es un año, y en las columnas tenemos los años transcurridos. En la última fila se encuentra el último año, por lo que tiene datos para una sola columna, el año corriente, y así cada fila va teniendo dato para una columna más, llegando a la primer fila, que es el último año que se tiene en cuenta, y para el cual se tiene información para todos los años transcurridos, así queda explicada la forma de la matriz triangular.
+Se suele trabajar con 3 matrices triangulares, donde las filas son años, y las columnas son los años transcurridos. Observesé el cuadro \ref{tabla1}, en la última fila se encuentra el último año, el cuál se tiene datos para una sola columna, el año corriente. La fila anterior tendrá una columna más, es decir tendrá información de dos períodos transcurridos, de esta manera se llega a la primer fila, la cuál es el último año que se tiene en cuenta, y para el cual se tiene información de todos los años transcurridos, de esta manera queda explicada la forma de la matriz triangular.
 
-La primer matriz triangular tiene la información de los pagos acumulados de los siniestros ocurridos en cada año, y cuando fueron pagados efectivamente. Para la primer fila, en la primer columna se tienen los pagos de los siniestros ocurridos y pagados hace 10 años, luego en la siguiente columna se tiene los siniestros ocurridos en ese año pero pagados en el siguiente, más los de la columna anterior (por ser pagos acumuados) y así sucesivamente.
+```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
 
-La segunda matriz es la matriz de siniestros pendientes de pagos, que tiene para cada año celda, los siniestros ocurridos en la fila a la que pertenece, y reportados pasado los años según la columna en la que está, es decir, salvo los de la primera columna, todos reportados luego de pasado cierta cantidad de años, pero que aún no han sido pagados, ya sea por litigio, o por que se está estimando el valor final a pagar.
+print(xtable(tri2, type="latex", align="ccccccccccc", digits = 0, caption="Siniestros incurridos acumulados por año y por período transcurrido en pesos.", label = "tabla1"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{8.5pt}{10pt}\\selectfont")
 
-En última instancia tenemos la matriz triangulas de siniestros incurridos, que en cada celda se tiene la suma de las dos matrices anteriores que es el total de los siniestros totales acumulados y reservados ocurridos en cada año y que han ido ocurriendo a lo largo de los años siguientes. Cada diagonal (en el sentido inverso, $X_{1,n}, X_{2,n-1}, \ldots , X_{n,1}$) corresponde a los pagos acumulados y reservados de un ejercicio contable.
 
-La reserva de IBNR es la reserva que debe tener la compañía pasado $n$ años (en general 10 años) para poder cubrir los siniestros ocurridos en el año actual, y que serán reportados durante lossiguientes años.
-
-Se trabajará con la matriz de siniestros trabajada en el curso de 'Solvencias de Compañías Aseguradoras' brindado por el profesor Enrique Arónica en noviembre de 2023 en la Facultad de Ciencias Económicas, se cuenta con la matriz de pagos acumulados, la matriz de siniestros pendientes de pagos y la de siniestros incurridos, esta última se presenta a continuación, que se encuentra guardada en un objeto de tipo **triangle**.
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.cap='long caption', fig.scap='short', tidy=FALSE}
-tri
-
-#print(xtable(tri), type="latex") # , results = 'asis'
-#knitr::kable(tri, format = "latex", booktabs = TRUE)
 ```
 
-Al tener la matriz guardada en un objeto especial, la función plot nos permiete ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo
+La primer matriz triangular tiene la información de los pagos acumulados de los siniestros ocurridos en cada año, y cuando fueron pagados efectivamente. Para la primer fila, en la primer columna se tienen los pagos de los siniestros ocurridos y pagados hace 10 años, luego en la siguiente columna se tiene los siniestros ocurridos en ese año pero reclamados y pagados en el siguiente, más los de la columna anterior (por ser pagos acumulados) y así sucesivamente.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE,caption = "Cada línea representa los siniestros incurridos en un período, y se ve como va aumentando los pagos acumulados y reservados con el correr de los períodos"}
-plot(tri/1000,  main = "Desarrollo de los reclamos por período")
+La segunda matriz es la matriz de siniestros pendientes de pagos, que tiene para cada celda (año), los siniestros ocurridos en la fila a la que pertenece, y reportados pasado los años según la columna en la que está, es decir, salvo los de la primera columna, todos son reportados luego de pasado cierta cantidad de años, pero que aún no han sido pagados, ya sea por litigio, o por que se está estimando el valor final a pagar.
+
+En última instancia tenemos la matriz triangular de siniestros incurridos (cuadro \ref{tabla1}). En cada celda se tiene la suma de las dos matrices anteriores que es el total de los siniestros acumulados y reservados ocurridos en cada año y que han ido ocurriendo a lo largo de los años siguientes. Cada diagonal (en el sentido inverso, $X_{1,n}, X_{2,n-1}, \ldots , X_{n,1}$) corresponde a los pagos acumulados y reservados de un ejercicio contable.
+
+La reserva de IBNR es la reserva que debe tener la compañía pasado $n$ años (en general 10 años) para poder cubrir los siniestros ocurridos en el año actual, y que serán reportados durante los siguientes años.
+
+Se trabajará con la matriz de siniestros trabajada en el curso de "Solvencias de Compañías Aseguradoras" brindado por el profesor \textit{Enrique Arónica} en Noviembre de 2023 en la Facultad de Ciencias Económicas (UDELAR). Se cuenta con la matriz de pagos acumulados, la matriz de siniestros pendientes de pagos y la de siniestros incurridos.
+
+La figura \ref{triangle} fue realizada con la función \texttt{plot} de \texttt{R} base, la cual fue aplicada a un objeto (matriz de siniestros incrurridos) de clase \texttt{triangle}. Esta figura nos permite ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo. Cada línea representa los siniestros incurridos en un período, y se ve como va aumentando los pagos acumulados y reservados con el correr de los períodos.
+
+```{r triangle, echo=FALSE, message=FALSE, warning=FALSE, caption = "\\label{triangle} Desarrollo de los reclamos por año y período."}
+
+#plot(tri/1000, ylab="Siniestros en miles de pesos", xlab="Período de desarrollo")
+knitr::include_graphics("imagenes/triangle.png")
+
 ```
+
 
 # Metodología
 
