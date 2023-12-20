@@ -565,10 +565,6 @@ Luego, como los datos están estandarizados, se puede graficar todos los datos j
 
 BayernMunich <- MunichChainLadder(acum,tri)
 
-
-BayernMunich
-
-
 ```
 
 Con la función \texttt{plot} pasándole un objeto del tipo \texttt{MunichChainLadder} genera la siguiente figura con 4 gráficos. El primero de ellos contiene la estimación de los siniestros pagados e incurridos ocurridos para cada período mediante el método de Munich Chain-Ladder, el siguiente gráfico muestra la obtención de los ratios $(P/I)$ en términos porcentuales obtenidos mediante Munich Chain-Ladder (MCL), o lo obtenidos si se hacía Chain-Ladder por separado (Mack), mostrando como así se hubiesen obtenidos ratios por encima de 1 (o por encima de \%100 en términos porcentuales). El gráfico de abajo a la izquierda, muestra la dispersión de todos los factores centrados y estandarizados de los pagos acumulados vs los ratios $(I/P)$ con su respectiva regresión. Y el último gráfico muestra lo mismo pero para los factores de los siniestros incurridos respceto al ratio $(P/I)$. 
@@ -579,16 +575,23 @@ plot(BayernMunich)
 
 ```
 
+
+Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich Chain Ladder} nos devuelve los últimos pagos acumulados y últimos siniestros incurridos, y el ratio $P/I$, luego también tiene las proyecciones de los pagos y de los incurridos mediante el método de Munich, y el ratio, al pedir que sea por año de origen mediante \texttt{summary(BayernMunich)$ByOrigin} esta informacioón nos la devuelve por año de origen, y se puede observar como ningún ratio supera la unidad.
+
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
-
 summary(BayernMunich)$ByOrigin
+```
+También se puede acceder al resumen pero para el total mediante \texttt{summary(BayernMunich)$Totals}, donde se tendrá la suma de las columnas anteriores, en la primer fila la sumade las diagonales, y su ratio, y en la segunda lo estimado y su ratio. 
 
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
 summary(BayernMunich)$Totals
-
 
 ```
 
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
+
+
+
 
 
 
