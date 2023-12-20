@@ -140,7 +140,7 @@ QAcum <- round(QAcum, 3)
 ```
 
 
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
+```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis'}
 Incurridos_Acumulados <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
@@ -160,8 +160,7 @@ Reserva_IBNR = sum(Reserva_IBNR),
                             row.names = "Total"))
 
 
-Exhibit
-
+print(xtable(Exhibit, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit"), caption.placement = "bottom", comment = FALSE)
 ```
 
 
@@ -176,27 +175,31 @@ $$
 L(q_j -1) = \alpha + \beta\times j
 $$
 
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
+```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis'}
 n <- 10
 q <- sapply(1:(n-1),
             function(i){
               sum(tri[c(1:(n-i)),i+1])/sum(tri[c(1:(n-i)),i])
             }
 )
-q
 
+factores_q1 <- data.frame(q)
+col_names <- c("Factores de desarrollo") 
+names(factores_q1) <- col_names
 
+print(xtable(factores_q1, type="latex", align="cc", digits = 3, caption=".", label = "factores1"), caption.placement = "bottom", comment = FALSE)
+#, size="\\fontsize{10pt}{10pt}\\selectfont"
+
+```
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
 # modelo lineal de los factores de desarrollo explicado por los anios (log(f-1))
 dev.period <- 1:(n-1)
 tail.model <- lm(log(q-1) ~ dev.period)
 
-
-plot(log(q-1) ~ dev.period, 
-     main="Extrapolación Log-lineal de los factores año a año")+
+plot(log(q-1) ~ dev.period, main="Extrapolación Log-lineal de los factores año a año")
 abline(tail.model)
-
 ```
-
 
 
 Para esto es necesario haber calculado los factores de desarrollo simple y hacer el modelo correspondiente, previamente chequendo si para el gráfico de dispersión de los datos corresopnde el modelo de regresión lineal.
@@ -212,8 +215,6 @@ f.tail <- prod(tail)
 plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
      main="Expected claims development pattern",
      xlab="Dev. period", ylab="Development % of ultimate loss")
-
-
 
 plot(100*(rev(1/cumprod(rev(c(q, tail))))), t="b",
      main="Expected claims development pattern",
@@ -242,7 +243,7 @@ Qs <- round(Qs, 3)
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='asis'}
 Incurridos_Acumulados2 <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
@@ -254,17 +255,12 @@ Reserva_IBNR2 = Perdida_Esperada2 - Incurridos_Acumulados2
 Exhibit2 <- data.frame(Incurridos_Acumulados2, Qs = round(rev(Qs), 3), Perdida_Esperada2, Reserva_IBNR2)
 # Tack on a Total row
 
-
-
 Exhibit2 <- rbind(Exhibit2,
                  data.frame(Incurridos_Acumulados2=sum(Incurridos_Acumulados2), Qs=NA, Perdida_Esperada2=sum(Perdida_Esperada2),
 Reserva_IBNR2 = sum(Reserva_IBNR2),                            
                             row.names = "Total"))
 
-
-Exhibit2
-
-
+print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit2"), caption.placement = "bottom", comment = FALSE)
 
 ```
 
@@ -319,44 +315,58 @@ $$
 \widehat{ECM}(\hat{R}_i) = \hat{X}_{i,n}^2 \sum_{j=n-i+1}^{n-1} \frac{\hat{\sigma_j}^2}{\hat{q}_j}\left( \frac{1}{\hat{X}_{i,j}} - \frac{1}{\sum_{l=1}^{I-j}X_{l,j}} \right)
 $$
 
-La función 'MackChainLadder' del paquete 'ChainLadder' nos da una tabla con las reservas de IBNR para cada año, su desvío y su coeficiente de variación, y las mismas medidas para el total, teniendo especial atentción de que el desvío del total no es igual a la suma del desvío, nos muestra la última pérdida obtenida, la última pérdida esperada, la relación entre estas, la reserva de IBNR, el desvío y el coeficiente de variación.
+La función \texttt{MackChainLadder} del paquete \texttt{ChainLadder} nos da una tabla con las reservas de IBNR para cada año, su desvío y su coeficiente de variación, y las mismas medidas para el total, teniendo especial atentción de que el desvío del total no es igual a la suma del desvío, nos muestra la última pérdida obtenida, la última pérdida esperada, la relación entre estas, la reserva de IBNR, el desvío y el coeficiente de variación.
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
 mackTRI <- MackChainLadder(tri)
 
 mackTRI
-
+#, results='asis'
+#print(xtable(resumenMackTRI$Totals, type="latex", align="cc", digits = 2, caption=".", label = "origin"), caption.placement = "bottom", comment = FALSE)
 ```
 
-También se puede acceder a los factores mediante acciedendo a 'mackTRI\$f', o a la matriz completa con la estimación de los siniestros incurridos en los años siguientes mediante 'mackTRI\$FullTriangle'.
+También se puede acceder a los factores mediante acciedendo a  \texttt{mackTRI\$f}, o a la matriz completa con la estimación de los siniestros incurridos en los años siguientes mediante   \texttt{mackTRI\$FullTriangle}.
 
-```{r, echo=FALSE, message=FALSE,warning=FALSE}
-mackTRI$f
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
+
+factores_q <- data.frame(mackTRI$f)
+col_names <- c("Factores de desarrollo") 
+names(factores_q) <- col_names
+
+print(xtable(factores_q, type="latex", align="cc", digits = 3, caption=".", label = "factores"), caption.placement = "bottom", comment = FALSE)
 ```
 
+
+
+
 ```{r, echo=FALSE, message=FALSE,warning=FALSE}
+
 mackTRI$FullTriangle
+
+#matriz <- as.matrix(mackTRI$FullTriangle)
+
+#print(xtable(resumenMackTRI$ByOrigin, type="latex", align="ccccccc", digits = 3, caption="Siniestros incurridos acumulados por año y por período #transcurrido en pesos.", label = "origin"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{10.5pt}{10pt}\\selectfont")
 ```
 
 Y al resumen final separado por año o para el total se accede mediante summary de la manera:
 
-```{r, echo=FALSE, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
 
 resumenMackTRI <- summary(mackTRI)
 
-resumenMackTRI$ByOrigin
-
+print(xtable(resumenMackTRI$ByOrigin, type="latex", align="ccccccc", digits = 3, caption=".", label = "origin"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{10.5pt}{10pt}\\selectfont")
 ```
 
-```{r, echo=FALSE, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
 
-resumenMackTRI$Totals
+print(xtable(resumenMackTRI$Totals, type="latex", align="cc", digits = 2, caption=".", label = "tot"), caption.placement = "bottom", comment = FALSE)
 
 ```
 Y se accede a distintos gráficos con la función plot
 
-```{r, echo=FALSE, out.width="100%", fig.cap = ""}
+```{r, echo=FALSE, out.width="100%", fig.cap = "", fig.height=15, fig.width=18}
 plot(mackTRI)
 ```
 
@@ -401,7 +411,7 @@ fracframe <- fracframe %>% mutate(
 
 
 ```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
-print(xtable(frac2, type="latex", align="ccccccccccc", digits = 4, caption="Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.", label = "tabla2"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{8.5pt}{10pt}\\selectfont")
+print(xtable(frac2, type="latex", align="ccccccccccc", digits = 4, caption="Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.", label = "tabla2"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{11.5pt}{10pt}\\selectfont")
 
 # movi el grafico para el siguiente chunk para que salieran juntos
 ```
@@ -580,16 +590,21 @@ plot(BayernMunich)
 ```
 
 
-Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich Chain Ladder} nos devuelve los últimos pagos acumulados y últimos siniestros incurridos, y el ratio $P/I$, luego también tiene las proyecciones de los pagos y de los incurridos mediante el método de Munich, y el ratio, al pedir que sea por año de origen mediante \texttt{summary(BayernMunich)$ByOrigin} esta informacioón nos la devuelve por año de origen, y se puede observar como ningún ratio supera la unidad.
+Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich Chain Ladder} nos devuelve los últimos pagos acumulados y últimos siniestros incurridos, y el ratio $P/I$, luego también tiene las proyecciones de los pagos y de los incurridos mediante el método de Munich, y el ratio, al pedir que sea por año de origen mediante \texttt{summary(BayernMunich)\$ByOrigin} esta informacioón nos la devuelve por año de origen, y se puede observar como ningún ratio supera la unidad.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
-summary(BayernMunich)$ByOrigin
+```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+print(xtable(summary(BayernMunich)$ByOrigin, type="latex", align="ccccccc", caption="", label = "origin2"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
+
 ```
-También se puede acceder al resumen pero para el total mediante \texttt{summary(BayernMunich)$Totals}, donde se tendrá la suma de las columnas anteriores, en la primer fila la sumade las diagonales, y su ratio, y en la segunda lo estimado y su ratio. 
+También se puede acceder al resumen pero para el total mediante \texttt{summary(BayernMunich)\$Totals}, donde se tendrá la suma de las columnas anteriores, en la primer fila la sumade las diagonales, y su ratio, y en la segunda lo estimado y su ratio. 
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
-summary(BayernMunich)$Totals
+```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
+#summary(BayernMunich)$Totals
+
+#
+print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 3, caption=".", label = "totales"), caption.placement = "bottom", comment = FALSE)
 ```
 
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
