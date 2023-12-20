@@ -7,7 +7,7 @@ lang: es
 bibliography: references.bib 
 output:
   pdf_document: 
-    keep_tex: true
+    keep_tex: false
     pandoc_args:
       - "--pdf-engine=xelatex"
       - "-V"
@@ -24,6 +24,9 @@ output:
   word_document: default
 nocite: |
   @chain
+  @mack
+  @munich
+  @tesis
 editor_options: 
   markdown: 
     wrap: 72
@@ -97,11 +100,11 @@ La reserva de IBNR es la reserva que debe tener la compañía pasado $n$ años (
 
 Se trabajará con la matriz de siniestros trabajada en el curso de "Solvencias de Compañías Aseguradoras" brindado por el profesor \textit{Enrique Arónica} en Noviembre de 2023 en la Facultad de Ciencias Económicas (UDELAR). Se cuenta con la matriz de pagos acumulados, la matriz de siniestros pendientes de pagos y la de siniestros incurridos.
 
-La figura \ref{triangle} fue realizada con la función \texttt{plot} de \texttt{R} base, la cual fue aplicada a un objeto (matriz de siniestros incrurridos) de clase \texttt{triangle}. Esta figura nos permite ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo. Cada línea representa los siniestros incurridos en un período, y se ve como va aumentando los pagos acumulados y reservados con el correr de los períodos.
+La figura \ref{triangle} fue realizada con la función \texttt{plot} de \texttt{R} base, la cual fue aplicada a un objeto (matriz de siniestros incurridos) de clase \texttt{triangle}. Esta figura nos permite ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo. Cada línea representa los siniestros incurridos en un período, y se ve como va aumentando los pagos acumulados y reservados con el correr de los períodos.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="\\label{triangle} Desarrollo de los reclamos por año y período.", results='asis'}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="\\label{triangle} Desarrollo de los reclamos por año y período."}
 
-plot(tri/1000, ylab=TeX("$\\textsp{Siniestros en miles de pesos}$"), xlab=TeX("$\\textsp{Periodo de desarrollo}"))
+plot(tri/1000, ylab="Siniestros en miles de pesos", xlab="Periodo de desarrollo")
 #knitr::include_graphics("imagenes/triangle.png")
 
 ```
@@ -112,7 +115,7 @@ plot(tri/1000, ylab=TeX("$\\textsp{Siniestros en miles de pesos}$"), xlab=TeX("$
 
 ## Chain Ladder 'clásico'
 
-Uno de los métodos más utilizados es el de 'Chain Ladder' (Escalera de Cadena), que a partir de la última matriz presentada en la sección anterior calcula los factores de desarrollo, que miden el crecimiento de los gastos por siniestro pasado los años. El factor de desarrollo representa la proporción que aumentan el monto de los siniestros incurridos entre dos períodos consecutivos (el factor de desarrollo $q_j$ representa el aumento de los siniestros incurridos entre el período $j$ y el $j+1$). Para el cálculo de este, se suma todos los siniestros incurridos en el período $j+1$, es decir $\sum_{i=1}^{n-j} X_{i,j+1}$ y se los divide entre la misma cantidad de filas, del período anterior ($j$), es decir $\sum_{i=1}^{n-j} X_{i,j}$
+Uno de los métodos más utilizados es el de 'Chain Ladder' (Escalera de Cadena), que a partir de la matriz que se puede ver en el cuadro \ref{tabla1}, calcula los factores de desarrollo, que miden el crecimiento de los gastos por siniestro pasado los años. El factor de desarrollo representa la proporción que aumentan el monto de los siniestros incurridos entre dos períodos consecutivos (el factor de desarrollo $q_j$ representa el aumento de los siniestros incurridos entre el período $j$ y el $j+1$). Para el cálculo de este, se suma todos los siniestros incurridos en el período $j+1$, es decir $\sum_{i=1}^{n-j} X_{i,j+1}$ y se los divide entre la misma cantidad de filas, del período anterior ($j$), es decir $\sum_{i=1}^{n-j} X_{i,j}$
 
 $$
 \hat{q}_{j} = \frac{\sum_{i=1}^{n-j} X_{i,j+1}}{\sum_{i=1}^{n-j} X_{i,j}}
@@ -569,9 +572,10 @@ BayernMunich <- MunichChainLadder(acum,tri)
 
 Con la función \texttt{plot} pasándole un objeto del tipo \texttt{MunichChainLadder} genera la siguiente figura con 4 gráficos. El primero de ellos contiene la estimación de los siniestros pagados e incurridos ocurridos para cada período mediante el método de Munich Chain-Ladder, el siguiente gráfico muestra la obtención de los ratios $(P/I)$ en términos porcentuales obtenidos mediante Munich Chain-Ladder (MCL), o lo obtenidos si se hacía Chain-Ladder por separado (Mack), mostrando como así se hubiesen obtenidos ratios por encima de 1 (o por encima de \%100 en términos porcentuales). El gráfico de abajo a la izquierda, muestra la dispersión de todos los factores centrados y estandarizados de los pagos acumulados vs los ratios $(I/P)$ con su respectiva regresión. Y el último gráfico muestra lo mismo pero para los factores de los siniestros incurridos respceto al ratio $(P/I)$. 
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
+```{r, echo=FALSE,message=FALSE,warning=FALSE, fig.height=20, fig.width=18}
 
 plot(BayernMunich)
+
 
 ```
 
@@ -591,18 +595,7 @@ summary(BayernMunich)$Totals
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
 
 
-
-
-
-
-%knitr::include_graphics("imagenes/condicional_normal.png")
-
-%[Nadaraya-Watson](#bib)
-
-
-
 \newpage
-
 
 
 # Bibliografía {-#bib}
@@ -610,11 +603,5 @@ Si se estima de esta manera el factor de desarrollo individual para poder estima
 ::: {#refs}
 :::
 
-# Material adicional {-}
 
-La entrega del informe viene acompañado de 2 scripts, que contienen la implementación de cada método presentado junto con las aplicaciones realizadas:
-
-- \texttt{quantile\_regression\_by\_huang-nguyen.R}
-
-- \texttt{quantile\_regression\_by\_yu-jones.R}
 
