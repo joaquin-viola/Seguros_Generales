@@ -87,7 +87,7 @@ Se suele trabajar con 3 matrices triangulares, donde las filas son años, y las 
 
 ```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
 
-print(xtable(tri2, type="latex", align="ccccccccccc", digits = 0, caption="Siniestros incurridos acumulados por año y por período transcurrido en pesos.", label = "tabla1"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{8.5pt}{10pt}\\selectfont")
+print(xtable(tri2, type="latex", align="ccccccccccc", digits = 0, caption="Siniestros incurridos acumulados por año y por período transcurrido en pesos.", label = "tabla1"), caption.placement = "top", comment = FALSE, size="\\fontsize{8.5pt}{10pt}\\selectfont")
 
 ```
 
@@ -112,6 +112,12 @@ plot(tri/1000, ylab="Siniestros en miles de pesos", xlab="Periodo de desarrollo"
 
 
 # Chain-Ladder
+
+El objetivo de este trabajo es presentar distintos métodos para estimar los siniestros incurridos que se tendrán pasado los años de desarrollo. Y de esta manera obtener la reserva necesaria para hacer frente a lo que será reclemado.
+
+Una de las principales herramientas del Chain-Ladder son los factores de desarrollo que se definiran más adelante. Se utilizan tanto en las matrices de pagos acumulados como en la de siniestros incurridos, y es el factor por el que los valores van creciendo de un período a otro. A veces se utiliza un solo factor de desarrollo para todo el período de desarrollo (ejemplo, para el crecimiento de los siniestros/pagos del período 6 al 7, sin importar el año de ocurrencia, lo que sería colomna por columna) y a veces es de particular interés los factores individuales, es decir, poder diferenciar tanto para el período de desarrollo como al año de ocurrencia (celda por celda).
+
+En primer lugar se presentará el método de Chain-Ladder clásico, que utiliza la información del desarrollo de los reportes de los siniestros durante los años posteriores a que hayan ocurrido para predecir cómo se comportaran en el futuro, que en general, se suele asumir que luego de terminado el último período de desarrollo, no habrá nuevos reclamos y los costos no aumentarán. Luego, se presentará una variación que utiliza un modelo de regresión en función de los años transcurridos a partir de los factores de desarrollos observados y así obtener mediante estimaciones un factor de desarrollo mayor a 1 para el último período de desarrollo. Después se presentará el método de Mack Chain-Ladder, que bajo utiliza ciertos supuestos y obtiene una estimación de los desvíos de los siniestros a futuros y de la reserva de IBNR. Por último se presentará el método de Munich Chain-Ladder que utiliza un modelo de regresión y parte de la correlación existente entre los siniestros incurridos y los pagos acumulados.
 
 
 ## Chain Ladder 'clásico'
@@ -161,7 +167,7 @@ Reserva_IBNR = sum(Reserva_IBNR),
                             row.names = "Total"))
 
 
-print(xtable(Exhibit, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit"), caption.placement = "bottom", comment = FALSE)
+print(xtable(Exhibit, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit"), caption.placement = "top", comment = FALSE)
 ```
 
 
@@ -188,7 +194,7 @@ factores_q1 <- data.frame(q)
 col_names <- c("Factores de desarrollo") 
 names(factores_q1) <- col_names
 
-print(xtable(factores_q1, type="latex", align="cc", digits = 3, caption=".", label = "factores1"), caption.placement = "bottom", comment = FALSE)
+print(xtable(factores_q1, type="latex", align="cc", digits = 3, caption=".", label = "factores1"), caption.placement = "top", comment = FALSE)
 #, size="\\fontsize{10pt}{10pt}\\selectfont"
 
 ```
@@ -261,7 +267,7 @@ Exhibit2 <- rbind(Exhibit2,
 Reserva_IBNR2 = sum(Reserva_IBNR2),                            
                             row.names = "Total"))
 
-print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit2"), caption.placement = "bottom", comment = FALSE)
+print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit2"), caption.placement = "top", comment = FALSE)
 
 ```
 
@@ -318,14 +324,56 @@ $$
 
 La función \texttt{MackChainLadder} del paquete \texttt{ChainLadder} nos da una tabla con las reservas de IBNR para cada año, su desvío y su coeficiente de variación, y las mismas medidas para el total, teniendo especial atentción de que el desvío del total no es igual a la suma del desvío, nos muestra la última pérdida obtenida, la última pérdida esperada, la relación entre estas, la reserva de IBNR, el desvío y el coeficiente de variación.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
+```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
 mackTRI <- MackChainLadder(tri)
 
-mackTRI
-#, results='asis'
-#print(xtable(resumenMackTRI$Totals, type="latex", align="cc", digits = 2, caption=".", label = "origin"), caption.placement = "bottom", comment = FALSE)
+#mackTRI
+
+# the print of the table had to be writed manual
+
 ```
+
+\begin{table}[ht]
+\centering
+\caption{First table caption}
+\label{mack}
+\begin{tabular}{ccccccc}
+\hline
+Year & Latest & Dev.To.Date & Ultimate & IBNR & Mack.S.E & CV(IBNR) \\
+\hline
+1999 & 5,099,688 & 1.000 & 5,099,688 & 0 & 0 & NaN \\
+2000 & 4,221,137 & 0.983 & 4,294,345 & 73,208 & 158,102 & 2.160 \\
+2001 & 5,969,088 & 0.956 & 6,242,289 & 273,201 & 246,430 & 0.902 \\
+2002 & 8,581,805 & 0.950 & 9,029,697 & 447,892 & 708,613 & 1.582 \\
+2003 & 7,276,239 & 0.847 & 8,589,919 & 1,313,680 & 782,964 & 0.596 \\
+2004 & 5,882,585 & 0.782 & 7,521,436 & 1,638,851 & 1,070,034 & 0.653 \\
+2005 & 9,901,076 & 0.703 & 14,077,509 & 4,176,433 & 1,880,771 & 0.450 \\
+2006 & 12,548,654 & 0.593 & 21,175,489 & 8,626,835 & 2,602,113 & 0.302 \\
+2007 & 9,171,465 & 0.471 & 19,492,933 & 10,321,468 & 3,717,510 & 0.360 \\
+2008 & 10,120,889 & 0.303 & 33,356,395 & 23,235,506 & 6,120,205 & 0.263 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{First table caption}
+\label{macktot}
+\begin{tabular}{lr}
+  \hline
+ & Totals \\ 
+  \hline
+Latest: & 78,772,626.00 \\ 
+Dev: & 0.61 \\ 
+Ultimate: & 128,879,702.24 \\ 
+IBNR: & 50,107,076.24 \\ 
+Mack.S.E & 11,156,939.54 \\ 
+CV(IBNR): & 0.22 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
 
 También se puede acceder a los factores mediante acciedendo a  \texttt{mackTRI\$f}, o a la matriz completa con la estimación de los siniestros incurridos en los años siguientes mediante   \texttt{mackTRI\$FullTriangle}.
 
@@ -336,19 +384,22 @@ factores_q <- data.frame(mackTRI$f)
 col_names <- c("Factores de desarrollo") 
 names(factores_q) <- col_names
 
-print(xtable(factores_q, type="latex", align="cc", digits = 3, caption=".", label = "factores"), caption.placement = "bottom", comment = FALSE)
+print(xtable(factores_q, type="latex", align="cc", digits = 3, caption=".", label = "factores"), caption.placement = "top", comment = FALSE)
 ```
 
 
 
 
-```{r, echo=FALSE, message=FALSE,warning=FALSE}
+```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
 
-mackTRI$FullTriangle
+#mackTRI$FullTriangle
 
-#matriz <- as.matrix(mackTRI$FullTriangle)
+mackTRI_df <- data.frame(matrix(unlist(mackTRI$FullTriangle), ncol = ncol(mackTRI$FullTriangle), byrow = TRUE))
+colnames(mackTRI_df) <- 1:10
+rownames(mackTRI_df) <- 1999:2008
 
-#print(xtable(resumenMackTRI$ByOrigin, type="latex", align="ccccccc", digits = 3, caption="Siniestros incurridos acumulados por año y por período #transcurrido en pesos.", label = "origin"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{10.5pt}{10pt}\\selectfont")
+print(xtable(mackTRI_df, type="latex", align="lcccccccccc", digits = 0, caption=".", label = "fulltriangle"), caption.placement = "top", table.placement = "ht", comment = FALSE, size="\\fontsize{8.2pt}{10pt}\\selectfont")
+
 ```
 
 Y al resumen final separado por año o para el total se accede mediante summary de la manera:
@@ -357,12 +408,12 @@ Y al resumen final separado por año o para el total se accede mediante summary 
 
 resumenMackTRI <- summary(mackTRI)
 
-print(xtable(resumenMackTRI$ByOrigin, type="latex", align="ccccccc", digits = 3, caption=".", label = "origin"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{10.5pt}{10pt}\\selectfont")
+print(xtable(resumenMackTRI$ByOrigin, type="latex", align="ccccccc", digits = 3, caption=".", label = "origin"), caption.placement = "top", comment = FALSE, size="\\fontsize{11pt}{10pt}\\selectfont")
 ```
 
 ```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
 
-print(xtable(resumenMackTRI$Totals, type="latex", align="cc", digits = 2, caption=".", label = "tot"), caption.placement = "bottom", comment = FALSE)
+print(xtable(resumenMackTRI$Totals, type="latex", align="cc", digits = 2, caption=".", label = "tot"), caption.placement = "top", comment = FALSE)
 
 ```
 Y se accede a distintos gráficos con la función plot
@@ -413,7 +464,7 @@ fracframe <- fracframe %>% mutate(
 
 ```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
 
-print(xtable(frac2, type="latex", align="ccccccccccc", digits = 4, caption="Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.", label = "tabla2"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{11.5pt}{10pt}\\selectfont")
+print(xtable(frac2, type="latex", align="ccccccccccc", digits = 4, caption="Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.", label = "tabla2"), caption.placement = "top", comment = FALSE, size="\\fontsize{11.5pt}{10pt}\\selectfont")
 
 ```
 
@@ -596,7 +647,7 @@ Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich C
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
-print(xtable(summary(BayernMunich)$ByOrigin, type="latex", align="ccccccc", caption="", label = "origin2"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
+print(xtable(summary(BayernMunich)$ByOrigin, type="latex", align="ccccccc", caption="", label = "origin2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
 
 ```
 También se puede acceder al resumen pero para el total mediante \texttt{summary(BayernMunich)\$Totals}, donde se tendrá la suma de las columnas anteriores, en la primer fila la sumade las diagonales, y su ratio, y en la segunda lo estimado y su ratio. 
@@ -606,7 +657,7 @@ También se puede acceder al resumen pero para el total mediante \texttt{summary
 #summary(BayernMunich)$Totals
 
 #
-print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 3, caption=".", label = "totales"), caption.placement = "bottom", comment = FALSE)
+print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 3, caption=".", label = "totales"), caption.placement = "top", comment = FALSE)
 ```
 
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
