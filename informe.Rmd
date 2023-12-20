@@ -131,9 +131,27 @@ $$
 ![En gris, las filas de la columna del período 2 y período 1 que se dividen para calcular el factor de desarrollo del período 1](imagenes/captura1.jpg)
 
 
-El total a pagar y reservar por los siniestros ocurridos en el año $i$ es el producto de $X_i = Q_j\cdot X_{i,j}$, donde $Q_j$ es el factor de desarrollo acumulado, que representa el aumento de los siniestros pagados acumulados y reservados al período $j$ ($X_{i,j}$), hasta el total que se va a pagar por los siniestros incurridos en el año $i$ ($X_i$). Se puede demostrar que el factor de desarrollo acumulado se calcula de forma iterativa a través de la fórmula $Q_{j-1}=q_{j-1}\cdot Q_{j}$, y en particular, $Q_n = 1$ que representa el aumento de los siniestros pagados acumulados y reservados ocurridos en el primer año que se está tomando, y acumulado durante los $n$ años siguientes, que luego, por cuestiones jurídicas no habrá nuevos reclamos.
+Se define también, de manera iterativa, el factor de desarrollo acumulado. De la forma:
 
-Luego, podemos decir que $X_i$ es la pérdida esperada por los siniestros incurridos en el año i, y nuestra reserva de $IBNR_i$, que es la reserva para los siniestros ocurridos en el año $i$ y que fueron denunciados en los años posteriores será la diferencia entre la pérdida esperada, y el último período para el que tenemos los pagos acumulados y reservados en la matriz de siniestros incurridos ($X_{i,n-i+1}$)
+$$
+Q_{j-1} = q_{j-1}\cdot Q_{j}
+$$
+
+Y en particular, para el último período de desarrollo se tiene, en general, que $Q_n = 1$. Luego, así como se puede predecir los siniestros incurridos para los valores por debajo de la diagonal de la manera:
+
+$$
+X_{i,c_i +1} = X_{i,c_i} \cdot q_{c_i}
+$$
+
+Se puede obtener con los factores de desarrollo acumulado el total a pagar y reservar por los siniestros ocurridos en el año $i$ ($X_i$) de la manera:
+
+$$
+X_i = Q_{c_i} \cdot X_{i,c_i}
+$$
+
+Que da el mismo resultado que hacer $X_i = X_{i,c_i} \cdot q_{c_i} \cdot \ldots \cdot q_{n}$, es decir, predecir todos los valores de la fila por debajo de la diagonal, y quedarnos con la última columna. Donde $c_i = n-i+1$ y queda definida la diagonal con todos los pares: $(i,c_i)$
+
+Luego, podemos decir que $X_i$ es la pérdida esperada por los siniestros incurridos en el año $i$, y nuestra reserva de $IBNR_i$, que es la reserva para los siniestros ocurridos en el año $i$ y que fueron denunciados en los años posteriores será la diferencia entre la pérdida esperada, y el último período para el que tenemos los pagos acumulados y reservados en la matriz de siniestros incurridos ($X_{i,c_i}$)
 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
 
