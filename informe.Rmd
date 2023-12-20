@@ -18,6 +18,7 @@ output:
       - "citecolor:blue"
     latex_engine: xelatex
     fig_caption: yes
+    extra_dependencies: "subfig"
     number_sections: yes
   html_document:
     df_print: paged
@@ -411,16 +412,16 @@ fracframe <- fracframe %>% mutate(
 
 
 ```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
+
 print(xtable(frac2, type="latex", align="ccccccccccc", digits = 4, caption="Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.", label = "tabla2"), caption.placement = "bottom", comment = FALSE, size="\\fontsize{11.5pt}{10pt}\\selectfont")
 
-# movi el grafico para el siguiente chunk para que salieran juntos
 ```
 
 ## Problemas del Chain-Ladder por separado (SCL)
 
 Formalmente, se tiene que $(P/I)_{i,j} = P_{i,j}/I_{i,j}$, luego, mediante los métodos vistos antes de Chain Ladder se puede estimar los valores faltantes de ambas matrices con los factores de desarrollo año a año a partir de la diagonal inversa, obteniendo el resultado de los ratios si se hace Chain-Ladder por separado (Método SCL).
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%", fig.cap='\\label{graficos} .', fig.subcap=c("\\label{graf1} Porcentaje P/I por periodo de desarrollo la recta roja que une las medias.", "\\label{graf2} Porcentaje P/I por periodo de desarrollo la recta roja que une las medias para valores observados y proyectados.")}
 
 trifull <- mackTRI$FullTriangle
 
@@ -446,13 +447,14 @@ ggplot(fracframe, aes(x=dev, y=100*value)) + geom_point(alpha=1, size = 2) +
   geom_line(stat = "summary", fun.y = "mean", color = "red", size = 1) +
   theme_bw() +
   ylim(c(10,120))+
-  labs(x="Periodo de Desarrollo", y="Porcentaje  P/I",caption="Porcentaje P/I por periodo de desarrollo la recta roja que une las medias")
+  labs(x="Periodo de Desarrollo", y="Porcentaje  P/I")
 
 ggplot(fracfullframe, aes(x=dev, y=100*value, alpha = Tipo)) + geom_point(size = 2) +
   geom_line(stat = "summary", fun.y = "mean", size = 1) + scale_alpha_manual(values = c(1,0.3)) +
   theme_bw() +
   ylim(c(10,120))+
-  labs(x="Periodo de Desarrollo", y="Porcentaje  P/I",caption="Porcentaje P/I por periodo de desarrollo la recta roja que une las medias para valores observados y proyectados")
+  labs(x="Periodo de Desarrollo", y="Porcentaje  P/I")
+
 ```
 Se puede notar en la segunda figura que para los valores proyectados en las dos matrices por separado a partir de cierto período de desarrollo se tiene que los siniestros pagados significan una proporción mayor a 1 que los siniestros incurridos, este error se da debido a que se aplicó el método de Chain-Ladder por separado a ambos triángulos (SCL) y no se tuvo en cuenta la estructura de correlación entre ambos triángulos.
 
