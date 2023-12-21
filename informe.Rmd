@@ -158,7 +158,7 @@ $$
 IBNR = \sum_{i=1}^n IBNR_i = \sum_{i=1}^n X_i - X_{i,c_i} 
 $$
 
-El cuadro \ref{exhibit} representa 
+El cuadro \ref{exhibit} representa un resúmen de los cálculos a realizar para obtener el $IBNR$, en la primer columna se representa el $X_{i,c_i}$, en la segunda el $Q_i$, en la tercera $X_i$ y en la última el $IBNR_i$.
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
 
 linkratios <- c(attr(ata(tri), "vwtd"), tail = 1)  #se elige cola a discrecion (factor de arranque)
@@ -188,13 +188,15 @@ Exhibit <- rbind(Exhibit,data.frame(Incurridos_Acumulados=sum(Incurridos_Acumula
                                     QAcum=NA,Perdida_Esperada=sum(Perdida_Esperada),
                                     Reserva_IBNR=sum(Reserva_IBNR), row.names = "Total"))
 
-col_names <- c("Último siniestro incurrido del período, X\u208i,c\u209i", "Factor de desarrollo acumulado, Q\u208j", "Pérdida Esperada, X\u208i", "IBNR por período, IBNR\u208i") 
+#col_names <- c("Último siniestro incurrido del período, X\u208i,c\u209i", "Factor de desarrollo acumulado, Q\u208j", "Pérdida Esperada, X\u208i", "IBNR por período, IBNR\u208i") 
+#col_names <- c("Último siniestro incurrido del período, $X_{i,c_i}$","Factor de desarrollo acumulado, $Q_j$","Pérdida Esperada, $X_i$","IBNR por período, $IBNR_i$")
+col_names <- c("Último siniestro incurrido","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
 names(Exhibit) <- col_names
 
-print(xtable(Exhibit, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit"), caption.placement = "top", comment = FALSE)
+print(xtable(Exhibit, type="latex", align="ccccc", digits = 2, caption=".", label = "exhibit"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
 ```
 
-También se puede asignar un valor mayor a 1 para el factor de desarrollo del último año $Q_n>1$, por distintas cuestiones que no son de particular interés en este trabajo, por ejemplo $Q_n=1,05$, y luego los siguientes factores de desarrollo quedaran determinados a partir de este primero.
+En algunas ocasiones, la asignación de un valor $Q_n=1$ para el último período de desarrollo puede no ser lo mejor, de esta forma, se puede asignar un valor mayor a 1 para el factor de desarrollo del último año, $Q_n>1$, por ejemplo $Q_n=1,05$, cabe aclarar que los siguientes factores de desarrollo quedaran determinados a partir de este primero.
 
 
 ## Chain Ladder con regresión
