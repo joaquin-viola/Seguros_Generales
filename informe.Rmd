@@ -18,7 +18,9 @@ output:
       - "citecolor:blue"
     latex_engine: xelatex
     fig_caption: yes
-    extra_dependencies: "subfig" 
+    extra_dependencies: 
+      - "float"
+      - "subfig"
     number_sections: yes
   html_document:
     df_print: paged
@@ -170,7 +172,7 @@ QAcum <- round(QAcum, 3)
 
 ```
 
-```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis', fig.pos="h"}
+```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis', fig.pos="H"}
 Incurridos_Acumulados <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
@@ -193,21 +195,22 @@ Exhibit <- rbind(Exhibit,data.frame(Incurridos_Acumulados=sum(Incurridos_Acumula
 col_names <- c("Último siniestro incurrido","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
 names(Exhibit) <- col_names
 
-print(xtable(Exhibit, type="latex", align="ccccc", digits = 2, caption=".", label = "exhibit"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
+print(xtable(Exhibit, type="latex", align="ccccc", digits = 2, caption="Cálculo del IBNR según el método clásico.", label = "exhibit"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
 ```
 
-En algunas ocasiones, la asignación de un valor $Q_n=1$ para el último período de desarrollo puede no ser lo mejor, de esta forma, se puede asignar un valor mayor a 1 para el factor de desarrollo del último año, $Q_n>1$, por ejemplo $Q_n=1,05$, cabe aclarar que los siguientes factores de desarrollo quedaran determinados a partir de este primero.
+En algunas ocasiones, la asignación de un valor $Q_n=1$ para el último período de desarrollo puede no ser lo mejor para la representación de la realidad, de esta forma, se puede asignar un valor mayor a 1 para el factor de desarrollo del último año, $Q_n>1$, por ejemplo $Q_n=1,05$, cabe aclarar que los siguientes factores de desarrollo quedaran determinados a partir de este primero.
 
 
 ## Chain Ladder con regresión
 
-Este modelo permite calcular el factor de desarrollo para $Q_n$ asumiendo una estructura de regresión para los factores de desarrollos (simples) en función de los períodos de desarrollo. Si bien estos no varían mucho a lo largo del tiempo, si se puede observar una estructura de regresión lineal si hacemos el logaritmo del aumento proporcional ($q-1$) de los siniestros incurridos en función de los períodos de desarrollo $L(q-1) \sim \text{períodos de desarrollo}$.
-
+Este modelo permite calcular el factor de desarrollo para $Q_n$ asumiendo una estructura de regresión para los factores de desarrollos (simples) en función de los períodos de desarrollo. Si bien estos no varían mucho a lo largo del tiempo, si se puede observar una estructura de regresión lineal si hacemos el logaritmo del aumento proporcional ($q-1$) de los siniestros incurridos en función de los períodos de desarrollo $Log(q-1) \sim \text{períodos de desarrollo}$.
 $$
-L(q_j -1) = \alpha + \beta\times j
+Log(q_j -1) = \alpha + \beta\cdot j
 $$
+siendo $\alpha$ la ordenada en el origen, $\beta$ la pendiente y $j$ el período de de desarrollo.
 
-```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis'}
+El cuadro \ref{factores1} representa los factores de desarrollo para cada período, $q_j$, de los siniestros incurridos presentados en el cuadro \ref{tabla1}. 
+```{r, echo=FALSE,warning=FALSE,message=FALSE, fig.pos="H", results='asis'}
 n <- 10
 q <- sapply(1:(n-1),
             function(i){
@@ -219,53 +222,52 @@ factores_q1 <- data.frame(q)
 col_names <- c("Factores de desarrollo") 
 names(factores_q1) <- col_names
 
-print(xtable(factores_q1, type="latex", align="cc", digits = 3, caption=".", label = "factores1"), caption.placement = "top", comment = FALSE)
+print(xtable(factores_q1, type="latex", align="cc", digits = 3, caption="Factores de desarrollo de los sinisestros incurridos.", label = "factores1"), caption.placement = "top", comment = FALSE)
 #, size="\\fontsize{10pt}{10pt}\\selectfont"
 
 ```
 
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
+Para modelar una regresión lineal de la forma $Log(q_j -1) = \alpha + \beta\cdot j$, es necesario haber calculado los factores de desarrollo. Previamente chequendo si para el gráfico de dispersión de los datos corresponde el modelo de regresión lineal. Una vez obtenidos los $q_j$ se modela. La figura \ref{regresion} representa el resultado de la misma.
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.cap="\\label{regresion} Extrapolación Log-lineal de los factores año a año.", out.width="100%"}
+
 # modelo lineal de los factores de desarrollo explicado por los anios (log(f-1))
 dev.period <- 1:(n-1)
 tail.model <- lm(log(q-1) ~ dev.period)
 
-plot(log(q-1) ~ dev.period, main="Extrapolación Log-lineal de los factores año a año")
+plot(log(q-1) ~ dev.period, main="", xlab="Período, j")
 abline(tail.model)
 ```
 
+Luego, se sugiere extrapolar los datos para 100 períodos de desarrollo, y se puede observar que el $Log(q_j -1)$ empieza a converger cuando $j$ aumenta. De esta forma podemos obtener una estimación para $Q_n$, podemos calcular como: 
+$$\hat{Q_n} = \prod_{j\geq n} \hat{q_{j}} $$
+De esta forma para los siniestros incurridos que venimos viendo, se obtiene $\hat{Q_n} = 1.021795$.
 
-Para esto es necesario haber calculado los factores de desarrollo simple y hacer el modelo correspondiente, previamente chequendo si para el gráfico de dispersión de los datos corresopnde el modelo de regresión lineal.
-Luego, se sugiere extrapolar los datos para 100 períodos de desarrollo, y se puede observar que se empieza a estabilizar $L(q_j -1)$ cuando $j$ aumenta, y si tomamos $Q_n$ el factor de desarrollo acumulado para el período que estamos trabajando, podemos calcular $\hat{Q_n} = \prod_{j\geq n} \hat{q_{j}} = 1.021795$.
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
+La figura \ref{regresion2} representa la extrapolación a 100 períodos de desarrollo. 
+```{r, echo=FALSE,warning=FALSE,message=FALSE, fig.show="hold", out.width="50%", fig.cap="\\label{regresion2} Patrón de desarrollo de reclamaciones esperado.", fig.subcap=c("\\label{reg1} 109 períodos de desarrollo.", "\\label{reg2} Primeros 19 períodos de desarrollo.")}
 # estudio de la ibnr para periodos mas largos
 co <- coef(tail.model)
 ## extrapolate another 100 dev. period de los factores de desarrollo
 tail <- exp(co[1] + c(n:(n + 100)) * co[2]) + 1
 f.tail <- prod(tail)
 
-plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
-     main="Expected claims development pattern",
-     xlab="Dev. period", ylab="Development % of ultimate loss")
-
 plot(100*(rev(1/cumprod(rev(c(q, tail))))), t="b",
-     main="Expected claims development pattern",
-     xlab="Dev. period", ylab="Development % of ultimate loss")
+     main="", xlab="Período, j", ylab="log(q-1)")
 
+plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
+     main="", xlab="Período, j", ylab="log(q-1)")
 ```
-
-
 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
 
 Qhat = f.tail
 
-Qhat
+#Qhat
 
 ```
 
-Nuestros factores de desarrollo serán los obtenidos normalmente hasta el momento $n-1=9$ y para $q_n=q_{10}$ se le asigna el valor de $\hat{Q_n}$ calculado que ya se mostró que para el último período de desarrollo era válida la equivalencia.
+Nuestros factores de desarrollo serán los obtenidos normalmente hasta el momento $n-1=9$ y para $q_n=q_{10}$ se le asigna el valor de $\hat{Q_n}$ calculado anteriormente, que para el último período de desarrollo era válida la equivalencia.
 
+De esta forma, se hace el análogo al cuadro \ref{exhibit} y se cálcula nuevamente el $IBNR$ con este método, observesé los resultados en el cuadro \ref{exhibit2}.
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
 qs <- c(q,Qhat)
 
@@ -274,7 +276,6 @@ names(Qs) <- colnames(tri) # so the display matches the triangle
 Qs <- round(Qs, 3)
 
 ```
-
 ```{r, echo=FALSE, results='asis'}
 Incurridos_Acumulados2 <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
@@ -292,11 +293,14 @@ Exhibit2 <- rbind(Exhibit2,
 Reserva_IBNR2 = sum(Reserva_IBNR2),                            
                             row.names = "Total"))
 
-print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit2"), caption.placement = "top", comment = FALSE)
+col_names <- c("Último siniestro incurrido","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
+names(Exhibit2) <- col_names
+
+print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption="Cálculo del IBNR según el método con regresión.", label = "exhibit2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
 
 ```
 
-Se observa que al asignarle un factor de desarrollo acumulado mayor a 1 para el último período de desarrollo se obtiene que las reservas por IBNR aumentan aproximadamente en \$3.000.000 respecto al método clásico, que representa aproximadamente un aumento del \%5. 
+Se observa que al asignarle un factor de desarrollo acumulado mayor a 1 para el último período de desarrollo se obtiene que las reservas por IBNR aumentan aproximadamente en \$3.000.000 respecto al método clásico representado en el cuadro \ref{exhibit}, este monto representa aproximadamente un aumento del \%5 en las reservas. Esto se traduce en menores ganancias para la compañia aseguradora pero permite estar mas cubierto frente a acontecimientos siniestrales ocurridos pero no reportados.
 
 # Mack Chain-Ladder
 
