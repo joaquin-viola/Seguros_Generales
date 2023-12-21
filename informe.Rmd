@@ -18,7 +18,7 @@ output:
       - "citecolor:blue"
     latex_engine: xelatex
     fig_caption: yes
-    extra_dependencies: "subfig"
+    extra_dependencies: "subfig" 
     number_sections: yes
   html_document:
     df_print: paged
@@ -113,46 +113,52 @@ plot(tri/1000, ylab="Siniestros en miles de pesos", xlab="Periodo de desarrollo"
 
 # Chain-Ladder
 
-El objetivo de este trabajo es presentar distintos métodos para estimar los siniestros incurridos que se tendrán pasado los años de desarrollo. Y de esta manera obtener la reserva necesaria para hacer frente a lo que será reclemado.
+El objetivo de este trabajo es presentar distintos métodos para estimar los siniestros incurridos que se tendrán pasado los años de desarrollo. Y de esta manera obtener la reserva necesaria para hacer frente a lo que será reclamado.
 
-Una de las principales herramientas del Chain-Ladder son los factores de desarrollo que se definiran más adelante. Se utilizan tanto en las matrices de pagos acumulados como en la de siniestros incurridos, y es el factor por el que los valores van creciendo de un período a otro. A veces se utiliza un solo factor de desarrollo para todo el período de desarrollo (ejemplo, para el crecimiento de los siniestros/pagos del período 6 al 7, sin importar el año de ocurrencia, lo que sería colomna por columna) y a veces es de particular interés los factores individuales, es decir, poder diferenciar tanto para el período de desarrollo como al año de ocurrencia (celda por celda).
+Una de las principales herramientas del Chain-Ladder son los factores de desarrollo que se definiran más adelante. Se utilizan tanto en las matrices de pagos acumulados como en la de siniestros incurridos, y es el factor por el que los valores van creciendo de un período a otro. A veces se utiliza un solo factor de desarrollo para todo el período de desarrollo (ejemplo, para el crecimiento de los siniestros/pagos del período 6 al 7, sin importar el año de ocurrencia, lo que sería columna por columna) y a veces es de particular interés los factores individuales, es decir, poder diferenciar tanto para el período de desarrollo como al año de ocurrencia (celda por celda).
 
-En primer lugar se presentará el método de Chain-Ladder clásico, que utiliza la información del desarrollo de los reportes de los siniestros durante los años posteriores a que hayan ocurrido para predecir cómo se comportaran en el futuro, que en general, se suele asumir que luego de terminado el último período de desarrollo, no habrá nuevos reclamos y los costos no aumentarán. Luego, se presentará una variación que utiliza un modelo de regresión en función de los años transcurridos a partir de los factores de desarrollos observados y así obtener mediante estimaciones un factor de desarrollo mayor a 1 para el último período de desarrollo. Después se presentará el método de Mack Chain-Ladder, que bajo utiliza ciertos supuestos y obtiene una estimación de los desvíos de los siniestros a futuros y de la reserva de IBNR. Por último se presentará el método de Munich Chain-Ladder que utiliza un modelo de regresión y parte de la correlación existente entre los siniestros incurridos y los pagos acumulados.
+En primer lugar se presentará el método de **Chain-Ladder clásico**, que utiliza la información del desarrollo de los reportes de los siniestros durante los años posteriores a que hayan ocurrido para predecir cómo se comportarán en el futuro, que en general, se suele asumir que luego de terminado el último período de desarrollo, no habrá nuevos reclamos y los costos no aumentarán. Luego, se presentará una variación del método, que utiliza un modelo de regresión en función de los años transcurridos a partir de los factores de desarrollos observados, de esta manera, obtener mediante estimaciones un factor de desarrollo mayor a 1 para el último período de desarrollo. Después se presentará el método de **Mack Chain-Ladder**, que bajo ciertos supuestos, obtiene una estimación de los desvíos de los siniestros a futuros y de la reserva de IBNR. Por último se presentará el método de **Munich Chain-Ladder** que utiliza un modelo de regresión y parte de la correlación existente entre los siniestros incurridos y los pagos acumulados.
 
 
 ## Chain Ladder 'clásico'
 
-Uno de los métodos más utilizados es el de 'Chain Ladder' (Escalera de Cadena), que a partir de la matriz que se puede ver en el cuadro \ref{tabla1}, calcula los factores de desarrollo, que miden el crecimiento de los gastos por siniestro pasado los años. El factor de desarrollo representa la proporción que aumentan el monto de los siniestros incurridos entre dos períodos consecutivos (el factor de desarrollo $q_j$ representa el aumento de los siniestros incurridos entre el período $j$ y el $j+1$). Para el cálculo de este, se suma todos los siniestros incurridos en el período $j+1$, es decir $\sum_{i=1}^{n-j} X_{i,j+1}$ y se los divide entre la misma cantidad de filas, del período anterior ($j$), es decir $\sum_{i=1}^{n-j} X_{i,j}$
-
+Uno de los métodos más utilizados es el de "Chain Ladder" (Escalera de Cadena). A partir de la matriz que se puede ver en el cuadro \ref{tabla1}, cálcula los factores de desarrollo, que miden el crecimiento de los gastos por siniestro pasado los años. El factor de desarrollo representa la proporción que aumentan el monto de los siniestros incurridos entre dos períodos consecutivos (el factor de desarrollo $q_j$ representa el aumento de los siniestros incurridos entre el período $j$ y el $j+1$). Para el cálculo de este, se suma todos los siniestros incurridos en el período $j+1$, es decir $\sum_{i=1}^{n-j} X_{i,j+1}$ y se los divide entre la misma cantidad de filas, del período anterior ($j$), es decir $\sum_{i=1}^{n-j} X_{i,j}$ de esta forma se obtiene:
 $$
 \hat{q}_{j} = \frac{\sum_{i=1}^{n-j} X_{i,j+1}}{\sum_{i=1}^{n-j} X_{i,j}}
 $$
+Obersevesé la figura \ref{captura1}, la cual representa la matriz de los siniestros incrurridos,equivalente al cuadro \ref{tabla1}. En sombreado las columnas del período 1 y 2 necesarias para cálcular $\hat{q}_{1}$. 
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.pos="ht", fig.cap="\\label{captura1} En sombreado, las filas de la columna correspondiente al período de desarrollo 1 y 2, que se dividen para calcular el factor de desarrollo del período 1.", out.width="100%"}
+knitr::include_graphics("imagenes/captura1.png")
+```
 
-![En gris, las filas de la columna del período 2 y período 1 que se dividen para calcular el factor de desarrollo del período 1](imagenes/captura1.jpg)
-
-
-Se define también, de manera iterativa, el factor de desarrollo acumulado. De la forma:
-
+Por otro lado, se define el *factor de desarrollo acumulado*, $Q_{j}$, que se obtiene de de manera iterativa, de la forma:
 $$
 Q_{j-1} = q_{j-1}\cdot Q_{j}
 $$
+En particular, para el último período de desarrollo se tiene, en general, que $Q_n = 1$ con $n$ correspondiente al último período. 
 
-Y en particular, para el último período de desarrollo se tiene, en general, que $Q_n = 1$. Luego, así como se puede predecir los siniestros incurridos para los valores por debajo de la diagonal de la manera:
-
+Una vez obtenidos los factores, se puede predecir los siniestros incurridos para los valores por debajo de la diagonal de la manera:
 $$
 X_{i,c_i +1} = X_{i,c_i} \cdot q_{c_i}
 $$
+siendo $i$ el período de ocurrencia, $c_i$ es el último período de desarrollo que se tiene información y $q_{c_i}$ el factor de desarrollo del período de desarrollo $c_i$.
 
-Se puede obtener con los factores de desarrollo acumulado el total a pagar y reservar por los siniestros ocurridos en el año $i$ ($X_i$) de la manera:
-
+De forma inmediata, se puede obtener con los factores de desarrollo acumulado el total a pagar y reservar por los siniestros ocurridos en el año $i$ ($X_i$) de la manera:
 $$
 X_i = Q_{c_i} \cdot X_{i,c_i}
 $$
+Que da el mismo resultado que hacer $X_i = X_{i,c_i} \cdot q_{c_i} \cdot \cdots \cdot q_{n}$, es decir, predecir todos los valores de la fila por debajo de la diagonal, y quedarnos con la última columna. Donde $c_i = n-i+1$ y queda definida la diagonal con todos los pares $(i,c_i)$.
 
-Que da el mismo resultado que hacer $X_i = X_{i,c_i} \cdot q_{c_i} \cdot \ldots \cdot q_{n}$, es decir, predecir todos los valores de la fila por debajo de la diagonal, y quedarnos con la última columna. Donde $c_i = n-i+1$ y queda definida la diagonal con todos los pares: $(i,c_i)$
+Luego, denominamos a $X_i$ como la *pérdida esperada* por los siniestros incurridos en el año $i$. La reserva de $IBNR_i$ del período $i$, es la reserva para los siniestros ocurridos en el año $i$ y que fueron denunciados en los años posteriores. Será calculada como la diferencia entre la pérdida esperada, y el último período para el que tenemos los pagos acumulados y reservados en la matriz de siniestros incurridos ($X_{i,c_i}$)
+$$
+IBNR_i = X_i - X_{i,c_i} 
+$$
+Finalmente obtenemos el $IBNR$ como la suma total de los $IBNR_i$ para cada período de ocurrencia:
+$$
+IBNR = \sum_{i=1}^n IBNR_i = \sum_{i=1}^n X_i - X_{i,c_i} 
+$$
 
-Luego, podemos decir que $X_i$ es la pérdida esperada por los siniestros incurridos en el año $i$, y nuestra reserva de $IBNR_i$, que es la reserva para los siniestros ocurridos en el año $i$ y que fueron denunciados en los años posteriores será la diferencia entre la pérdida esperada, y el último período para el que tenemos los pagos acumulados y reservados en la matriz de siniestros incurridos ($X_{i,c_i}$)
-
+El cuadro \ref{exhibit} representa 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
 
 linkratios <- c(attr(ata(tri), "vwtd"), tail = 1)  #se elige cola a discrecion (factor de arranque)
@@ -164,8 +170,7 @@ QAcum <- round(QAcum, 3)
 
 ```
 
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis'}
+```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis', fig.pos="h"}
 Incurridos_Acumulados <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
 # Reverse the LDFs so the first, least mature factor [1]
 #   is applied to the last origin year (1990)
@@ -179,15 +184,15 @@ Exhibit <- data.frame(Incurridos_Acumulados, QAcum = round(rev(QAcum), 3), Perdi
 
 
 
-Exhibit <- rbind(Exhibit,
-                 data.frame(Incurridos_Acumulados=sum(Incurridos_Acumulados), QAcum=NA, Perdida_Esperada=sum(Perdida_Esperada),
-Reserva_IBNR = sum(Reserva_IBNR),                            
-                            row.names = "Total"))
+Exhibit <- rbind(Exhibit,data.frame(Incurridos_Acumulados=sum(Incurridos_Acumulados),
+                                    QAcum=NA,Perdida_Esperada=sum(Perdida_Esperada),
+                                    Reserva_IBNR=sum(Reserva_IBNR), row.names = "Total"))
 
+col_names <- c("Último siniestro incurrido del período, X\u208i,c\u209i", "Factor de desarrollo acumulado, Q\u208j", "Pérdida Esperada, X\u208i", "IBNR por período, IBNR\u208i") 
+names(Exhibit) <- col_names
 
 print(xtable(Exhibit, type="latex", align="ccccc", digits = 3, caption=".", label = "exhibit"), caption.placement = "top", comment = FALSE)
 ```
-
 
 También se puede asignar un valor mayor a 1 para el factor de desarrollo del último año $Q_n>1$, por distintas cuestiones que no son de particular interés en este trabajo, por ejemplo $Q_n=1,05$, y luego los siguientes factores de desarrollo quedaran determinados a partir de este primero.
 
