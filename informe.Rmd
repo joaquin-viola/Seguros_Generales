@@ -300,7 +300,7 @@ print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption="Cálcul
 
 ```
 
-Se observa que al asignarle un factor de desarrollo acumulado mayor a 1 para el último período de desarrollo se obtiene que las reservas por IBNR aumentan aproximadamente en \$3.000.000 respecto al método clásico representado en el cuadro \ref{exhibit}, este monto representa aproximadamente un aumento del \%5 en las reservas. Esto se traduce en menores ganancias para la compañia aseguradora pero permite estar mas cubierto frente a acontecimientos siniestrales ocurridos pero no reportados.
+Se observa que al asignarle un factor de desarrollo acumulado mayor a 1 para el último período de desarrollo, se obtiene que las reservas por IBNR aumentan aproximadamente en \$3.000.000 respecto al método clásico representado en el cuadro \ref{exhibit}, este monto representa aproximadamente un aumento del \%5 en las reservas. Esto se traduce en menores ganancias para la compañia aseguradora pero permite estar mas cubierto frente a acontecimientos siniestrales ocurridos pero no reportados.
 
 # Mack Chain-Ladder
 
