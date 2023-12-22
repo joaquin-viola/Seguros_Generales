@@ -30,6 +30,7 @@ nocite: |
   @mack
   @munich
   @tesis
+  @bootstrap
 editor_options: 
   markdown: 
     wrap: 72
@@ -366,7 +367,7 @@ print(xtable(summary(mackTRI)$ByOrigin, type="latex", align="ccccccc", caption="
 ```
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-print(xtable(summary(mackTRI)$Totals, type="latex", align="cc", caption="Estimaciones mediante Método Mack Chain-Ladder para el total", label = "origin2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
+print(xtable(summary(mackTRI)$Totals, type="latex", align="cc", caption="Estimaciones mediante Método Mack Chain-Ladder para el total", label = "total2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
 
 ```
 
@@ -542,7 +543,7 @@ correlation=cor(fraci1,qi1p)
 ```
 
 
-```{r, echo=FALSE, out.width="80%", fig.align='center',  message=FALSE, warning=FALSE,  fig.cap='\\label{reg1} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de pagos acumulados para el primer período'}
+```{r, echo=FALSE, out.width="80%", fig.align='center',  message=FALSE, warning=FALSE,  fig.cap='\\label{reg1_1} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de pagos acumulados para el primer período'}
 ggplot(data.frame(fraci1, qi1p), aes(x = fraci1, y = qi1p)) +
   geom_point() +
   geom_vline(xintercept = mean(fraci1), linetype = "dashed", color = "red") +
@@ -570,7 +571,7 @@ correlation=cor(fraci1,qi1I)
 ```
 
 
-```{r, echo=FALSE, out.width="80%",fig.align='center',  message=FALSE, warning=FALSE,  fig.cap='\\label{reg2} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de siniestros incurridos para el primer período'}
+```{r, echo=FALSE, out.width="80%",fig.align='center',  message=FALSE, warning=FALSE,  fig.cap='\\label{reg2_2} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de siniestros incurridos para el primer período'}
 ggplot(data.frame(fraci1, qi1I), aes(x = fraci1, y = qi1I)) +
   geom_point() +
   geom_vline(xintercept = mean(fraci1), linetype = "dashed", color = "red") +
@@ -641,11 +642,11 @@ plot(BayernMunich)
 ```
 
 
-Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich Chain Ladder} nos devuelve los últimos pagos acumulados y últimos siniestros incurridos, y el ratio $P/I$, luego también tiene las proyecciones de los pagos y de los incurridos mediante el método de Munich, y el ratio, al pedir que sea por año de origen mediante \texttt{summary(BayernMunich)\$ByOrigin} esta informacioón nos la devuelve por año de origen ((tabla \ref{origin2})), y se puede observar como ningún ratio al final de los 10 períodos de desarrollos supera la unidad.
+Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich Chain Ladder} nos devuelve los últimos pagos acumulados y últimos siniestros incurridos, y el ratio $P/I$, luego también tiene las proyecciones de los pagos y de los incurridos mediante el método de Munich, y el ratio, al pedir que sea por año de origen mediante \texttt{summary(BayernMunich)\$ByOrigin} esta informacioón nos la devuelve por año de origen ((tabla \ref{origin Munich})), y se puede observar como ningún ratio al final de los 10 períodos de desarrollos supera la unidad.
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
-print(xtable(summary(BayernMunich)$ByOrigin, type="latex", align="ccccccc", caption="Resumen por año de ocurrencia del método Munich Chain-Ladder", label = "origin2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
+print(xtable(summary(BayernMunich)$ByOrigin, type="latex", align="ccccccc", caption="Resumen por año de ocurrencia del método Munich Chain-Ladder", label = "origin Munich"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
 
 ```
 
@@ -660,6 +661,56 @@ print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 
 ```
 
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
+
+
+# Bootstrap
+
+El método de Chain-Ladder con Bootstrap se aplica sobre el triángulo de pagos acumulados.
+En la primera etapa se aplica el método de Chain-Ladder ordinario y se calculan los residuos escalados (dividido el desvío). Luego se aplica bootstrap (R veces) sobre estos para obtener predicciones sobre los futuros reclamos mediante Chain-Ladder.
+En la segunda etapa, se utiliza una distribución para el proceso de reclamaciones asumida, con el valor de la media el obtenido en la simulación actual de bootstrap, y se simula un valor para el error. Obteniendo una distribución predictiva para poder obtener medidas de dispersión como el desvío o cuantiles de interés.
+
+Las distribuciones asumidas para el proceso que admite la función \texttt{BootChainLadder} son la distribución \textit{Gamma} y una distribución \texttt{Poisson} que admite una dispersión mayor que la media (over-dispersed Poisson).
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+
+Bootstrap <- BootChainLadder(acum,R=1000, "gamma", seed=201223)
+
+```
+
+El comando para poder correrlo en \texttt{R} es \texttt{BootChainLadder(Triangulo, R=999, process.distr=c("gamma", "od.pois"), seed=NULL )}, donde \textbf{R} es la cantidad de simulaciones que por defecto son 999 y tiene la opción de fijar una semilla dentro de la función para que sea reproducible.
+
+Por último se pueden ver los resultados mediante la función \texttt{summary} tanto para cada año de ocurrencia (tabla \ref{anual bootstrap}) como para el total, y obtener los cuantiles para las reservas por IBNR.
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+print(xtable(summary(Bootstrap)$ByOrigin, type="latex", align="lcccccc", digits = 1, caption="Resumen por año del método Bootstrap Chain-Ladder", label = "anual bootstrap"), caption.placement = "top", comment = FALSE)
+
+```
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+print(xtable(summary(Bootstrap)$Total, type="latex", align="lc", digits = 1, caption="Resumen Para el total del método Bootstrap Chain-Ladder", label = "total bootstrap"), caption.placement = "top", comment = FALSE)
+
+```
+
+También se puede obtener el gráfico con la función  \texttt{plot} a un objeto de la clase  \texttt{'BootChainLadder'}. En los dos gráficos superiores de la figura \ref{plotBoot} se obtien el histograma del total de reservas de IBNR y la función de distribución de las reservas por IBNR. Mientras que en la parte inferior se obtienen gráficos de dispersión de los costos últimos simulados para cada año de origen con la media en rojo y de las simulaciones de los costos acumulados actuales para cada año, con el valor observado en la diagonal en rojo.
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE, fig.height=20, fig.width=18, fig.cap='\\label{plotBoot} Gráfico automático para objetos de tipo Bootstrap Chain-Ladder'}
+
+plot(Bootstrap)
+
+
+```
+
+Además también se pueden obtener los cuantiles de interés para cada año mediante la función \texttt{quantile} para obtener un intervalo de confianza al 95%, ya que la función \texttt{summary} brinda el cuantil $0.75$ y el $0.95$
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+print(xtable(quantile(Bootstrap,c(0.025,0.975))$ByOrigin, type="latex", align="lrr", digits = 1, caption="IC al 95 por año del método Bootstrap Chain-Ladder", label = "quantile_boot"), caption.placement = "top", comment = FALSE)
+
+```
+
+En la tabla \ref{quantile_boot} se puede observar que para el primer año de origen se tiene una límite inferior del intervalo negativo, esto se debe a que la media es 0, y la parte de simulación de los errores se generan valores negativos, esto se puede arreglar o bien truncando el intervalo de confianza, o asumiendo que la reserva para el primer año es 0 y no tiene varianza ni desvío.
 
 
 \newpage
