@@ -53,31 +53,12 @@ fontsize: 12pt
 
 \newpage
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(readxl)
-library(ChainLadder)
-library(xtable)
-library(latex2exp)
-```
+
 
 
 # Introducción 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
-tri <- as.data.frame(read_excel(path = "siniestros_IBNR.xlsx", skip = 2))
-rownames(tri) <- tri[,1]
-tri[,1] <- NULL
-colnames(tri) <- 1:10
-rownames(tri) <- 1999:2008  # se simplifica el nombre de los años a años simples para que facilite el uso de algunas funciones
-
-tri2 <- tri
-
-# triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
-tri <- as.triangle(as.matrix(tri))
-
-```
 
 
 En este trabajo se pretende abordar distintos métodos para el cálculo de reservas técnicas asociadas al IBNR. El IBNR por sus siglas en inglés, son los siniestros incurridos y que aún no fueron reclamados. En muchos países, los seguros de responsabilidad civil, cuentan con un período de 10 años para el reclamo de un seguro luego de que el siniestro haya ocurrido.
@@ -88,11 +69,29 @@ Para poder calcular las reservas de IBNR hay varios métodos, basados en la util
 
 Se suele trabajar con 3 matrices triangulares, donde las filas son años, y las columnas son los años transcurridos. Observesé el cuadro \ref{tabla1}, en la última fila se encuentra el último año, el cuál se tiene datos para una sola columna, el año corriente. La fila anterior tendrá una columna más, es decir tendrá información de dos períodos transcurridos, de esta manera se llega a la primer fila, la cuál es el último año que se tiene en cuenta, y para el cual se tiene información de todos los años transcurridos, de esta manera queda explicada la forma de la matriz triangular.
 
-```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
-
-print(xtable(tri2, type="latex", align="ccccccccccc", digits = 0, caption="Siniestros incurridos acumulados por año y por período transcurrido en pesos.", label = "tabla1"), caption.placement = "top", comment = FALSE, size="\\fontsize{8.5pt}{10pt}\\selectfont")
-
-```
+\begin{table}[ht]
+\centering
+\caption{Siniestros incurridos acumulados por año y por período transcurrido en pesos.} 
+\label{tabla1}
+\begingroup\fontsize{8.5pt}{10pt}\selectfont
+\begin{tabular}{ccccccccccc}
+  \hline
+ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+  \hline
+1999 & 652799 & 1383776 & 2634200 & 3167840 & 3842289 & 4029679 & 4454460 & 4817622 & 5012751 & 5099688 \\ 
+  2000 & 1360795 & 2480988 & 2806387 & 3592401 & 3451088 & 3931688 & 4491687 & 4165270 & 4221137 &  \\ 
+  2001 & 1985553 & 3275646 & 3290023 & 3945474 & 4961886 & 4975029 & 5914580 & 5969088 &  &  \\ 
+  2002 & 2901555 & 4528347 & 4556763 & 5790821 & 6444829 & 7957380 & 8581805 &  &  &  \\ 
+  2003 & 3572829 & 4717083 & 5937065 & 6835232 & 7309686 & 7276239 &  &  &  &  \\ 
+  2004 & 2578343 & 4423917 & 4664371 & 5348014 & 5882585 &  &  &  &  &  \\ 
+  2005 & 4051902 & 6081465 & 8618348 & 9901076 &  &  &  &  &  &  \\ 
+  2006 & 5030173 & 8881224 & 12548654 &  &  &  &  &  &  &  \\ 
+  2007 & 6849422 & 9171465 &  &  &  &  &  &  &  &  \\ 
+  2008 & 10120889 &  &  &  &  &  &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 La primer matriz triangular tiene la información de los pagos acumulados de los siniestros ocurridos en cada año, y cuando fueron pagados efectivamente. Para la primer fila, en la primer columna se tienen los pagos de los siniestros ocurridos y pagados hace 10 años, luego en la siguiente columna se tiene los siniestros ocurridos en ese año pero reclamados y pagados en el siguiente, más los de la columna anterior (por ser pagos acumulados) y así sucesivamente.
 
@@ -106,12 +105,7 @@ Se trabajará con la matriz de siniestros trabajada en el curso de "Solvencias d
 
 La figura \ref{triangle} fue realizada con la función \texttt{plot} de \texttt{R} base, la cual fue aplicada a un objeto (matriz de siniestros incurridos) de clase \texttt{triangle}. Esta figura nos permite ver como crecen los siniestros incurridos en cada período con el correr de los años, obteniendo así una línea para cada año de ocurrencia y observando el crecimiento de los siniestros incurridos durante los períodos de desarrollo. Cada línea representa los siniestros incurridos en un período, y se ve como va aumentando los pagos acumulados y reservados con el correr de los períodos.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="\\label{triangle} Desarrollo de los reclamos por año y período."}
-
-plot(tri/1000, ylab="Siniestros en miles de pesos", xlab="Periodo de desarrollo")
-#knitr::include_graphics("imagenes/triangle.png")
-
-```
+![\label{triangle} Desarrollo de los reclamos por año y período.](informe_files/figure-latex/unnamed-chunk-4-1.pdf) 
 
 
 # Chain-Ladder
@@ -130,9 +124,9 @@ $$
 \hat{q}_{j} = \frac{\sum_{i=1}^{n-j} X_{i,j+1}}{\sum_{i=1}^{n-j} X_{i,j}}
 $$
 Obersevesé la figura \ref{captura1}, la cual representa la matriz de los siniestros incrurridos,equivalente al cuadro \ref{tabla1}. En sombreado las columnas del período 1 y 2 necesarias para cálcular $\hat{q}_{1}$. 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.pos="ht", fig.cap="\\label{captura1} En sombreado, las filas de la columna correspondiente al período de desarrollo 1 y 2, que se dividen para calcular el factor de desarrollo del período 1.", out.width="100%"}
-knitr::include_graphics("imagenes/captura1.png")
-```
+\begin{figure}[ht]
+\includegraphics[width=1\linewidth]{imagenes/captura1} \caption{\label{captura1} En sombreado, las filas de la columna correspondiente al período de desarrollo 1 y 2, que se dividen para calcular el factor de desarrollo del período 1.}\label{fig:unnamed-chunk-5}
+\end{figure}
 
 Por otro lado, se define el *factor de desarrollo acumulado*, $Q_{j}$, que se obtiene de de manera iterativa, de la forma:
 $$
@@ -162,42 +156,32 @@ IBNR = \sum_{i=1}^n IBNR_i = \sum_{i=1}^n X_i - X_{i,c_i}
 $$
 
 El cuadro \ref{exhibit} representa un resúmen de los cálculos a realizar para obtener el $IBNR$, en la primer columna se representa el $X_{i,c_i}$, en la segunda el $Q_i$, en la tercera $X_i$ y en la última el $IBNR_i$.
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
-
-linkratios <- c(attr(ata(tri), "vwtd"), tail = 1)  #se elige cola a discrecion (factor de arranque)
-linkratios <- round(linkratios, 3)
-
-QAcum <- rev(cumprod(rev(linkratios)))
-names(QAcum) <- colnames(tri) # so the display matches the triangle
-QAcum <- round(QAcum, 3)
-
-```
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE, results='asis', fig.pos="H"}
-Incurridos_Acumulados <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
-# Reverse the LDFs so the first, least mature factor [1]
-#   is applied to the last origin year (1990)
-Perdida_Esperada <- Incurridos_Acumulados * rev(QAcum) #ultima perdida esperada
-# Start with the body of the exhibit
-
-Reserva_IBNR = Perdida_Esperada - Incurridos_Acumulados
-
-Exhibit <- data.frame(Incurridos_Acumulados, QAcum = round(rev(QAcum), 3), Perdida_Esperada, Reserva_IBNR)
-# Tack on a Total row
 
 
-
-Exhibit <- rbind(Exhibit,data.frame(Incurridos_Acumulados=sum(Incurridos_Acumulados),
-                                    QAcum=NA,Perdida_Esperada=sum(Perdida_Esperada),
-                                    Reserva_IBNR=sum(Reserva_IBNR), row.names = "Total"))
-
-#col_names <- c("Último siniestro incurrido del período, X\u208i,c\u209i", "Factor de desarrollo acumulado, Q\u208j", "Pérdida Esperada, X\u208i", "IBNR por período, IBNR\u208i") 
-#col_names <- c("Último siniestro incurrido del período, $X_{i,c_i}$","Factor de desarrollo acumulado, $Q_j$","Pérdida Esperada, $X_i$","IBNR por período, $IBNR_i$")
-col_names <- c("Último siniestro incurrido","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
-names(Exhibit) <- col_names
-
-print(xtable(Exhibit, type="latex", align="ccccc", digits = 2, caption="Cálculo del IBNR según el método clásico.", label = "exhibit"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
-```
+\begin{table}[ht]
+\centering
+\caption{Cálculo del IBNR según el método clásico.} 
+\label{exhibit}
+\begingroup\fontsize{10pt}{10pt}\selectfont
+\begin{tabular}{ccccc}
+  \hline
+ & Último siniestro incurrido & Factor de desarrollo acumulado & Pérdida Esperada & IBNR \\ 
+  \hline
+1999 & 5099688.00 & 1.00 & 5099688.00 & 0.00 \\ 
+  2000 & 4221137.00 & 1.02 & 4292896.33 & 71759.33 \\ 
+  2001 & 5969088.00 & 1.04 & 6237696.96 & 268608.96 \\ 
+  2002 & 8581805.00 & 1.05 & 9028058.86 & 446253.86 \\ 
+  2003 & 7276239.00 & 1.18 & 8585962.02 & 1309723.02 \\ 
+  2004 & 5882585.00 & 1.28 & 7517943.63 & 1635358.63 \\ 
+  2005 & 9901076.00 & 1.42 & 14069429.00 & 4168353.00 \\ 
+  2006 & 12548654.00 & 1.69 & 21169579.30 & 8620925.30 \\ 
+  2007 & 9171465.00 & 2.12 & 19489363.12 & 10317898.12 \\ 
+  2008 & 10120889.00 & 3.30 & 33368571.03 & 23247682.03 \\ 
+  Total & 78772626.00 &  & 128859188.25 & 50086562.25 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 En algunas ocasiones, la asignación de un valor $Q_n=1$ para el último período de desarrollo puede no ser lo mejor para la representación de la realidad, de esta forma, se puede asignar un valor mayor a 1 para el factor de desarrollo del último año, $Q_n>1$, por ejemplo $Q_n=1,05$, cabe aclarar que los siguientes factores de desarrollo quedaran determinados a partir de este primero.
 
@@ -211,96 +195,72 @@ $$
 siendo $\alpha$ la ordenada en el origen, $\beta$ la pendiente y $j$ el período de de desarrollo.
 
 El cuadro \ref{factores1} representa los factores de desarrollo para cada período, $q_j$, de los siniestros incurridos presentados en el cuadro \ref{tabla1}. 
-```{r, echo=FALSE,warning=FALSE,message=FALSE, fig.pos="H", results='asis'}
-n <- 10
-q <- sapply(1:(n-1),
-            function(i){
-              sum(tri[c(1:(n-i)),i+1])/sum(tri[c(1:(n-i)),i])
-            }
-)
-
-factores_q1 <- data.frame(q)
-col_names <- c("Factores de desarrollo") 
-names(factores_q1) <- col_names
-
-print(xtable(factores_q1, type="latex", align="cc", digits = 3, caption="Factores de desarrollo de los sinisestros incurridos.", label = "factores1"), caption.placement = "top", comment = FALSE)
-#, size="\\fontsize{10pt}{10pt}\\selectfont"
-
-```
+\begin{table}[ht]
+\centering
+\caption{Factores de desarrollo de los sinisestros incurridos.} 
+\label{factores1}
+\begin{tabular}{cc}
+  \hline
+ & Factores de desarrollo \\ 
+  \hline
+1 & 1.551 \\ 
+  2 & 1.260 \\ 
+  3 & 1.187 \\ 
+  4 & 1.112 \\ 
+  5 & 1.083 \\ 
+  6 & 1.122 \\ 
+  7 & 1.006 \\ 
+  8 & 1.028 \\ 
+  9 & 1.017 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 Para modelar una regresión lineal de la forma $Log(q_j -1) = \alpha + \beta\cdot j$, es necesario haber calculado los factores de desarrollo. Previamente chequendo si para el gráfico de dispersión de los datos corresponde el modelo de regresión lineal. Una vez obtenidos los $q_j$ se modela. La figura \ref{regresion} representa el resultado de la misma.
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.pos="H", fig.cap="\\label{regresion} Extrapolación Log-lineal de los factores año a año.", out.width="100%"}
-
-# modelo lineal de los factores de desarrollo explicado por los anios (log(f-1))
-dev.period <- 1:(n-1)
-tail.model <- lm(log(q-1) ~ dev.period)
-
-plot(log(q-1) ~ dev.period, main="", xlab="Período, j")
-abline(tail.model)
-```
+\begin{figure}[H]
+\includegraphics[width=1\linewidth]{informe_files/figure-latex/unnamed-chunk-9-1} \caption{\label{regresion} Extrapolación Log-lineal de los factores año a año.}\label{fig:unnamed-chunk-9}
+\end{figure}
 
 Luego, se sugiere extrapolar los datos para 100 períodos de desarrollo, y se puede observar que el $Log(q_j -1)$ empieza a converger cuando $j$ aumenta. De esta forma podemos obtener una estimación para $Q_n$, podemos calcular como: 
 $$\hat{Q_n} = \prod_{j\geq n} \hat{q_{j}} $$
 De esta forma para los siniestros incurridos que venimos viendo, se obtiene $\hat{Q_n} = 1.021795$.
 
 La figura \ref{regresion2} representa la extrapolación a 100 períodos de desarrollo. 
-```{r, echo=FALSE,warning=FALSE,message=FALSE, fig.show="hold", out.width="50%", fig.cap="\\label{regresion2} Patrón de desarrollo de reclamaciones esperado.", fig.subcap=c("\\label{reg1} 109 períodos de desarrollo.", "\\label{reg2} Primeros 19 períodos de desarrollo.")}
-# estudio de la ibnr para periodos mas largos
-co <- coef(tail.model)
-## extrapolate another 100 dev. period de los factores de desarrollo
-tail <- exp(co[1] + c(n:(n + 100)) * co[2]) + 1
-f.tail <- prod(tail)
+\begin{figure}
+\subfloat[\label{reg1} 109 períodos de desarrollo.\label{fig:unnamed-chunk-10-1}]{\includegraphics[width=0.5\linewidth]{informe_files/figure-latex/unnamed-chunk-10-1} }\subfloat[\label{reg2} Primeros 19 períodos de desarrollo.\label{fig:unnamed-chunk-10-2}]{\includegraphics[width=0.5\linewidth]{informe_files/figure-latex/unnamed-chunk-10-2} }\caption{\label{regresion2} Patrón de desarrollo de reclamaciones esperado.}\label{fig:unnamed-chunk-10}
+\end{figure}
 
-plot(100*(rev(1/cumprod(rev(c(q, tail))))), t="b",
-     main="", xlab="Período, j", ylab="100*1/Q")
 
-plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
-     main="", xlab="Período, j", ylab="100*1/Q")
-```
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
-
-Qhat = f.tail
-
-#Qhat
-
-```
 
 Nuestros factores de desarrollo serán los obtenidos normalmente hasta el momento $n-1=9$ y para $q_n=q_{10}$ se le asigna el valor de $\hat{Q_n}$ calculado anteriormente, que para el último período de desarrollo era válida la equivalencia.
 
 De esta forma, se hace el análogo al cuadro \ref{exhibit} y se cálcula nuevamente el $IBNR$ con este método, observesé los resultados en el cuadro \ref{exhibit2}.
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
-qs <- c(q,Qhat)
 
-Qs <- rev(cumprod(rev(qs)))
-names(Qs) <- colnames(tri) # so the display matches the triangle
-Qs <- round(Qs, 3)
 
-```
-
-```{r, echo=FALSE, results='asis'}
-Incurridos_Acumulados2 <- getLatestCumulative(tri) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
-# Reverse the LDFs so the first, least mature factor [1]
-#   is applied to the last origin year (1990)
-Perdida_Esperada2 <- Incurridos_Acumulados2 * rev(Qs) #ultima perdida esperada
-# Start with the body of the exhibit
-
-Reserva_IBNR2 = Perdida_Esperada2 - Incurridos_Acumulados2
-
-Exhibit2 <- data.frame(Incurridos_Acumulados2, Qs = round(rev(Qs), 3), Perdida_Esperada2, Reserva_IBNR2)
-# Tack on a Total row
-
-Exhibit2 <- rbind(Exhibit2,
-                 data.frame(Incurridos_Acumulados2=sum(Incurridos_Acumulados2), Qs=NA, Perdida_Esperada2=sum(Perdida_Esperada2),
-Reserva_IBNR2 = sum(Reserva_IBNR2),                            
-                            row.names = "Total"))
-
-col_names <- c("Último siniestro incurrido","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
-names(Exhibit2) <- col_names
-
-print(xtable(Exhibit2, type="latex", align="ccccc", digits = 3, caption="Cálculo del IBNR según el método con regresión.", label = "exhibit2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
-
-```
+\begin{table}[ht]
+\centering
+\caption{Cálculo del IBNR según el método con regresión.} 
+\label{exhibit2}
+\begingroup\fontsize{10pt}{10pt}\selectfont
+\begin{tabular}{ccccc}
+  \hline
+ & Último siniestro incurrido & Factor de desarrollo acumulado & Pérdida Esperada & IBNR \\ 
+  \hline
+1999 & 5099688.000 & 1.022 & 5211881.136 & 112193.136 \\ 
+  2000 & 4221137.000 & 1.040 & 4389982.480 & 168845.480 \\ 
+  2001 & 5969088.000 & 1.069 & 6380955.072 & 411867.072 \\ 
+  2002 & 8581805.000 & 1.075 & 9225440.375 & 643635.375 \\ 
+  2003 & 7276239.000 & 1.206 & 8775144.234 & 1498905.234 \\ 
+  2004 & 5882585.000 & 1.306 & 7682656.010 & 1800071.010 \\ 
+  2005 & 9901076.000 & 1.453 & 14386263.428 & 4485187.428 \\ 
+  2006 & 12548654.000 & 1.724 & 21633879.496 & 9085225.496 \\ 
+  2007 & 9171465.000 & 2.172 & 19920421.980 & 10748956.980 \\ 
+  2008 & 10120889.000 & 3.368 & 34087154.152 & 23966265.152 \\ 
+  Total & 78772626.000 &  & 131693778.363 & 52921152.363 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 Se observa que al asignarle un factor de desarrollo acumulado mayor a 1 para el último período de desarrollo, se obtiene que las reservas por IBNR aumentan aproximadamente en \$3.000.000 respecto al método clásico representado en el cuadro \ref{exhibit}, este monto representa aproximadamente un aumento del \%5 en las reservas. Esto se traduce en menores ganancias para la compañia aseguradora pero permite estar mas cubierto frente a acontecimientos siniestrales ocurridos pero no reportados.
 
@@ -355,21 +315,49 @@ $$
 
 La función \texttt{MackChainLadder} del paquete \texttt{ChainLadder} nos da una tabla con las reservas de IBNR para cada año, su desvío y su coeficiente de variación, y las mismas medidas para el total, teniendo especial atentción de que el desvío del total no es igual a la suma del desvío, nos muestra la última pérdida obtenida, la última pérdida esperada, la relación entre estas, la reserva de IBNR, el desvío y el coeficiente de variación.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+\begin{table}[ht]
+\centering
+\caption{Estimaciones mediante Método Mack Chain-Ladder por año de Ocurrencia} 
+\label{origin2}
+\begingroup\fontsize{10pt}{10pt}\selectfont
+\begin{tabular}{ccccccc}
+  \hline
+ & Latest & Dev.To.Date & Ultimate & IBNR & Mack.S.E & CV(IBNR) \\ 
+  \hline
+1999 & 5099688.00 & 1.00 & 5099688.00 & 0.00 & 0.00 &  \\ 
+  2000 & 4221137.00 & 0.98 & 4294344.90 & 73207.90 & 158102.19 & 2.16 \\ 
+  2001 & 5969088.00 & 0.96 & 6242289.13 & 273201.13 & 246430.13 & 0.90 \\ 
+  2002 & 8581805.00 & 0.95 & 9029697.31 & 447892.31 & 708612.58 & 1.58 \\ 
+  2003 & 7276239.00 & 0.85 & 8589919.40 & 1313680.40 & 782964.48 & 0.60 \\ 
+  2004 & 5882585.00 & 0.78 & 7521436.22 & 1638851.22 & 1070034.24 & 0.65 \\ 
+  2005 & 9901076.00 & 0.70 & 14077508.98 & 4176432.98 & 1880770.51 & 0.45 \\ 
+  2006 & 12548654.00 & 0.59 & 21175489.41 & 8626835.41 & 2602113.44 & 0.30 \\ 
+  2007 & 9171465.00 & 0.47 & 19492933.42 & 10321468.42 & 3717510.05 & 0.36 \\ 
+  2008 & 10120889.00 & 0.30 & 33356395.46 & 23235506.46 & 6120205.09 & 0.26 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
-mackTRI <- MackChainLadder(tri)
-
-
-print(xtable(summary(mackTRI)$ByOrigin, type="latex", align="ccccccc", caption="Estimaciones mediante Método Mack Chain-Ladder por año de Ocurrencia", label = "origin2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
-
-
-
-```
-
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-print(xtable(summary(mackTRI)$Totals, type="latex", align="cc", caption="Estimaciones mediante Método Mack Chain-Ladder para el total", label = "total2"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
-
-```
+\begin{table}[ht]
+\centering
+\caption{Estimaciones mediante Método Mack Chain-Ladder para el total} 
+\label{total2}
+\begingroup\fontsize{10pt}{10pt}\selectfont
+\begin{tabular}{cc}
+  \hline
+ & Totals \\ 
+  \hline
+Latest: & 78772626.00 \\ 
+  Dev: & 0.61 \\ 
+  Ultimate: & 128879702.24 \\ 
+  IBNR: & 50107076.24 \\ 
+  Mack S.E.: & 11156939.54 \\ 
+  CV(IBNR): & 0.22 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 
 
@@ -379,42 +367,65 @@ print(xtable(summary(mackTRI)$Totals, type="latex", align="cc", caption="Estimac
 También se puede acceder a los factores mediante  \texttt{mackTRI\$f} (Cuadro \ref{factores}), o a la matriz completa con la estimación de los siniestros incurridos en los años siguientes mediante  \texttt{mackTRI\$FullTriangle} (Cuadro \ref{fulltriangle}).
 
 
-```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
+\begin{table}[ht]
+\centering
+\caption{Factores de desarrollo} 
+\label{factores}
+\begin{tabular}{cc}
+  \hline
+ & Factores de desarrollo \\ 
+  \hline
+1 & 1.551 \\ 
+  2 & 1.260 \\ 
+  3 & 1.187 \\ 
+  4 & 1.112 \\ 
+  5 & 1.083 \\ 
+  6 & 1.122 \\ 
+  7 & 1.006 \\ 
+  8 & 1.028 \\ 
+  9 & 1.017 \\ 
+  10 & 1.000 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
-factores_q <- data.frame(mackTRI$f)
-col_names <- c("Factores de desarrollo") 
-names(factores_q) <- col_names
-
-print(xtable(factores_q, type="latex", align="cc", digits = 3, caption="Factores de desarrollo", label = "factores"), caption.placement = "top", comment = FALSE)
-```
 
 
 
-
-```{r, echo=FALSE, message=FALSE,warning=FALSE, results='asis'}
-
-#mackTRI$FullTriangle
-
-mackTRI_df <- data.frame(matrix(unlist(mackTRI$FullTriangle), ncol = ncol(mackTRI$FullTriangle), byrow = TRUE))
-colnames(mackTRI_df) <- 1:10
-rownames(mackTRI_df) <- 1999:2008
-
-print(xtable(mackTRI_df, type="latex", align="lcccccccccc", digits = 0, caption="Matriz Completa con la estimación de los Siniestros Incurridos a futuro", label = "fulltriangle"), caption.placement = "top", table.placement = "ht", comment = FALSE, size="\\fontsize{8.2pt}{10pt}\\selectfont")
-
-```
+\begin{table}[ht]
+\centering
+\caption{Matriz Completa con la estimación de los Siniestros Incurridos a futuro} 
+\label{fulltriangle}
+\begingroup\fontsize{8.2pt}{10pt}\selectfont
+\begin{tabular}{lcccccccccc}
+  \hline
+ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+  \hline
+1999 & 652799 & 1360795 & 1985553 & 2901555 & 3572829 & 2578343 & 4051902 & 5030173 & 6849422 & 10120889 \\ 
+  2000 & 1383776 & 2480988 & 3275646 & 4528347 & 4717083 & 4423917 & 6081465 & 8881224 & 9171465 & 15694252 \\ 
+  2001 & 2634200 & 2806387 & 3290023 & 4556763 & 5937065 & 4664371 & 8618348 & 12548654 & 11551567 & 19767093 \\ 
+  2002 & 3167840 & 3592401 & 3945474 & 5790821 & 6835232 & 5348014 & 9901076 & 14893269 & 13709884 & 23460415 \\ 
+  2003 & 3842289 & 3451088 & 4961886 & 6444829 & 7309686 & 5882585 & 11010150 & 16561547 & 15245604 & 26088346 \\ 
+  2004 & 4029679 & 3931688 & 4975029 & 7957380 & 7276239 & 6371162 & 11924596 & 17937063 & 16511825 & 28255109 \\ 
+  2005 & 4454460 & 4491687 & 5914580 & 8581805 & 8163841 & 7148357 & 13379234 & 20125140 & 18526042 & 31701847 \\ 
+  2006 & 4817622 & 4165270 & 5969088 & 8634502 & 8213971 & 7192252 & 13461390 & 20248719 & 18639802 & 31896514 \\ 
+  2007 & 5012751 & 4221137 & 6135874 & 8875763 & 8443483 & 7393214 & 13837522 & 20814500 & 19160627 & 32787752 \\ 
+  2008 & 5099688 & 4294345 & 6242289 & 9029697 & 8589919 & 7521436 & 14077509 & 21175489 & 19492933 & 33356395 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 
 La función  \texttt{plot} recibe como argumento un objeto del tipo  \texttt{MackChainLadder} y genera graficos con las estimaciones de los siniestros incurridos a futuro y un intervalo de confianza así como información sobre los residuos estandarizados.
 
-```{r, echo=FALSE, out.width="100%", fig.cap = "Gráfico estandar para objetos MackChain-Ladder", fig.height=15, fig.width=18}
-plot(mackTRI)
-```
+\begin{figure}
+\includegraphics[width=1\linewidth]{informe_files/figure-latex/unnamed-chunk-18-1} \caption{Gráfico estandar para objetos MackChain-Ladder}\label{fig:unnamed-chunk-18}
+\end{figure}
 
 También se puede graficar la predicción del desarrollo de los siniestros incurridos a futuro junto a una medida de la dispersión, separado por cada año de ocurrencia, se puede notar que para años de ocurrencia más reciente, para los cuáles se requiere estimar más valores, el intervalo de confianza empieza en períodos de desarrollo anteriores, y tiene mayor amplitud.
 
-```{r, echo=FALSE, fig.cap = "lattice = TRUE para obtener la estimación del desarrollo para cada año de ocurrencia"}
-plot(mackTRI, lattice=TRUE)
-```
+![lattice = TRUE para obtener la estimación del desarrollo para cada año de ocurrencia](informe_files/figure-latex/unnamed-chunk-19-1.pdf) 
 
 
 \newpage
@@ -424,78 +435,44 @@ plot(mackTRI, lattice=TRUE)
 El método de Munich utiliza la correlación positiva entre el triángulo de siniestros incurridos y el triángulo de siniestros pagados acumulados para proyectar los futuros pagos. Como hasta ahora se venía trabajando con el triángulo de siniestros incurridos, ahora se debe agregar el triángulo de pagos acumulados.
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
-acum <- as.data.frame(read_excel(path = "pagos_acumulados_IBNR.xlsx", skip = 2))
-rownames(acum) <- acum[,1]
-acum[,1] <- NULL
-colnames(acum) <- 1:10
-rownames(acum) <- 1999:2008  # se simplifica el nombre de los años a años simples para que facilite el uso de algunas funciones
-frac2 <- acum/tri2
-
-# triangle class, ready for ChainLadder  /  creacion del objeto tipo triangulo
-acum <- as.triangle(as.matrix(acum))
-
-```
 
 Llamando *I* a la matriz de siniestros incurridos y *P* a la matriz de siniestros pagados acumulados, se halla la matriz $P/I$ calculada como la división de celda a celda de la matriz *P* entre la matriz *I*, y representa la fracción de los siniestros incurridos que ya están pago de cada año ocurrencia durante los períodos de desarrollo. Donde se suele observar que a medida que hay más períodos de desarrollo la mayoría de los siniestros han sido pagados.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-frac <- acum/tri
-
-fracframe <- as.data.frame(frac)
-
-fracframe <- fracframe %>% mutate(
-  devf = as.factor(dev)
-)
-```
 
 
-```{r, echo=FALSE, fig.pos="h", message=FALSE, warning=FALSE, results='asis'}
 
-print(xtable(frac2, type="latex", align="ccccccccccc", digits = 4, caption="Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.", label = "tabla2"), caption.placement = "top", comment = FALSE, size="\\fontsize{11.5pt}{10pt}\\selectfont")
-
-```
+\begin{table}[ht]
+\centering
+\caption{Proporción de siniestros incurridos que han sido pagos en cada período de desarrollo.} 
+\label{tabla2}
+\begingroup\fontsize{11.5pt}{10pt}\selectfont
+\begin{tabular}{ccccccccccc}
+  \hline
+ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ 
+  \hline
+1999 & 0.5712 & 0.4191 & 0.2374 & 0.2043 & 0.2524 & 0.3934 & 0.5571 & 0.6733 & 0.8434 & 0.8644 \\ 
+  2000 & 0.2671 & 0.2708 & 0.2546 & 0.2058 & 0.2168 & 0.2695 & 0.4919 & 0.7259 & 0.7843 &  \\ 
+  2001 & 0.3263 & 0.3150 & 0.3936 & 0.4187 & 0.4143 & 0.4693 & 0.4024 & 0.3657 &  &  \\ 
+  2002 & 0.1413 & 0.2445 & 0.3226 & 0.2988 & 0.3824 & 0.5337 & 0.5969 &  &  &  \\ 
+  2003 & 0.2329 & 0.3176 & 0.2790 & 0.2980 & 0.3529 & 0.3592 &  &  &  &  \\ 
+  2004 & 0.3728 & 0.3429 & 0.4024 & 0.4045 & 0.3816 &  &  &  &  &  \\ 
+  2005 & 0.5250 & 0.5667 & 0.5095 & 0.4520 &  &  &  &  &  &  \\ 
+  2006 & 0.4937 & 0.4846 & 0.4755 &  &  &  &  &  &  &  \\ 
+  2007 & 0.4634 & 0.5191 &  &  &  &  &  &  &  &  \\ 
+  2008 & 0.4818 &  &  &  &  &  &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 ## Problemas del Chain-Ladder por separado (SCL)
 
 Formalmente, se tiene que $(P/I)_{i,j} = P_{i,j}/I_{i,j}$, luego, mediante los métodos vistos antes de Chain Ladder se puede estimar los valores faltantes de ambas matrices con los factores de desarrollo año a año a partir de la diagonal inversa, obteniendo el resultado de los ratios si se hace Chain-Ladder por separado (Método SCL).
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%", fig.cap='\\label{graficos} Ratio P/I en 100% con recta que une las medias por período de desarrollo', fig.subcap=c("\\label{graf1} Valores observados.", "\\label{graf2} Valores observados y proyectados.")}
-
-trifull <- mackTRI$FullTriangle
-
-mackACUM <- MackChainLadder(acum)
-
-acumfull <- mackACUM$FullTriangle
-
-
-fracfull <- acumfull/trifull
-
-fracfullframe <- as.data.frame(fracfull)
-
-fracfullframe <- fracfullframe %>% mutate(
-  originn = as.numeric(origin)
-)
-
-fracfullframe <- fracfullframe %>% mutate(
-  Tipo = ifelse(originn+dev>2009, "pred","obs")
-)
-
-
-ggplot(fracframe, aes(x=dev, y=100*value)) + geom_point(alpha=1, size = 2) +
-  geom_line(stat = "summary", fun.y = "mean", color = "red", size = 1) +
-  theme_bw() +
-  ylim(c(10,120))+
-  labs(x="Periodo de Desarrollo", y="Porcentaje  P/I")
-
-ggplot(fracfullframe, aes(x=dev, y=100*value, alpha = Tipo)) + geom_point(size = 2) +
-  geom_line(stat = "summary", fun.y = "mean", size = 1) + scale_alpha_manual(values = c(1,0.3)) +
-  theme_bw() +
-  ylim(c(10,120))+
-  labs(x="Periodo de Desarrollo", y="Porcentaje  P/I")
-
-```
+\begin{figure}
+\subfloat[\label{graf1} Valores observados.\label{fig:unnamed-chunk-23-1}]{\includegraphics[width=0.5\linewidth]{informe_files/figure-latex/unnamed-chunk-23-1} }\subfloat[\label{graf2} Valores observados y proyectados.\label{fig:unnamed-chunk-23-2}]{\includegraphics[width=0.5\linewidth]{informe_files/figure-latex/unnamed-chunk-23-2} }\caption{\label{graficos} Ratio P/I en 100% con recta que une las medias por período de desarrollo}\label{fig:unnamed-chunk-23}
+\end{figure}
 
 Se puede notar en la figura \ref{graf2} que para los valores proyectados en las dos matrices por separado a partir de cierto período de desarrollo se tiene que los siniestros pagados significan una proporción mayor a 1 que los siniestros incurridos, este error se da debido a que se aplicó el método de Chain-Ladder por separado a ambos triángulos (SCL) y no se tuvo en cuenta la estructura de correlación entre ambos triángulos.
 
@@ -529,57 +506,32 @@ Que indica que para cada año de accidente, el ratio de $(P/I)_{i,t}$ con el $(P
 El modelo de Munich Chain-Ladder incorpora la correlación entre la matriz de pagos acumulados $P$ y la de siniestros incurridos $I$.
 Vemos que la correlación entre los factores de desarrollo para cada año de ocurrencia del primer período de desarrollo de la matriz de pagos acumulados, es decir, el vector de $q_{i,1}^P$ $\forall i = \{1,2,\ldots,10\}$ respecto a los ratios $(P/I)_{i,1}$ es de $-0.7278$.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-qi1p <- c()
 
-fraci1 <- c()
 
-for(i in 1:9){
-  qi1p[i] = acum[i,2]/acum[i,1];
-  fraci1[i] = acum[i,1]/tri[i,1]
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{informe_files/figure-latex/unnamed-chunk-25-1} 
+
 }
 
-correlation=cor(fraci1,qi1p)
-```
-
-
-```{r, echo=FALSE, out.width="80%", fig.align='center',  message=FALSE, warning=FALSE,  fig.cap='\\label{reg1_1} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de pagos acumulados para el primer período'}
-ggplot(data.frame(fraci1, qi1p), aes(x = fraci1, y = qi1p)) +
-  geom_point() +
-  geom_vline(xintercept = mean(fraci1), linetype = "dashed", color = "red") +
-  geom_hline(yintercept = mean(qi1p), linetype = "dashed", color = "blue") +
-  labs(title = paste("Gráfico de Dispersión de los factores de desarrollo de pagos acumulados vs P/I\nCorrelación: ", round(correlation, 2)),
-       x = "P/I del primer periodo", y = "Factores de desarrollo del primer periodo de la matriz P")
-
-
-```
+\caption{\label{reg1_1} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de pagos acumulados para el primer período}\label{fig:unnamed-chunk-25}
+\end{figure}
 
 Y por otro lado, haciendo lo mismo para los factores de desarrollo individuales del primer período de la matriz de siniestros incurridos y los ratios del primer período de desarrollo se tiene una correlación positiva más débil de $0.3572$
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-qi1I <- c()
 
-fraci1 <- c()
 
-for(i in 1:9){
-  qi1I[i] = tri[i,2]/tri[i,1];
-  fraci1[i] = acum[i,1]/tri[i,1]
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{informe_files/figure-latex/unnamed-chunk-27-1} 
+
 }
 
-correlation=cor(fraci1,qi1I)
-```
-
-
-```{r, echo=FALSE, out.width="80%",fig.align='center',  message=FALSE, warning=FALSE,  fig.cap='\\label{reg2_2} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de siniestros incurridos para el primer período'}
-ggplot(data.frame(fraci1, qi1I), aes(x = fraci1, y = qi1I)) +
-  geom_point() +
-  geom_vline(xintercept = mean(fraci1), linetype = "dashed", color = "red") +
-  geom_hline(yintercept = mean(qi1I), linetype = "dashed", color = "blue") +
-  labs(title = paste("Gráfico de Dispersión de los factores de desarrollo de siniestros Incurridos vs P/I\nCorrelación: ", round(correlation, 2)),
-       x = "P/I del primer periodo", y = "Factores de desarrollo del primer periodo de la matriz I")
-
-```
+\caption{\label{reg2_2} Gráfico de Puntos de Ratios P/I y Factores de desarrollo de la matriz de siniestros incurridos para el primer período}\label{fig:unnamed-chunk-27}
+\end{figure}
 
 Parece ser que uno de los problemas principales de hacer SCL es asumir un factor igual para todos los años de ocurrencia, dado un período de desarrollo y se nota que estos factores depende de los ratios $(P/I)$.
 
@@ -589,27 +541,14 @@ Siendo que para cada período de desarrollo se tiene un gráfico de puntos como 
 
 El método de Munich Chain-Ladder también incorpora los ratios $(I/P)=1/(P/I)$, y la regresión de los factores de desarrollo de los pagos acumulados se hace respecto a este ratio.
 
-```{r, echo=FALSE, out.width="80%", fig.align='center', message=FALSE,warning=FALSE, fig.cap='\\label{reg3} Gráfico de Puntos de Ratios I/P y Factores de desarrollo de la matriz de pagos acumulados para el primer período'}
+\begin{figure}
 
-qi1p <- c()
+{\centering \includegraphics[width=0.8\linewidth]{informe_files/figure-latex/unnamed-chunk-28-1} 
 
-fracinvi1 <- c()
-
-for(i in 1:9){
-  qi1p[i] = acum[i,2]/acum[i,1];
-  fracinvi1[i] = tri[i,1]/acum[i,1]
 }
 
-correlation= cor(fracinvi1,qi1p)
-
-ggplot(data.frame(fracinvi1, qi1p), aes(x = fracinvi1, y = qi1p)) +
-  geom_point() +
-  geom_vline(xintercept = mean(fracinvi1), linetype = "dashed", color = "red") +
-  geom_hline(yintercept = mean(qi1p), linetype = "dashed", color = "blue") +
-  labs(title = paste("Gráfico de Dispersión de los factores de desarrollo de Pagos Acumulados vs I/P\nCorrelación: ", round(correlation, 2)),
-       x = "I/P del primer periodo", y = "Factores de desarrollo del primer periodo de la matriz P")
-
-```
+\caption{\label{reg3} Gráfico de Puntos de Ratios I/P y Factores de desarrollo de la matriz de pagos acumulados para el primer período}\label{fig:unnamed-chunk-28}
+\end{figure}
 
 El segundo problema que se puede observar, es que, con el pasar de los períodos de desarrollo, se tienen menos datos, y las estimaciones son más volátiles, incluso algunas veces se pueden obtener regresiones con el signo incorrecto en el coeficiente. Y por último, a veces no hay una estructura clara que refleje correlación. O la misma es muy débil.
 
@@ -626,39 +565,54 @@ Por último, se completa la matriz $(P/I)$ y $(I/P)$ con los datos nuevos estima
 
 Este método se puede aplicar a partir de la función \texttt{MunichChainLadder} del paquete \texttt{ChainLadder}, a la que se le debe pasar como argumento los dos triangulos, el de pagos acumulados y el de siniestros incurridos.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
-BayernMunich <- MunichChainLadder(acum,tri)
-
-```
 
 Con la función \texttt{plot} pasándole un objeto del tipo \texttt{MunichChainLadder} genera la figura \ref{plotMunich} con 4 gráficos. El primero de ellos contiene la estimación de los siniestros pagados e incurridos para cada año de ocurrencia mediante el método de Munich Chain-Ladder, el siguiente gráfico muestra la obtención de los ratios $(P/I)$ en términos porcentuales obtenidos mediante Munich Chain-Ladder (MCL), y los obtenidos si se hacía Chain-Ladder por separado (Mack), mostrando como así se hubiesen obtenidos ratios por encima de 1 (o por encima de \%100 en términos porcentuales). El gráfico de abajo a la izquierda, muestra la dispersión de todos los factores centrados y estandarizados de los pagos acumulados vs los ratios $(I/P)$ con su respectiva regresión. Y el último gráfico muestra lo mismo pero para los factores de los siniestros incurridos respceto al ratio $(P/I)$. 
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, fig.height=20, fig.width=18, fig.cap='\\label{plotMunich} Gráfico automático para objetos de tipo Munich Chain-Ladder'}
-
-plot(BayernMunich)
-
-
-```
+![\label{plotMunich} Gráfico automático para objetos de tipo Munich Chain-Ladder](informe_files/figure-latex/unnamed-chunk-30-1.pdf) 
 
 
 Al pedir el resumen con la función \texttt{summary} del objeto \texttt{Munich Chain Ladder} nos devuelve los últimos pagos acumulados y últimos siniestros incurridos, y el ratio $P/I$, luego también tiene las proyecciones de los pagos y de los incurridos mediante el método de Munich, y el ratio, al pedir que sea por año de origen mediante \texttt{summary(BayernMunich)\$ByOrigin} esta informacioón nos la devuelve por año de origen ((tabla \ref{origin Munich})), y se puede observar como ningún ratio al final de los 10 períodos de desarrollos supera la unidad.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-
-print(xtable(summary(BayernMunich)$ByOrigin, type="latex", align="ccccccc", caption="Resumen por año de ocurrencia del método Munich Chain-Ladder", label = "origin Munich"), caption.placement = "top", comment = FALSE, size="\\fontsize{10pt}{10pt}\\selectfont")
-
-```
+\begin{table}[ht]
+\centering
+\caption{Resumen por año de ocurrencia del método Munich Chain-Ladder} 
+\label{origin Munich}
+\begingroup\fontsize{10pt}{10pt}\selectfont
+\begin{tabular}{ccccccc}
+  \hline
+ & Latest Paid & Latest Incurred & Latest P/I Ratio & Ult. Paid & Ult. Incurred & Ult. P/I Ratio \\ 
+  \hline
+1999 & 4408012.35 & 5099688.00 & 0.86 & 4408012.35 & 5099688.00 & 0.86 \\ 
+  2000 & 3310585.34 & 4221137.00 & 0.78 & 3516429.02 & 4285192.30 & 0.82 \\ 
+  2001 & 2183145.17 & 5969088.00 & 0.37 & 3938896.95 & 6078382.19 & 0.65 \\ 
+  2002 & 5122735.27 & 8581805.00 & 0.60 & 7450536.68 & 9075686.58 & 0.82 \\ 
+  2003 & 2613770.37 & 7276239.00 & 0.36 & 6336075.64 & 8419911.00 & 0.75 \\ 
+  2004 & 2244504.33 & 5882585.00 & 0.38 & 5950165.65 & 7535352.06 & 0.79 \\ 
+  2005 & 4475502.88 & 9901076.00 & 0.45 & 12013700.59 & 14652550.55 & 0.82 \\ 
+  2006 & 5966324.20 & 12548654.00 & 0.48 & 17995072.95 & 22028140.99 & 0.82 \\ 
+  2007 & 4760793.00 & 9171465.00 & 0.52 & 17172978.06 & 20825622.64 & 0.82 \\ 
+  2008 & 4876379.00 & 10120889.00 & 0.48 & 29364788.76 & 35705671.10 & 0.82 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
 
 También se puede acceder al resumen pero para el total mediante \texttt{summary(BayernMunich)\$Totals}, donde se tendrá la suma de las columnas anteriores, en la primer fila la sumade las diagonales, y su ratio, y en la segunda lo estimado y su ratio ((tabla \ref{totales}). 
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-
-#summary(BayernMunich)$Totals
-
-#
-print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 3, caption="Resumen para el total del método Munich Chain-Ladder", label = "totales"), caption.placement = "top", comment = FALSE)
-```
+\begin{table}[ht]
+\centering
+\caption{Resumen para el total del método Munich Chain-Ladder} 
+\label{totales}
+\begin{tabular}{cccc}
+  \hline
+ & Paid & Incurred & P/I Ratio \\ 
+  \hline
+Latest: & 39961751.923 & 78772626.000 & 0.507 \\ 
+  Ultimate: & 108146656.650 & 133706197.413 & 0.809 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
 
@@ -671,44 +625,79 @@ En la segunda etapa, se utiliza una distribución para el proceso de reclamacion
 
 Las distribuciones asumidas para el proceso que admite la función \texttt{BootChainLadder} son la distribución \textit{Gamma} y una distribución \texttt{Poisson} que admite una dispersión mayor que la media (over-dispersed Poisson).
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
-Bootstrap <- BootChainLadder(acum,R=1000, "gamma", seed=201223)
-
-```
 
 El comando para poder correrlo en \texttt{R} es \texttt{BootChainLadder(Triangulo, R=999, process.distr=c("gamma", "od.pois"), seed=NULL )}, donde \textbf{R} es la cantidad de simulaciones que por defecto son 999 y tiene la opción de fijar una semilla dentro de la función para que sea reproducible.
 
 Por último se pueden ver los resultados mediante la función \texttt{summary} tanto para cada año de ocurrencia (tabla \ref{anual bootstrap}) como para el total, y obtener los cuantiles para las reservas por IBNR.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+\begin{table}[ht]
+\centering
+\caption{Resumen por año del método Bootstrap Chain-Ladder} 
+\label{anual bootstrap}
+\begin{tabular}{lcccccc}
+  \hline
+ & Latest & Mean Ultimate & Mean IBNR & SD IBNR & IBNR 75\% & IBNR 95\% \\ 
+  \hline
+1999 & 4408012.3 & 4408012.3 & 0.0 & 0.0 & 0.0 & 0.0 \\ 
+  2000 & 3310585.3 & 3477147.3 & 166562.0 & 293342.7 & 265009.2 & 713760.9 \\ 
+  2001 & 2183145.2 & 2772883.6 & 589738.4 & 545102.8 & 798041.6 & 1594449.0 \\ 
+  2002 & 5122735.3 & 7802772.8 & 2680037.5 & 1433663.1 & 3464629.7 & 5386333.8 \\ 
+  2003 & 2613770.4 & 5262936.8 & 2649166.4 & 1351740.2 & 3373788.6 & 5335618.8 \\ 
+  2004 & 2244504.3 & 6176158.7 & 3931654.4 & 1913837.5 & 5034009.6 & 7659572.0 \\ 
+  2005 & 4475502.9 & 15239044.7 & 10763541.8 & 4157532.0 & 13027862.4 & 18640394.9 \\ 
+  2006 & 5966324.2 & 22453405.4 & 16487081.2 & 5848680.1 & 19854084.4 & 26332960.7 \\ 
+  2007 & 4760793.0 & 23008730.0 & 18247937.0 & 6594537.1 & 21886641.0 & 30280424.2 \\ 
+  2008 & 4876379.0 & 39571561.3 & 34695182.3 & 11953587.7 & 42260201.1 & 55774681.4 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
-print(xtable(summary(Bootstrap)$ByOrigin, type="latex", align="lcccccc", digits = 1, caption="Resumen por año del método Bootstrap Chain-Ladder", label = "anual bootstrap"), caption.placement = "top", comment = FALSE)
-
-```
-
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-
-print(xtable(summary(Bootstrap)$Total, type="latex", align="lc", digits = 1, caption="Resumen Para el total del método Bootstrap Chain-Ladder", label = "total bootstrap"), caption.placement = "top", comment = FALSE)
-
-```
+\begin{table}[ht]
+\centering
+\caption{Resumen Para el total del método Bootstrap Chain-Ladder} 
+\label{total bootstrap}
+\begin{tabular}{lc}
+  \hline
+ & Totals \\ 
+  \hline
+Latest: & 39961751.9 \\ 
+  Mean Ultimate: & 130172652.9 \\ 
+  Mean IBNR: & 90210901.0 \\ 
+  SD IBNR: & 25006409.7 \\ 
+  Total IBNR 75\%: & 103925962.8 \\ 
+  Total IBNR 95\%: & 136562111.7 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 También se puede obtener el gráfico con la función  \texttt{plot} a un objeto de la clase  \texttt{'BootChainLadder'}. En los dos gráficos superiores de la figura \ref{plotBoot} se obtien el histograma del total de reservas de IBNR y la función de distribución de las reservas por IBNR. Mientras que en la parte inferior se obtienen gráficos de dispersión de los costos últimos simulados para cada año de origen con la media en rojo y de las simulaciones de los costos acumulados actuales para cada año, con el valor observado en la diagonal en rojo.
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, fig.height=20, fig.width=18, fig.cap='\\label{plotBoot} Gráfico automático para objetos de tipo Bootstrap Chain-Ladder'}
-
-plot(Bootstrap)
-
-
-```
+![\label{plotBoot} Gráfico automático para objetos de tipo Bootstrap Chain-Ladder](informe_files/figure-latex/unnamed-chunk-36-1.pdf) 
 
 Además también se pueden obtener los cuantiles de interés para cada año mediante la función \texttt{quantile} para obtener un intervalo de confianza al 95%, ya que la función \texttt{summary} brinda el cuantil $0.75$ y el $0.95$
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-
-print(xtable(quantile(Bootstrap,c(0.025,0.975))$ByOrigin, type="latex", align="lrr", digits = 1, caption="IC al 95 por año del método Bootstrap Chain-Ladder", label = "quantile_boot"), caption.placement = "top", comment = FALSE)
-
-```
+\begin{table}[ht]
+\centering
+\caption{IC al 95 por año del método Bootstrap Chain-Ladder} 
+\label{quantile_boot}
+\begin{tabular}{lrr}
+  \hline
+ & IBNR 2.5\% & IBNR 97.5\% \\ 
+  \hline
+1999 & 0.0 & 0.0 \\ 
+  2000 & -175984.8 & 884742.0 \\ 
+  2001 & 1868.2 & 1934375.2 \\ 
+  2002 & 623701.1 & 6199430.7 \\ 
+  2003 & 577961.4 & 5934189.9 \\ 
+  2004 & 965675.3 & 8408063.9 \\ 
+  2005 & 4451607.8 & 20659547.9 \\ 
+  2006 & 6901482.5 & 30215920.3 \\ 
+  2007 & 8361546.3 & 33780130.5 \\ 
+  2008 & 15094097.2 & 61506628.6 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 En la tabla \ref{quantile_boot} se puede observar que para el primer año de origen se tiene una límite inferior del intervalo negativo, esto se debe a que la media es 0, y la parte de simulación de los errores se generan valores negativos, esto se puede arreglar o bien truncando el intervalo de confianza, o asumiendo que la reserva para el primer año es 0 y no tiene varianza ni desvío.
 
