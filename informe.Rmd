@@ -673,8 +673,14 @@ El método de Bootstrap se aplica sobre la matriz triangular de pagos acumulados
 Para los pagos acumulados del año $i$ del período de desarrollo $j$ ($P_{i.j}$) se tendrá:
 
 $$
-\mathbb{E}(P_{i,j}) = m_{i,j} \text{   ,    }   \mathbb{V}(P_{i,j})=\phi\mathbb{E}(P_{i,j})=\phi m_{i,j} \\
-log(m_{i,j}) = \eta_{i,j} \\
+\mathbb{E}(P_{i,j}) = m_{i,j} \text{   ,    }   \mathbb{V}(P_{i,j})=\phi\mathbb{E}(P_{i,j})=\phi m_{i,j}
+$$
+
+$$
+log(m_{i,j}) = \eta_{i,j}
+$$
+
+$$
 \eta_{i,j}= c + \alpha_i + \beta_j  \text{   ,  } \alpha_1=\beta_1=0
 $$
 
