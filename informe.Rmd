@@ -663,13 +663,52 @@ print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
 
 
+
 # Bootstrap
 
-El método de Chain-Ladder con Bootstrap se aplica sobre el triángulo de pagos acumulados.
-En la primera etapa se aplica el método de Chain-Ladder ordinario y se calculan los residuos escalados (dividido el desvío). Luego se aplica bootstrap (R veces) sobre estos para obtener predicciones sobre los futuros reclamos mediante Chain-Ladder.
-En la segunda etapa, se utiliza una distribución para el proceso de reclamaciones asumida, con el valor de la media el obtenido en la simulación actual de bootstrap, y se simula un valor para el error. Obteniendo una distribución predictiva para poder obtener medidas de dispersión como el desvío o cuantiles de interés.
+## Modelado
 
-Las distribuciones asumidas para el proceso que admite la función \texttt{BootChainLadder} son la distribución \textit{Gamma} y una distribución \texttt{Poisson} que admite una dispersión mayor que la media (over-dispersed Poisson).
+El método de Bootstrap se aplica sobre la matriz triangular de pagos acumulados. Para la aplicación de bootstrap es necesario primero hacer un modelo estocástico para la reserva de pagos acumulados, Kremer (1982) considera un modelo para el logaritmo de los pagos acumulados, pero presentaremos el modelo de Poisson sobre-disperso dentro de los modelos lineales generalizados, dado que permite considerar que la varianza no sea constante para todos los valores predichos. Además, como se verá luego, es uno de los modelos que acepta la función \texttt{BootChainLadder}. Además estaremos considerando a la función logarítmica como función de enlace.
+
+Para los pagos acumulados del año $i$ del período de desarrollo $j$ ($P_{i.j}$) se tendrá:
+
+$$
+\mathbb{E}(P_{i,j}) = m_{i,j} \text{   ,    }   \mathbb{V}(P_{i,j})=\phi\mathbb{E}(P_{i,j})=\phi m_{i,j} \\
+log(m_{i,j}) = \eta_{i,j} \\
+\eta_{i,j}= c + \alpha_i + \beta_j  \text{   ,  } \alpha_1=\beta_1=0
+$$
+
+En donde $\alpha_i$ es el parámetro asociado al año de ocurrencia $i$ y $\beta_j$ para el período de desarrollo $j$, donde se toman los años y los períodos como 'factores', o variables categóricas. Y son estimados mediante máxima verosimilitud.
+
+Luego, con los valores de $\alpha_i$ y $\beta_j$ estimados a partir del modelo se puede estimar $\eta_{i,j}$ para los valores de $j>c_i$, y se tiene que $\mathbb{E}(P_{i,j}) = m_{i,j} = e^{\eta_{i,j}}$ para completar el triangulo de pagos acumulados y la reserva de IBNR para cada año.
+
+El otro modelo que acepta la función es el modelo Gamma, que es igual al modelo Poisson sobre-disperso, solo que la varianza será calcula $\mathbb{V}(P_{i,j}) = \phi\cdot \mathbb{E}(P_{i,j})^2=\phi \cdot m_{i,j}^2$.
+
+## Proceso de Bootstrap
+
+En 1999 England y Verrall proponen un método de bootstrap a partir de los modelos antes presentados. Consistene en aplicar el modelo y estimar los valores de $\alpha_i$ y $\beta_j$, luego predecir los valores de $P_{i,j}$ del triángulo superior, y calcular los residuos de Pearson.
+
+$$
+r_p = \frac{P_{i,j}-\hat{m}_{i,j}}{\sqrt{\hat{m}_{i,j}}}
+$$
+
+Luego se aplica Bootstrap sobre los valores de los residuos de Pearson, y se calculan los valores de pago acumulado del triángulo superior de la forma:
+
+$$
+P^*_{i,j} = r^*_p\cdot\sqrt{\hat{m}_{i,j}} + \hat{m}_{i,j}
+$$
+Con la muestra de pagos acumulados se vuelve a ajustar el modelo elegido, se calcula el triángulo inferior de la matriz de pago y se calcula la reserva de IBNR para cada año. Este método se repite $N$ veces, y el error estandar de las estimaciones será el desvío de los valores obtenidos en cada muestra de bootstrap.
+
+Por último, el parámetro de escala del desvío $\phi$ es estimado con los desvíos de Pearson de la forma:
+
+$$
+\phi_P = \frac{\sum r_p^2}{n-p}
+$$
+Con $n$ el número de datos en la muestra, que cuando se trabaja con 10 años y 10 períodos son $55$ datos (el triángulo superior) y $p$ la cantidad de parámetros.
+
+## Aplicación de Bootstrap en R
+
+Este modelo se aplica con el comando \texttt{BootChainLadder}, que tiene como argumento los datos (la matriz triangular de pagos acumulados), la cantidad de muestras con Bootstrap que se va a obtener ($R=999$ por defecto), y el modelo que asumirá, que puede ser el Poisson sobre-disperso o el Gamma (\texttt{process-distr=c("gamma","od.pois")}) y adicionalmente se le puede fijar una semilla para replicar los resultados (\texttt{seed=NULL})
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
@@ -677,9 +716,7 @@ Bootstrap <- BootChainLadder(acum,R=1000, "gamma", seed=201223)
 
 ```
 
-El comando para poder correrlo en \texttt{R} es \texttt{BootChainLadder(Triangulo, R=999, process.distr=c("gamma", "od.pois"), seed=NULL )}, donde \textbf{R} es la cantidad de simulaciones que por defecto son 999 y tiene la opción de fijar una semilla dentro de la función para que sea reproducible.
-
-Por último se pueden ver los resultados mediante la función \texttt{summary} tanto para cada año de ocurrencia (tabla \ref{anual bootstrap}) como para el total, y obtener los cuantiles para las reservas por IBNR.
+Se puede acceder al resumen de los valores obtenidos tanto para cada año de ocurrencia (tabla \ref{anual bootstrap}) como para el total, y obtener los cuantiles para las reservas por IBNR.
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
@@ -712,9 +749,7 @@ print(xtable(quantile(Bootstrap,c(0.025,0.975))$ByOrigin, type="latex", align="l
 
 En la tabla \ref{quantile_boot} se puede observar que para el primer año de origen se tiene una límite inferior del intervalo negativo, esto se debe a que la media es 0, y la parte de simulación de los errores se generan valores negativos, esto se puede arreglar o bien truncando el intervalo de confianza, o asumiendo que la reserva para el primer año es 0 y no tiene varianza ni desvío.
 
-
 \newpage
-
 
 # Bibliografía {-#bib}
 
