@@ -660,6 +660,8 @@ También se puede acceder al resumen pero para el total mediante \texttt{summary
 print(xtable(summary(BayernMunich)$Totals, type="latex", align="cccc", digits = 3, caption="Resumen para el total del método Munich Chain-Ladder", label = "totales"), caption.placement = "top", comment = FALSE)
 ```
 
+Restando la fila ''Ultimate'' menos ''Latest'' de la tabla \ref{totales}, que refieren a la suma de las estimaciones de los pagos de todos los años al final de todos los períodos, y la suma de la diagonal respectivamente se obtiene la reserva de IBNR, que en este caso se puede obtener para cualquiera de los dos triángulos. Para el triángulo de siniestros incurridos se tiene que $IBNR=133.706.197,413-78.772.626=54.933.951,413$.
+
 Si se estima de esta manera el factor de desarrollo individual para poder estimar los valores que están enseguida por debajo de la diagonal invertida, y luego de forma iterativa se completa la matriz, tanto la de pagos acumulados como la de siniestros incurridos, al final del período, cuando se evalúen los ratios $(P/I)$ no se obtendrán los valores mayores a 1 que se obtenían cuando se hacía las dos matrices por separado.
 
 
@@ -754,6 +756,23 @@ print(xtable(quantile(Bootstrap,c(0.025,0.975))$ByOrigin, type="latex", align="l
 ```
 
 En la tabla \ref{quantile_boot} se puede observar que para el primer año de origen se tiene una límite inferior del intervalo negativo, esto se debe a que la media es 0, y la parte de simulación de los errores se generan valores negativos, esto se puede arreglar o bien truncando el intervalo de confianza, o asumiendo que la reserva para el primer año es 0 y no tiene varianza ni desvío.
+
+
+
+# Comparación de Métodos
+
+Como se comentó al principio, durante el documento se pretendía abordar diferentes métodos para el cálculo de la reserva para siniestros incurridos pero no reportados, o reserva de IBNR.
+Para el cálculo de la reserva de IBNR se contaba con una matriz triangular, que según el caso podía ser la de siniestros incurridos o la de pagos acumulados, y los métodos abordados se utilizaban para completar esta matriz, es decir, para predecir cómo se comportaran los reclamos ocurridos en cada año, durante el desarrollo de los siguientes años, y así determinar una reserva para poder cubrir los futuros reclamos.
+
+El primer método que se aplicó fue el ''Chain-Ladder clásico'', y luego se tuvo en cuenta una pequeña variación de un ''Chain-Ladder con regresión'' de los factores de desarrollo a lo largo de los períodos de desarrollo. Estos dos modelos eran sencillos y fáciles de entender, además se podían aplicar tanto sobre el triángulo de pagos acumulados como en el triángulo de siniestros incurridos. Se observó que el modelo con regresión producía una reserva de IBNR mayor al modelo clásico, pero este último se podía modificar mediante la asignación de un factor de desarrollo mayor a uno para el último período de desarrollo y obtener una estimación de la reserva de IBNR aún mayor que en el modelo de regresión.
+Una de las desventajas de estos modelos es que no se obtenían medidas de dispersión de las estimaciones y tampoco se podían realizar intervalos de confianza para las mismas.
+
+El método de ''Mack Chain-Ladder'' utiliza los factores de desarrollo individuales para cada año de ocurrencia y período de desarrollo, además brindaba una estimación de los errores estandar de la estimación de la reserva de IBNR, esta estimación de los errores surge de los errores que se obtienen para la estimación de los pagos en el último período de desarrollo, ya que la reserva de IBNR para cada año de ocurrencia era la resta de estos menos el último pago ocurrido.
+
+Luego, el método de ''Munich Chain-Ladder'' tenía en cuenta la correlación entre ambos triángulos y se completaba ambos triángulos al mismo tiempo, por lo que se podía obtener la reserva de IBNR para cualquiera de los dos, y la varianza se obtenía de una forma parecida al método de Mack, a través de la varianza de los factores de desarrollo.
+
+Por último, el método de Bootstrap surgía de asumir un modelo para los pagos
+
 
 \newpage
 
