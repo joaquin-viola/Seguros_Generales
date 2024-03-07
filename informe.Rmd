@@ -670,12 +670,12 @@ Si se estima de esta manera el factor de desarrollo individual para poder estima
 
 ## Modelado
 
-El método de Bootstrap se aplica sobre la matriz triangular de pagos acumulados. Para la aplicación de bootstrap es necesario primero hacer un modelo estocástico para la reserva de pagos acumulados, Kremer (1982) considera un modelo para el logaritmo de los pagos acumulados, pero presentaremos el modelo de Poisson sobre-disperso dentro de los modelos lineales generalizados, dado que permite considerar que la varianza no sea constante para todos los valores predichos. Además, como se verá luego, es uno de los modelos que acepta la función \texttt{BootChainLadder}. Además estaremos considerando a la función logarítmica como función de enlace.
+Para la aplicación de bootstrap es necesario primero hacer un modelo estocástico para la reserva de siniestros incurridos, Kremer (1982) considera un modelo para el logaritmo de los pagos acumulados, pero presentaremos el modelo de Poisson sobre-disperso dentro de los modelos lineales generalizados dado que permite considerar que la varianza no sea constante para todos los valores predichos. Además, como se verá luego, es uno de los modelos que acepta la función \texttt{BootChainLadder}. En este modelo estaremos considerando a la función logarítmica como función de enlace.
 
-Para los pagos acumulados del año $i$ del período de desarrollo $j$ ($P_{i.j}$) se tendrá:
+Para los siniestros incurridos del año $i$ del período de desarrollo $j$ ($I_{i.j}$) se tendrá:
 
 $$
-\mathbb{E}(P_{i,j}) = m_{i,j} \text{   ,    }   \mathbb{V}(P_{i,j})=\phi\mathbb{E}(P_{i,j})=\phi m_{i,j}
+\mathbb{E}(I_{i,j}) = m_{i,j} \text{   ,    }   \mathbb{V}(I_{i,j})=\phi\mathbb{E}(I_{i,j})=\phi m_{i,j}
 $$
 
 $$
@@ -688,39 +688,40 @@ $$
 
 En donde $\alpha_i$ es el parámetro asociado al año de ocurrencia $i$ y $\beta_j$ para el período de desarrollo $j$, donde se toman los años y los períodos como 'factores', o variables categóricas. Y son estimados mediante máxima verosimilitud.
 
-Luego, con los valores de $\alpha_i$ y $\beta_j$ estimados a partir del modelo se puede estimar $\eta_{i,j}$ para los valores de $j>c_i$, y se tiene que $\mathbb{E}(P_{i,j}) = m_{i,j} = e^{\eta_{i,j}}$ para completar el triangulo de pagos acumulados y la reserva de IBNR para cada año.
+Luego, con los valores de $\alpha_i$ y $\beta_j$ estimados a partir del modelo se puede estimar $\eta_{i,j}$ para los valores de $j>c_i$, y se tiene que $\mathbb{E}(I_{i,j}) = m_{i,j} = e^{\eta_{i,j}}$ para completar el triangulo de siniestros incurridos y la reserva de IBNR para cada año.
 
-El otro modelo que acepta la función es el modelo Gamma, que es igual al modelo Poisson sobre-disperso, solo que la varianza será calcula $\mathbb{V}(P_{i,j}) = \phi\cdot \mathbb{E}(P_{i,j})^2=\phi \cdot m_{i,j}^2$.
+El otro modelo que acepta la función es el modelo Gamma, que es igual al modelo Poisson sobre-disperso, solo que la varianza será calcula $\mathbb{V}(I_{i,j}) = \phi\cdot \mathbb{E}(I_{i,j})^2=\phi \cdot m_{i,j}^2$.
 
 ## Proceso de Bootstrap
 
-En 1999 England y Verrall proponen un método de bootstrap a partir de los modelos antes presentados. Consistene en aplicar el modelo y estimar los valores de $\alpha_i$ y $\beta_j$, luego predecir los valores de $P_{i,j}$ del triángulo superior, y calcular los residuos de Pearson.
+En 1999 England y Verrall proponen un método de bootstrap a partir de los modelos antes presentados. Consistene en aplicar el modelo y estimar los valores de $\alpha_i$ y $\beta_j$, luego predecir los valores de $I_{i,j}$ del triángulo superior, y calcular los residuos de Pearson ($r_p$).
 
 $$
-r_p = \frac{P_{i,j}-\hat{m}_{i,j}}{\sqrt{\hat{m}_{i,j}}}
+r_p = \frac{I_{i,j}-\hat{m}_{i,j}}{\sqrt{\hat{m}_{i,j}}}
 $$
 
-Luego se aplica Bootstrap sobre los valores de los residuos de Pearson, y se calculan los valores de pago acumulado del triángulo superior de la forma:
+Luego se aplica Bootstrap sobre los valores de los residuos de Pearson, y se calculan los valores de siniestros incurridos del triángulo superior de la forma:
 
 $$
-P^*_{i,j} = r^*_p\cdot\sqrt{\hat{m}_{i,j}} + \hat{m}_{i,j}
+I^*_{i,j} = r^*_p\cdot\sqrt{\hat{m}_{i,j}} + \hat{m}_{i,j}
 $$
-Con la muestra de pagos acumulados se vuelve a ajustar el modelo elegido, se calcula el triángulo inferior de la matriz de pago y se calcula la reserva de IBNR para cada año. Este método se repite $N$ veces, y el error estandar de las estimaciones será el desvío de los valores obtenidos en cada muestra de bootstrap.
+Con la muestra de siniestros incurridos se vuelve a ajustar el modelo elegido, se calcula el triángulo inferior de la matriz de siniestro y se calcula la reserva de IBNR para cada año. Este método se repite $N$ veces, y el error estandar de las estimaciones será el desvío de los valores obtenidos en cada muestra de bootstrap.
 
 Por último, el parámetro de escala del desvío $\phi$ es estimado con los desvíos de Pearson de la forma:
 
 $$
 \phi_P = \frac{\sum r_p^2}{n-p}
 $$
+
 Con $n$ el número de datos en la muestra, que cuando se trabaja con 10 años y 10 períodos son $55$ datos (el triángulo superior) y $p$ la cantidad de parámetros.
 
 ## Aplicación de Bootstrap en R
 
-Este modelo se aplica con el comando \texttt{BootChainLadder}, que tiene como argumento los datos (la matriz triangular de pagos acumulados), la cantidad de muestras con Bootstrap que se va a obtener ($R=999$ por defecto), y el modelo que asumirá, que puede ser el Poisson sobre-disperso o el Gamma (\texttt{process-distr=c("gamma","od.pois")}) y adicionalmente se le puede fijar una semilla para replicar los resultados (\texttt{seed=NULL})
+Este modelo se aplica con el comando \texttt{BootChainLadder}, que tiene como argumento los datos (la matriz triangular), la cantidad de muestras con Bootstrap que se va a obtener ($R=999$ por defecto), y el modelo que asumirá, que puede ser el Poisson sobre-disperso o el Gamma (\texttt{process-distr=c("gamma","od.pois")}) y adicionalmente se le puede fijar una semilla para replicar los resultados (\texttt{seed=NULL})
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
-Bootstrap <- BootChainLadder(acum,R=1000, "gamma", seed=201223)
+Bootstrap <- BootChainLadder(tri,R=1000, "gamma", seed=201223)
 
 ```
 
@@ -764,20 +765,20 @@ En la tabla \ref{quantile_boot} se puede observar que para el primer año de ori
 Como se comentó al principio, durante el documento se pretendía abordar diferentes métodos para el cálculo de la reserva para siniestros incurridos pero no reportados, o reserva de IBNR.
 Para el cálculo de la reserva de IBNR se contaba con una matriz triangular, que según el caso podía ser la de siniestros incurridos o la de pagos acumulados, y los métodos abordados se utilizaban para completar esta matriz, es decir, para predecir cómo se comportaran los reclamos ocurridos en cada año, durante el desarrollo de los siguientes años, y así determinar una reserva para poder cubrir los futuros reclamos.
 
-El primer método que se aplicó fue el ''Chain-Ladder clásico'', y luego se tuvo en cuenta una pequeña variación de un ''Chain-Ladder con regresión'' de los factores de desarrollo a lo largo de los períodos de desarrollo. Estos dos modelos eran sencillos y fáciles de entender, además se podían aplicar tanto sobre el triángulo de pagos acumulados como en el triángulo de siniestros incurridos. Se observó que el modelo con regresión producía una reserva de IBNR mayor al modelo clásico, pero este último se podía modificar mediante la asignación de un factor de desarrollo mayor a uno para el último período de desarrollo y obtener una estimación de la reserva de IBNR aún mayor que en el modelo de regresión.
+El primer método que se aplicó fue el ''Chain-Ladder clásico'', y luego se tuvo en cuenta una pequeña variación de un ''Chain-Ladder con regresión'' de los factores de desarrollo a lo largo de los períodos de desarrollo. Estos dos modelos eran sencillos y fáciles de entender, además se podían aplicar tanto sobre el triángulo de pagos acumulados como en el triángulo de siniestros incurridos. Se observó que el modelo con regresión producía una reserva de IBNR mayor al modelo clásico debido a que el factor del último período de desarrollo era mayor a uno.
 Una de las desventajas de estos modelos es que no se obtenían medidas de dispersión de las estimaciones y tampoco se podían realizar intervalos de confianza para las mismas.
 
 El método de ''Mack Chain-Ladder'' utiliza los factores de desarrollo individuales para cada año de ocurrencia y período de desarrollo, además brindaba una estimación de los errores estandar de la estimación de la reserva de IBNR, esta estimación de los errores surge de los errores que se obtienen para la estimación de los pagos en el último período de desarrollo, ya que la reserva de IBNR para cada año de ocurrencia era la resta de estos menos el último pago ocurrido.
 
 Luego, el método de ''Munich Chain-Ladder'' tenía en cuenta la correlación entre ambos triángulos y se completaba ambos triángulos al mismo tiempo, por lo que se podía obtener la reserva de IBNR para cualquiera de los dos, y la varianza se obtenía de una forma parecida al método de Mack, a través de la varianza de los factores de desarrollo.
 
-Por último, el método de Bootstrap surgía de asumir un modelo para los pagos acumulados, que podía ser el ''Poisson sobre disperso'' o el modelo ''Gamma'', a partir de la predicción de los pagos acumulados se obtienen a través de bootstrap los residuos de Pearson, se despeja los valores de pagos acumulados de la fórmula de los residuos, y se desarrolla el modelo de ''Chainn-Ladder'' con estos valores de pagos acumulados. Este modelo generaba medidas de la varianza de las estimaciones, a través de la varianza muestral del Bootstrap, pero se podía aplicar sobre la matriz de pagos acumulados y no sobre la matriz de siniestros incurridos, por lo que la comparación con el ''Chain-Ladder'' clásico será cuando este se aplica sobre la primera matriz.
+Por último, el método de Bootstrap surgía de asumir un modelo para los pagos acumulados, que podía ser el ''Poisson sobre disperso'' o el modelo ''Gamma'', a partir de la predicción de los pagos acumulados se obtienen a través de bootstrap los residuos de Pearson, se despeja los valores de pagos acumulados de la fórmula de los residuos, y se desarrolla el modelo de ''Chainn-Ladder'' con estos valores de pagos acumulados. Este modelo generaba medidas de la varianza de las estimaciones, a través de la varianza muestral del Bootstrap.
 
 ## Comparaciones de las Reservas de IBNR
 
 En esta sección se pretende comparar los resultados obtenidos de la aplicación de los distintos métodos, comparar el valor de la reserva de IBNR entre sí y con respecto al ''Chain-Ladder clásico'', y en los casos en que haya, comparar las medidas de variación.
 
-Para los siniestros incurridos se tiene la tabla \ref{Comparaciones1} que cuenta con la última pérdida esperada total para cada método, menos para el bootstrap, la reserva de IBNR, el error y el coeficiente de variación si corresponde, y el porcentaje en que varía la estimación de la reserva respecto al Chain-Ladder clásico, en donde se observa que el ''Chain-Ladder con regresión'' aumenta en un 5,7\% las reservas de IBNR, el ''Mack Chain-Ladder'' un 0,04\% y el ''Munich Chain-Ladder'' aumenta las reservas en un 9,7\%
+Se comparan los siniestros incurridos en la tabla \ref{Comparaciones1} que cuenta con la última pérdida esperada total para cada método, la reserva de IBNR, el error y el coeficiente de variación si corresponde, y el porcentaje en que varía la estimación de la reserva respecto al Chain-Ladder clásico, en donde se observa que el ''Chain-Ladder con regresión'' aumenta en un 5,7\% las reservas de IBNR, el ''Mack Chain-Ladder'' un 0,04\%, el ''Munich Chain-Ladder'' aumenta las reservas en un 9,7\% y el método de ''Bootstrap'' un 3,7\%.
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
@@ -786,162 +787,35 @@ Chain_Ladder_Incurrido <- rbind(Chain_Ladder_Incurrido, cbind( Exhibit2[11,3:4],
 row.names(Chain_Ladder_Incurrido) <- c("C-L Clasico","C-L Regresión")
 colnames(Chain_Ladder_Incurrido) <- c("Pérdida Esperada","IBNR","Error","CV")
 
-Mack_Incurrido <- as.data.frame(cbind(summary(mackTRI)$Totals[3,],summary(mackTRI)$Totals[4,],summary(mackTRI)$Totals[5,],summary(mackTRI)$Totals[6,]))
+Mack_Incurrido <- as.data.frame(cbind(summary(mackTRI)$Total[3,],summary(mackTRI)$Total[4,],summary(mackTRI)$Total[5,],summary(mackTRI)$Total[6,]))
 colnames(Mack_Incurrido) <- c("Pérdida Esperada","IBNR","Error","CV")
 row.names(Mack_Incurrido) <- c("Mack C-L")
 
-Munich_Incurrido <- as.data.frame(cbind(summary(BayernMunich)$Totals[2,2],summary(BayernMunich)$Totals[2,2]-summary(BayernMunich)$Totals[1,2],NA,NA))
+Munich_Incurrido <- as.data.frame(cbind(summary(BayernMunich)$Total[2,2],summary(BayernMunich)$Total[2,2]-summary(BayernMunich)$Total[1,2],NA,NA))
 colnames(Munich_Incurrido) <- c("Pérdida Esperada","IBNR","Error","CV")
 row.names(Munich_Incurrido) <- c("Munich C-L")
-
-Total <- rbind(Chain_Ladder_Incurrido,Mack_Incurrido,Munich_Incurrido)
-
-Total <- Total %>% mutate(
-  VariacionPorcentual = round(100*(IBNR-IBNR[1])/IBNR[1],3)
-)
-
-print(xtable(Total,type="latex", align="lrrrrr", digits = 3, caption = "Comparación de la Estimación de la Reserva de IBNR para los Siniestros Incurridos con distintos métodos", label = "Comparaciones1"), caption.placement = "top", comment = FALSE)
-
-```
-
-Por otra parte, para hacer el mismo análisis para los pagos acumulados y poder agregar el método de Bootstrap es necesario aplicar los otros métodos a este triángulo, a excepción del método de Munich, que se aplicaba sobre los dos triángulos en simultaneo.
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
-
-linkratios <- c(attr(ata(acum), "vwtd"), tail = 1)  #se elige cola a discrecion (factor de arranque)
-linkratios <- round(linkratios, 3)
-
-QAcum <- rev(cumprod(rev(linkratios)))
-names(QAcum) <- colnames(acum) # so the display matches the triangle
-QAcum <- round(QAcum, 3)
-
-```
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
-Pagos_Acumulados <- getLatestCumulative(acum) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
-# Reverse the LDFs so the first, least mature factor [1]
-#   is applied to the last origin year (1990)
-Perdida_Esperada <- Pagos_Acumulados*rev(QAcum) #ultima perdida esperada
-# Start with the body of the exhibit
-
-Reserva_IBNR = Perdida_Esperada - Pagos_Acumulados
-
-Exhibit3 <- data.frame(Pagos_Acumulados, QAcum = round(rev(QAcum), 3), Perdida_Esperada, Reserva_IBNR)
-# Tack on a Total row
-
-
-
-Exhibit3 <- rbind(Exhibit3,data.frame(Pagos_Acumulados=sum(Pagos_Acumulados),
-                                    QAcum=NA,Perdida_Esperada=sum(Perdida_Esperada),
-                                    Reserva_IBNR=sum(Reserva_IBNR), row.names = "Total"))
-
-#col_names <- c("Último siniestro incurrido del período, X\u208i,c\u209i", "Factor de desarrollo acumulado, Q\u208j", "Pérdida Esperada, X\u208i", "IBNR por período, IBNR\u208i") 
-#col_names <- c("Último siniestro incurrido del período, $X_{i,c_i}$","Factor de desarrollo acumulado, $Q_j$","Pérdida Esperada, $X_i$","IBNR por período, $IBNR_i$")
-col_names <- c("Último siniestro Pago","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
-names(Exhibit) <- col_names
-```
-
-```{r, echo=FALSE,warning=FALSE,message=FALSE}
-n <- 10
-q <- sapply(1:(n-1),
-            function(i){
-              sum(acum[c(1:(n-i)),i+1])/sum(acum[c(1:(n-i)),i])
-            }
-)
-
-factores_q1 <- data.frame(q)
-col_names <- c("Factores de desarrollo") 
-names(factores_q1) <- col_names
-
-
-```
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-
-# modelo lineal de los factores de desarrollo explicado por los anios (log(f-1))
-dev.period <- 1:(n-1)
-tail.model <- lm(log(q-1) ~ dev.period)
-
-```
-
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
-# estudio de la ibnr para periodos mas largos
-co <- coef(tail.model)
-## extrapolate another 100 dev. period de los factores de desarrollo
-tail <- exp(co[1] + c(n:(n + 100)) * co[2]) + 1
-f.tail <- prod(tail)
-
-Qhat = f.tail
-
-qs <- c(q,Qhat)
-
-Qs <- rev(cumprod(rev(qs)))
-names(Qs) <- colnames(tri) # so the display matches the triangle
-Qs <- round(Qs, 3)
-
-Pagos_Acumulados2 <- getLatestCumulative(acum) # para obtener la diagonal inversa principal de nuestra matriz triangular (ultimos reclamos acumulados de cada anio)
-# Reverse the LDFs so the first, least mature factor [1]
-#   is applied to the last origin year (1990)
-Perdida_Esperada2 <- Pagos_Acumulados2 * rev(Qs) #ultima perdida esperada
-# Start with the body of the exhibit
-
-Reserva_IBNR2 = Perdida_Esperada2 - Pagos_Acumulados2
-
-Exhibit4 <- data.frame(Pagos_Acumulados2, Qs = round(rev(Qs), 3), Perdida_Esperada2, Reserva_IBNR2)
-# Tack on a Total row
-
-Exhibit4 <- rbind(Exhibit4,
-                 data.frame(Pagos_Acumulados2=sum(Pagos_Acumulados2), Qs=NA, Perdida_Esperada2=sum(Perdida_Esperada2),
-Reserva_IBNR2 = sum(Reserva_IBNR2),                            
-                            row.names = "Total"))
-
-col_names <- c("Último siniestro Pago Acumulado","Factor de desarrollo acumulado","Pérdida Esperada","IBNR")
-names(Exhibit4) <- col_names
-
-```
-
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
-
-MackAcum <- MackChainLadder(acum)
-
-```
-
-Como en este caso solo nos interesa la esimación de la reserva de IBNR y las medidas de dispersión de la misma nos limitaremos a obtener estas medidas y compararlas y no se verán los detalles que se vieron cuando fue presentado cada uno de los modelos. La comparación entre los métodos se puede observar en la tabla \ref{Comparaciones2}.
-
-```{r, echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
-
-Chain_Ladder_Pagos <- cbind(Exhibit3[11,3:4],NA,NA)
-colnames(Exhibit4) <- c(colnames(Exhibit3))
-Chain_Ladder_Pagos <- rbind(Chain_Ladder_Pagos, cbind(Exhibit4[11,3:4],NA,NA))
-row.names(Chain_Ladder_Pagos) <- c("C-L Clasico","C-L Regresión")
-colnames(Chain_Ladder_Pagos) <- c("Pérdida Esperada","IBNR","Error","CV")
-
-Mack_Pagos <- as.data.frame(cbind(summary(MackAcum)$Totals[3,],summary(MackAcum)$Totals[4,],summary(MackAcum)$Totals[5,],summary(MackAcum)$Totals[6,]))
-colnames(Mack_Pagos) <- c("Pérdida Esperada","IBNR","Error","CV")
-row.names(Mack_Pagos) <- c("Mack C-L")
-
-Munich_Pagos <- as.data.frame(cbind(summary(BayernMunich)$Totals[2,1],summary(BayernMunich)$Totals[2,1]-summary(BayernMunich)$Totals[1,1],NA,NA))
-colnames(Munich_Pagos) <- c("Pérdida Esperada","IBNR","Error","CV")
-row.names(Munich_Pagos) <- c("Munich C-L")
-
 
 Boot_Pagos <- as.data.frame(cbind(summary(Bootstrap)$Total[2,1],summary(Bootstrap)$Total[3,1],summary(Bootstrap)$Total[4,1],summary(Bootstrap)$Total[4,1]/summary(Bootstrap)$Total[3,1]))
 colnames(Boot_Pagos) <- c("Pérdida Esperada","IBNR","Error","CV")
 rownames(Boot_Pagos) <- c("Bootstrap")
 
-Total2 <- rbind(Chain_Ladder_Pagos,Mack_Pagos,Munich_Pagos,Boot_Pagos)
 
-Total2 <- Total2 %>% mutate(
-  VariacionPorcentual = round(100*(IBNR-IBNR[1])/IBNR[1],3)
-)
+Total <- rbind(Chain_Ladder_Incurrido,Mack_Incurrido,Munich_Incurrido, Boot_Pagos)
 
-print(xtable(Total2,type="latex", align="lrrrrr", digits = 3, caption = "Comparación de la Estimación de la Reserva de IBNR para los Pagos Acumulados con distintos métodos", label = "Comparaciones2"), caption.placement = "top", comment = FALSE)
+Total <- Total %>% mutate(
+  VariacionPorcentual = round(100*(IBNR-IBNR[1])/IBNR[1],3),
+  `Pérdida Esperada` = round((`Pérdida Esperada`)/1000000,1),
+  IBNR = round(IBNR/1000000,1)
+  )
+
+colnames(Total) <- c("Pérdida Esperada (M)","IBNR (M)","Error","CV","VariaciónPorcentual")
+
+
+print(xtable(Total,type="latex", align="lrrrrr", digits = c(1,1,1,1,2,3), caption = "Comparación de la Estimación de la última pérdida y de la Reserva de IBNR para los Siniestros Incurridos con distintos métodos, medidos en Millones de pesos", label = "Comparaciones1"), caption.placement = "top", comment = FALSE)
 
 ```
 
-En primer lugar, se observa que la reserva de IBNR estimada para los pagos acumulados es menor que la reserva de IBNR de los siniestros incurridos, esto se debe, en parte, a que en esta última están contabilizados los siniestros pendientes de pago en cada año y período de desarrollo, lo cual genera que los crecimientos sean más chicos.
-También se observa que el modelo de regresión estima una reserva del doble del valor con respecto al ''Chain-Ladder clásico'', el modelo de ''Mack'' sigue variando muy poco en términos porcentuales, en este caso por abajo. El modelo de ''Munich'' varía un 20,8\% por debajo del ''Chain-Ladder clásico'' y el Bootstrap un 4,8\% por arriba.
-
+Se observa que entre los modelos que tenían una medida del desvío el método de Bootstrap tiene mayor desvío y el coeficiente de variación es de un 36\%, mientras que el método de Mack tiene un coeficiente de variación del 22\%, además, en mayor o menor medida todos los métodos sobre estiman la reserva de IBNR respecto al método clásico, es decir, dan más seguridad.
 
 \newpage
 
