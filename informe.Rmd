@@ -1,6 +1,6 @@
 ---
 title: |
-  Incurred But Not Reported (IBNR)
+  Métodos Para el Cálculo de Reservas de IBNR 
 author: "Ignacio Campón & Joaquín Viola"
 subtitle: "Seguros Generales y Modelos de Riesgo"
 lang: es
@@ -49,6 +49,15 @@ fontsize: 12pt
 
 \newpage
 
+# Resúmen
+
+En el ámbito de los seguros, las reservas se refiere a la cantidad de dinero que las compañias aseguradoras deben reservar para poder cumplir con sus obligaciones de pago a futuro, el cálculo del monto de estas reservas vienen asociados a una cierta probabilidad de quiebra de la compañía según el comportamiento aleatorio de los siniestros.
+En este trabajo se pretende abordar distintos métodos para el cálculo de reservas técnicas asociadas al IBNR. El IBNR por sus siglas en inglés, son los siniestros incurridos y que aún no fueron reclamados. En muchos países, los seguros de responsabilidad civil cuentan con un período de 10 años para el reclamo de un seguro luego de que el siniestro haya ocurrido.
+
+En el repositorio [https://github.com/joaquin-viola/Seguros_Generales](https://github.com/joaquin-viola/Seguros_Generales) se encuentran los datos utilizados durante el documento, así como el documento en formato \texttt{RMarkdown} para poder reproducir los códigos utilizados.
+
+\newpage
+
 \tableofcontents
 
 \newpage
@@ -79,12 +88,9 @@ tri <- as.triangle(as.matrix(tri))
 
 ```
 
+Como se comentó en el resúmen, las compañías de seguro a menudo reciben reclamos por un siniestro durante los años posteriores a la ocurrencia del mismo, por lo que es necesario contar con las reservas de IBNR, el fin principal de estas es poder estar cubierto en el futuro de siniestros que ocurrieron en el año corriente (mientras está activa la poliza), pero el reclamo es efectuado en los años siguientes.
 
-En este trabajo se pretende abordar distintos métodos para el cálculo de reservas técnicas asociadas al IBNR. El IBNR por sus siglas en inglés, son los siniestros incurridos y que aún no fueron reclamados. En muchos países, los seguros de responsabilidad civil, cuentan con un período de 10 años para el reclamo de un seguro luego de que el siniestro haya ocurrido.
-
-La idea principal de las reservas de IBNR es poder estar cubierto en el futuro de siniestros que ocurrieron en el año corriente (mientras está activa la poliza), pero el reclamo es efectuado en los años siguientes.
-
-Para poder calcular las reservas de IBNR hay varios métodos, basados en la utilización de información previa (recolectada en años anteriores), para poder predecir cómo se comportan los reclamos en los años siguientes.
+Para poder calcular las reservas de IBNR hay varios métodos que están basados en la utilización de información previa (recolectada en años anteriores), para poder predecir cómo se comportan los reclamos en los años siguientes.
 
 Se suele trabajar con 3 matrices triangulares, donde las filas son años, y las columnas son los años transcurridos. Observesé el cuadro \ref{tabla1}, en la última fila se encuentra el último año, el cuál se tiene datos para una sola columna, el año corriente. La fila anterior tendrá una columna más, es decir tendrá información de dos períodos transcurridos, de esta manera se llega a la primer fila, la cuál es el último año que se tiene en cuenta, y para el cual se tiene información de todos los años transcurridos, de esta manera queda explicada la forma de la matriz triangular.
 
