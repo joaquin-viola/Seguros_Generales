@@ -70,6 +70,27 @@ library(xtable)
 library(latex2exp)
 ```
 
+```{r setup, include=FALSE}
+# Create the directory for the output if it doesn't exist
+output_dir <- "graficos"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+}
+
+# Hook to save all plots as .jpg files
+knitr::opts_hooks$set(fig.keep = function(options) {
+  if (options$fig.keep == "all") {
+    options$dev = "jpeg"
+    options$fig.path = file.path(output_dir, paste0(options$label, "-"))
+  }
+  options
+})
+
+# Default options for chunks
+knitr::opts_chunk$set(fig.keep = "all")
+
+```
+
 
 # Introducción 
 
