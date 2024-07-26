@@ -1,0 +1,1312 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2024.3.22)  21 JUL 2024 10:51
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**plantilla_MEES.tex
+(./plantilla_MEES.tex
+LaTeX2e <2020-02-02> patch level 2
+L3 programming layer <2020-02-14> (./siep.cls
+Document Style `siep' <2016>.
+Document Class: siep 2016/12/10
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
+)
+\c@part=\count167
+\c@section=\count168
+\c@subsection=\count169
+\c@subsubsection=\count170
+\c@paragraph=\count171
+\c@subparagraph=\count172
+\c@figure=\count173
+\c@table=\count174
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen134
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/01/20 v2.17e AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks14
+\ex@=\dimen135
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen136
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count175
+LaTeX Info: Redefining \frac on input line 227.
+\uproot@=\count176
+\leftroot@=\count177
+LaTeX Info: Redefining \overline on input line 389.
+\classnum@=\count178
+\DOTSCASE@=\count179
+LaTeX Info: Redefining \ldots on input line 486.
+LaTeX Info: Redefining \dots on input line 489.
+LaTeX Info: Redefining \cdots on input line 610.
+\Mathstrutbox@=\box45
+\strutbox@=\box46
+\big@size=\dimen137
+LaTeX Font Info:    Redeclaring font encoding OML on input line 733.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
+\macc@depth=\count180
+\c@MaxMatrixCols=\count181
+\dotsspace@=\muskip16
+\c@parentequation=\count182
+\dspbrk@lvl=\count183
+\tag@help=\toks15
+\row@=\count184
+\column@=\count185
+\maxfields@=\count186
+\andhelp@=\toks16
+\eqnshift@=\dimen138
+\alignsep@=\dimen139
+\tagshift@=\dimen140
+\tagwidth@=\dimen141
+\totwidth@=\dimen142
+\lineht@=\dimen143
+\@envbody=\toks17
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2859.
+LaTeX Info: Redefining \] on input line 2860.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(./caption2.sty
+Package: caption2 2002/08/03 v2.1 Customising captions (AS)
+\captionmargin=\dimen144
+\captionwidth=\dimen145
+\captionindent=\dimen146
+Package caption2 Info: Running in caption2 v2.0 compatibility mode on input lin
+e 147.
+\captionlinewidth=\dimen147
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2019/11/23 v1.2a Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+)
+\Gin@req@height=\dimen148
+\Gin@req@width=\dimen149
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/harvard/harvard.sty
+Package: harvard 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2020/01/14 v7.00d Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
+)
+\@linkdim=\dimen150
+\Hy@linkcounter=\count187
+\Hy@pagecounter=\count188
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2020/01/14 v7.00d Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count189
+\pdfmajorversion=\count190
+Package hyperref Info: Hyper figures OFF on input line 4547.
+Package hyperref Info: Link nesting OFF on input line 4552.
+Package hyperref Info: Hyper index ON on input line 4555.
+Package hyperref Info: Plain pages OFF on input line 4562.
+Package hyperref Info: Backreferencing OFF on input line 4567.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4800.
+\c@Hy@tempcnt=\count191
+LaTeX Info: Redefining \url on input line 5159.
+\XeTeXLinkMargin=\dimen151
+
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count192
+\Field@Width=\dimen152
+\Fld@charsize=\dimen153
+Package hyperref Info: Hyper figures OFF on input line 6430.
+Package hyperref Info: Link nesting OFF on input line 6435.
+Package hyperref Info: Hyper index ON on input line 6438.
+Package hyperref Info: backreferencing OFF on input line 6445.
+Package hyperref Info: Link coloring OFF on input line 6450.
+Package hyperref Info: Link coloring with OCG OFF on input line 6455.
+Package hyperref Info: PDF/A mode OFF on input line 6460.
+LaTeX Info: Redefining \ref on input line 6500.
+LaTeX Info: Redefining \pageref on input line 6504.
+
+(/usr/share/texlive/texmf-dist/tex/generic/atbegshi/atbegshi.sty
+Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
+)
+\Hy@abspage=\count193
+\c@Item=\count194
+\c@Hfootnote=\count195
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2020/01/14 v7.00d Hyperref driver for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/latex/atveryend/atveryend.sty
+Package: atveryend 2019-12-11 v1.11 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+)
+\Fld@listcount=\count196
+\c@bookmark@seq@number=\count197
+
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+)
+\Hy@SectionHShift=\skip52
+)
+(./algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+ (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count198
+\float@exts=\toks20
+\float@box=\box47
+\@float@everytoks=\toks21
+\@floatcapt=\box48
+)
+\@float@every@algorithm=\toks22
+\c@algorithm=\count199
+)
+(./algorithmic.sty
+Package: algorithmic 2005/07/05
+
+Document Style `algorithmic' - environment
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count266
+\calc@Bcount=\count267
+\calc@Adimen=\dimen154
+\calc@Bdimen=\dimen155
+\calc@Askip=\skip53
+\calc@Bskip=\skip54
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count268
+\calc@Cskip=\skip55
+)
+\c@ALC@line=\count269
+\c@ALC@rem=\count270
+\c@ALC@depth=\count271
+\ALC@tlm=\skip56
+\algorithmicindent=\skip57
+)
+\c@author=\count272
+\c@address=\count273
+\abstractbox=\box49
+\keywordbox=\box50
+\dlugosc=\skip58
+\c@theorem=\count274
+\c@proposition=\count275
+\c@lemma=\count276
+\c@corollary=\count277
+\c@example=\count278
+\c@remark=\count279
+\c@definition=\count280
+\c@problem=\count281
+\c@observation=\count282
+\c@assumption=\count283
+\c@property=\count284
+\c@statement=\count285
+\@npoints=\dimen156
+\@nbrak=\count286
+\@nlines=\count287
+\@tekst=\count288
+\c@appendix=\count289
+)
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2020/02/14 3.40 The Babel package
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2020/02/14 3.40 Babel switching mechanism
+)
+(/usr/share/texlive/texmf-dist/tex/generic/babel-spanish/spanish.ldf
+Language: spanish.ldf 2016/03/03 v5.0p Spanish support from the babel system
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2020/02/14 3.40 Babel common definitions
+\babel@savecnt=\count290
+\U@D=\dimen157
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count291
+)
+\es@quottoks=\toks23
+\es@quotdepth=\count292
+Package babel Info: Making " an active character on input line 561.
+Package babel Info: Making . an active character on input line 662.
+Package babel Info: Making < an active character on input line 707.
+Package babel Info: Making > an active character on input line 707.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks24
+\inpenc@posthook=\toks25
+)
+(/usr/share/texlive/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
+)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count293
+\l__pdf_internal_box=\box51
+)
+(./plantilla_MEES.aux
+LaTeX Info: Redefining \. on input line 27.
+LaTeX Info: Redefining \% on input line 27.
+
+
+LaTeX Warning: Label `fig:5' multiply defined.
+
+)
+\openout1 = `plantilla_MEES.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 4
+3.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count294
+\scratchdimen=\dimen158
+\scratchbox=\box52
+\nofMPsegments=\count295
+\nofMParguments=\count296
+\everyMPshowfont=\toks26
+\MPscratchCnt=\count297
+\MPscratchDim=\dimen159
+\MPnumerator=\count298
+\makeMPintoPDFobject=\count299
+\everyMPtoPDFconversion=\toks27
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\AtBeginShipoutBox=\box53
+Package hyperref Info: Link coloring OFF on input line 43.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count300
+)
+LaTeX Info: Redefining \ref on input line 43.
+LaTeX Info: Redefining \pageref on input line 43.
+LaTeX Info: Redefining \nameref on input line 43.
+
+(./plantilla_MEES.out) (./plantilla_MEES.out)
+\@outlinefile=\write3
+\openout3 = `plantilla_MEES.out'.
+
+Package hyperref Info: *** compatibility with harvard ****  on input line 43.
+LaTeX Info: Redefining \. on input line 43.
+LaTeX Info: Redefining \% on input line 43.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 50.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 50.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+<XVII_SIEP.jpg, id=64, 680.5425pt x 57.21375pt>
+File: XVII_SIEP.jpg Graphic file (type jpg)
+<use XVII_SIEP.jpg>
+Package pdftex.def Info: XVII_SIEP.jpg  used on input line 56.
+(pdftex.def)             Requested size: 495.07777pt x 41.62163pt.
+
+Overfull \hbox (11.38094pt too wide) in paragraph at lines 56--56
+[][] 
+ []
+
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 5
+6.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 63--64
+[]\OT1/ptm/m/n/10 En la primera parte se busca brindar una
+ []
+
+
+Underfull \hbox (badness 2635) in paragraph at lines 63--64
+\OT1/ptm/m/n/10 de costo-efectividad. Tambi[]en en c[]omo obtener los
+ []
+
+
+Underfull \hbox (badness 1642) in paragraph at lines 69--71
+\OT1/ptm/m/n/10 resolver el problema econ[]omico de asignar recursos
+ []
+
+
+LaTeX Warning: Citation `moreno_bayesian_nodate' on page 1 undefined on input l
+ine 74.
+
+
+LaTeX Warning: Citation `weinstein_foundations_1977' on page 1 undefined on inp
+ut line 74.
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+
+ <./XVII_SIEP.jpg>]
+
+LaTeX Warning: Citation `baio_bayesian_nodate' on page 2 undefined on input lin
+e 76.
+
+
+LaTeX Warning: Citation `soto_alvarez_evaluacion_2012' on page 2 undefined on i
+nput line 76.
+
+
+Underfull \hbox (badness 2409) in paragraph at lines 76--77
+\OT1/ptm/m/n/10 de vida, el aumento de la presencia de patolog[]^^Pas
+ []
+
+
+LaTeX Warning: Citation `zarate_evaluaciones_2010' on page 2 undefined on input
+ line 78.
+
+
+LaTeX Warning: Citation `sacristan_evaluacion_nodate' on page 2 undefined on in
+put line 78.
+
+
+LaTeX Warning: Citation `vallejo-torres_cost-effectiveness_2021' on page 2 unde
+fined on input line 81.
+
+
+LaTeX Warning: Citation `gimenez_once_2021' on page 2 undefined on input line 8
+1.
+
+
+Underfull \hbox (badness 1082) in paragraph at lines 81--82
+\OT1/ptm/m/n/10 Como por ejemplo ``An[]alisis de coste-utilidad de un
+ []
+
+
+Underfull \hbox (badness 1275) in paragraph at lines 81--82
+\OT1/ptm/m/n/10 programa de vigilancia para prevenir la luxaci[]on de
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
+
+ []
+
+
+Underfull \hbox (badness 1337) in paragraph at lines 88--89
+\OT1/ptm/m/n/10 medir los resultados, y nosotros los separaremos en
+ []
+
+
+Underfull \hbox (badness 1715) in paragraph at lines 88--89
+\OT1/ptm/m/n/10 los 3 principales: costos-beneficios, costos-utilidad y
+ []
+
+
+LaTeX Warning: Citation `baio_bayesian_nodate' on page 2 undefined on input lin
+e 93.
+
+
+Underfull \hbox (badness 3547) in paragraph at lines 92--94
+ \OT1/ptm/b/n/10 2.2.1. An[]ali-sis Costos-Beneficios.[][] \OT1/ptm/m/n/10 Para
+ el an[]alisis
+ []
+
+
+Underfull \hbox (badness 1776) in paragraph at lines 92--94
+\OT1/ptm/m/n/10 los costos, beneficios y prejuicios para la salud en
+ []
+
+
+LaTeX Warning: Citation `gray_applied_2011' on page 2 undefined on input line 9
+5.
+
+
+Underfull \hbox (badness 3118) in paragraph at lines 95--96
+[]\OT1/ptm/m/n/10 El An[]alisis Costo-Beneficio comunmente se lo
+ []
+
+
+LaTeX Warning: Citation `soto_alvarez_evaluacion_2012' on page 2 undefined on i
+nput line 97.
+
+
+Underfull \hbox (badness 1721) in paragraph at lines 99--101
+[]\OT1/ptm/m/n/10 Una de las principales ventajas de aplicar este
+ []
+
+
+Underfull \hbox (badness 1424) in paragraph at lines 104--106
+[]\OT1/ptm/m/n/10 Estos an[]alisis buscan estimar el monto que los
+ []
+
+
+Underfull \hbox (badness 1057) in paragraph at lines 104--106
+\OT1/ptm/m/n/10 pacientes estar[]^^Pan dispuestos a pagar por mejorar su
+ []
+
+
+LaTeX Warning: Citation `soto_alvarez_evaluacion_2012' on page 2 undefined on i
+nput line 111.
+
+
+Underfull \hbox (badness 7667) in paragraph at lines 109--113
+\OT1/ptm/m/n/10 de los m[]etodos utilizados son los ''M[]etodos de
+ []
+
+
+Underfull \hbox (badness 1783) in paragraph at lines 109--113
+\OT1/ptm/m/n/10 el comportamiento y los intereses frente a distintas
+ []
+
+
+Underfull \hbox (badness 2181) in paragraph at lines 109--113
+\OT1/ptm/m/n/10 previstos para el tratamiento y los posibles efectos
+ []
+
+
+Underfull \hbox (badness 2237) in paragraph at lines 109--113
+\OT1/ptm/m/n/10 Un problema de esta metodolog[]^^Pa es que se est[]an
+ []
+
+
+Underfull \hbox (badness 3679) in paragraph at lines 109--113
+\OT1/ptm/m/n/10 presentando situacions hipot[]eticas, y puede generar
+ []
+
+<XVII_SIEP_1.jpg, id=80, 669.2503pt x 56.46094pt>
+File: XVII_SIEP_1.jpg Graphic file (type jpg)
+<use XVII_SIEP_1.jpg>
+Package pdftex.def Info: XVII_SIEP_1.jpg  used on input line 113.
+(pdftex.def)             Requested size: 495.07777pt x 41.76836pt.
+
+Overfull \hbox (253.22954pt too wide) has occurred while \output is active
+[] [] 
+ []
+
+[2 <./XVII_SIEP_1.jpg>]
+
+LaTeX Warning: Citation `baio_bayesian_nodate' on page 3 undefined on input lin
+e 114.
+
+
+Underfull \hbox (badness 3701) in paragraph at lines 114--115
+[]\OT1/ptm/m/n/10 Otra opci[]on, bastante m[]as simple, es conocer
+ []
+
+
+Underfull \hbox (badness 1308) in paragraph at lines 114--115
+\OT1/ptm/m/n/10 enfermedad, y las probabilidades de contraerla. Para
+ []
+
+
+Underfull \hbox (badness 1231) in paragraph at lines 114--115
+\OT1/ptm/m/it/10 In Health Eco-no-mics, de Gian-lu-ca Baio \OT1/ptm/m/n/10 ( [\
+OT1/ptm/b/n/10 ?\OT1/ptm/m/n/10 ]), que
+ []
+
+
+Underfull \hbox (badness 1205) in paragraph at lines 114--115
+\OT1/ptm/m/n/10 plantea la administraci[]on de una vacuna para ni[]nos,
+ []
+
+
+Underfull \hbox (badness 5050) in paragraph at lines 114--115
+\OT1/ptm/m/n/10 o tambi[]en a los liceales. Se asume en caso de
+ []
+
+
+Overfull \hbox (21.46046pt too wide) in paragraph at lines 120--128
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 141--143
+ \OT1/ptm/b/n/10 2.2.3. An[]ali-sis Costos-Utilidad.[][] \OT1/ptm/m/n/10 Se usa
+ para
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 141--143
+\OT1/ptm/m/n/10 casos especiales del an[]alisis costos-efectividad,
+ []
+
+
+Underfull \hbox (badness 6348) in paragraph at lines 141--143
+\OT1/ptm/m/n/10 particularmente cuando la efectividad est[]a medida
+ []
+
+
+Underfull \hbox (badness 3907) in paragraph at lines 141--143
+\OT1/ptm/m/n/10 de los efectos, integrada por las dos dimensiones
+ []
+
+
+Underfull \hbox (badness 1137) in paragraph at lines 149--151
+[]\OT1/ptm/m/n/10 En este caso, la ''utilidad'' hace referencia a la
+ []
+
+
+LaTeX Warning: Citation `baio_bayesian_nodate' on page 3 undefined on input lin
+e 164.
+
+
+Underfull \hbox (badness 1009) in paragraph at lines 164--165
+[]\OT1/ptm/m/n/10 En \OT1/ptm/m/it/10 ''Ba-ye-sian Met-hods in Health Eco-no-mi
+cs de
+ []
+
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
+75.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+Overfull \hbox (107.76021pt too wide) in paragraph at lines 168--183
+ [][] 
+ []
+
+
+Underfull \hbox (badness 1337) in paragraph at lines 187--189
+[]\OT1/ptm/m/n/10 En el ejemplo vemos que se aplica la f[]ormula
+ []
+
+File: XVII_SIEP.jpg Graphic file (type jpg)
+<use XVII_SIEP.jpg>
+Package pdftex.def Info: XVII_SIEP.jpg  used on input line 189.
+(pdftex.def)             Requested size: 495.07777pt x 41.62163pt.
+
+Overfull \hbox (264.61046pt too wide) has occurred while \output is active
+[][] 
+ []
+
+[3pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
+as been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.189 
+      ]
+Underfull \hbox (badness 1264) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 como puede ser los a[]nos de \OT1/ptm/m/it/10 vi-da ga-na-dos\O
+T1/ptm/m/n/10 , mejoras
+ []
+
+
+Underfull \hbox (badness 1014) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 en el estado de salud, presi[]on sangu[]^^Pnea o nivel de
+ []
+
+
+Underfull \hbox (badness 2269) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 el costo y la efectividad no estan medidos en las
+ []
+
+
+Underfull \hbox (badness 1168) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 pasan a ser un poco ambiguos. Para estos casos se
+ []
+
+
+Underfull \hbox (badness 1509) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 cumple sus objetivos o no, la efectividad, involucra
+ []
+
+
+Underfull \hbox (badness 2111) in paragraph at lines 192--194
+\OT1/ptm/m/n/10 evaluaci[]on econ[]omica mediante el an[]alisis de costo
+ []
+
+
+Underfull \hbox (badness 4403) in paragraph at lines 196--198
+\OT1/ptm/m/n/10 dependiendo del objetivo principal del tratamiento.
+ []
+
+
+LaTeX Warning: Citation `baio_bayesian_nodate' on page 4 undefined on input lin
+e 201.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+[]\OT1/ptm/m/n/10 Existen distintos instrumentos que buscan
+ []
+
+
+Underfull \hbox (badness 1005) in paragraph at lines 201--202
+\OT1/ptm/m/n/10 agregar el efecto de la calidad de los a[]nos de vida
+ []
+
+
+Underfull \hbox (badness 6204) in paragraph at lines 207--208
+[]\OT1/ptm/b/n/10 Costos Di-rec-tos\OT1/ptm/m/n/10 : incluye todos los bienes y
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--212
+[]\OT1/ptm/b/n/10 Costos In-tan-gi-bles\OT1/ptm/m/n/10 : relacionados al dolor 
+o
+ []
+
+
+Underfull \hbox (badness 1983) in paragraph at lines 211--212
+\OT1/ptm/m/n/10 sufrimiento que tienen los pacientes durante el
+ []
+
+
+Underfull \hbox (badness 1314) in paragraph at lines 213--214
+[]\OT1/ptm/b/n/10 Costos de Transici[]on\OT1/ptm/m/n/10 : relacionado a los gas
+tos
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 218--219
+ \OT1/ptm/b/n/10 2.2.5. Ra-tio In-cre-men-tal de Costo-Efectividad.[][]
+ []
+
+File: XVII_SIEP_1.jpg Graphic file (type jpg)
+<use XVII_SIEP_1.jpg>
+Package pdftex.def Info: XVII_SIEP_1.jpg  used on input line 225.
+(pdftex.def)             Requested size: 495.07777pt x 41.76836pt.
+
+Overfull \hbox (253.22954pt too wide) has occurred while \output is active
+[] [] 
+ []
+
+[4pdfTeX warning (ext4): destination with the same identifier (name{table.2}) h
+as been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.225 \end{equation}
+                    ]
+Underfull \hbox (badness 1264) in paragraph at lines 253--254
+\OT1/ptm/m/n/10 el tratamiento $\OT1/cmr/m/n/10 0$ \OT1/ptm/m/n/10 es \OT1/ptm/
+b/n/10 do-mi-na-do \OT1/ptm/m/n/10 por el tratamiento $\OT1/cmr/m/n/10 1$\OT1/p
+tm/m/n/10 .
+ []
+
+<grafi/Plano_Costo_elab_propia.png, id=106, 375.804pt x 284.11143pt>
+File: grafi/Plano_Costo_elab_propia.png Graphic file (type png)
+<use grafi/Plano_Costo_elab_propia.png>
+Package pdftex.def Info: grafi/Plano_Costo_elab_propia.png  used on input line 
+257.
+(pdftex.def)             Requested size: 217.6621pt x 164.55498pt.
+
+Underfull \hbox (badness 1715) in paragraph at lines 270--271
+[]\OT1/ptm/m/n/10 El \OT1/ptm/m/it/10 INB \OT1/ptm/m/n/10 est[]a expresado en t
+[]erminos monetarios,
+ []
+
+File: XVII_SIEP.jpg Graphic file (type jpg)
+<use XVII_SIEP.jpg>
+Package pdftex.def Info: XVII_SIEP.jpg  used on input line 284.
+(pdftex.def)             Requested size: 495.07777pt x 41.62163pt.
+
+Overfull \hbox (264.61046pt too wide) has occurred while \output is active
+[][] 
+ []
+
+[5pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.284 \end{equation}
+                     <./grafi/Plano_Costo_elab_propia.png>]
+Underfull \hbox (badness 1147) in paragraph at lines 286--287
+[]\OT1/ptm/m/n/10 En donde la $\U/msb/m/n/10 V\OT1/cmr/m/n/10 ([])$ \OT1/ptm/m/
+n/10 se puede estimar con el
+ []
+
+
+Underfull \hbox (badness 1009) in paragraph at lines 286--287
+\OT1/ptm/m/n/10 estimador de la varianza ($[]$) sustituyendo los
+ []
+
+<grafi/Curva_acept.jpg, id=119, 526.96875pt x 325.215pt>
+File: grafi/Curva_acept.jpg Graphic file (type jpg)
+<use grafi/Curva_acept.jpg>
+Package pdftex.def Info: grafi/Curva_acept.jpg  used on input line 292.
+(pdftex.def)             Requested size: 217.6621pt x 134.33148pt.
+
+Underfull \hbox (badness 3108) in paragraph at lines 300--301
+\OT1/ptm/m/n/10 interrogantes que nos queda al momento es c[]omo
+ []
+
+
+Underfull \hbox (badness 2197) in paragraph at lines 300--301
+\OT1/ptm/m/n/10 relevadas o preferencias declaradas, que se detallan
+ []
+
+
+Underfull \hbox (badness 1052) in paragraph at lines 300--301
+\OT1/ptm/m/n/10 en la secci[]on 2.8.1, cuando se introduce el An[]alisis
+ []
+
+
+LaTeX Warning: Citation `kaplan_health-related_1982' on page 6 undefined on inp
+ut line 302.
+
+
+Underfull \hbox (badness 1297) in paragraph at lines 302--303
+\OT1/ptm/m/n/10 (\OT1/ptm/b/n/10 QALY\OT1/ptm/m/n/10 ). La primer categor[]^^Pa
+ es de valores de ``R''
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 305--308
+[]\OT1/ptm/m/n/10 Estos valores se espera que cambien seg[]un los
+ []
+
+
+Underfull \hbox (badness 2253) in paragraph at lines 305--308
+\OT1/ptm/m/n/10 valores de ``R'' ser[]an m[]as chicos. Algunas lecturas
+ []
+
+
+Underfull \hbox (badness 1019) in paragraph at lines 305--308
+\OT1/ptm/m/n/10 sugiere que los tratamientos con un ICER menor al
+ []
+
+
+Underfull \hbox (badness 2197) in paragraph at lines 310--311
+\OT1/ptm/m/n/10 obtener intervalos de confianza para los par[]ametros
+ []
+
+
+LaTeX Warning: Citation `moreno_bayesian_nodate' on page 6 undefined on input l
+ine 315.
+
+
+Underfull \hbox (badness 1418) in paragraph at lines 315--316
+\OT1/ptm/m/n/10 lo que se estim[]o hasta ahora, costos y medidas de
+ []
+
+
+Underfull \hbox (badness 2573) in paragraph at lines 317--318
+[]\OT1/ptm/m/n/10 Suponiendo conocidas las distribuciones de los
+ []
+
+
+Underfull \hbox (badness 5288) in paragraph at lines 317--318
+\OT1/ptm/m/n/10 costos y efectividad,se estiman los par[]ametros de
+ []
+
+
+Underfull \hbox (badness 1377) in paragraph at lines 338--339
+[]\OT1/ptm/m/n/10 Para una confianza de un $\OT1/cmr/m/n/10 95 %[]$ \OT1/ptm/m/
+n/10 el intervalo de
+ []
+
+File: XVII_SIEP_1.jpg Graphic file (type jpg)
+<use XVII_SIEP_1.jpg>
+Package pdftex.def Info: XVII_SIEP_1.jpg  used on input line 339.
+(pdftex.def)             Requested size: 495.07777pt x 41.76836pt.
+
+Overfull \hbox (253.22954pt too wide) has occurred while \output is active
+[] [] 
+ []
+
+[6pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.339 
+       <./grafi/Curva_acept.jpg>]
+Overfull \hbox (16.79996pt too wide) detected at line 342
+[]\OML/cmm/m/it/10 IC[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^M[]\OT1/cmr/m/n/10 )
+ = [[] \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 Z[]^^[[]=[]; [] \OT1/cmr/m/n/10 + 
+\OML/cmm/m/it/10 Z[]^^[[]=[]\OT1/cmr/m/n/10 ]
+ []
+
+
+Underfull \hbox (badness 4168) in paragraph at lines 345--346
+[]\OT1/ptm/m/n/10 Se puede aplicar el mismo resultado para la
+ []
+
+
+Underfull \hbox (badness 1838) in paragraph at lines 350--351
+\OT1/ptm/m/n/10 los intervalos de confianza alcanzar[]a con hallar los
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 350--351
+
+ []
+
+
+Underfull \hbox (badness 1694) in paragraph at lines 352--353
+[]\OT1/ptm/m/n/10 Se puede graficar las parejas de $\OT1/cmr/m/n/10 ^^A[]$ \OT1
+/ptm/m/n/10 y $\OT1/cmr/m/n/10 ^^A[]$ \OT1/ptm/m/n/10 en
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 352--353
+
+ []
+
+<grafi/mil_sims.png, id=133, 532.23843pt x 385.44pt>
+File: grafi/mil_sims.png Graphic file (type png)
+<use grafi/mil_sims.png>
+Package pdftex.def Info: grafi/mil_sims.png  used on input line 356.
+(pdftex.def)             Requested size: 217.6621pt x 157.62561pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 361--362
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--364
+
+ []
+
+<grafi/curva_acept.png, id=134, 532.23843pt x 385.44pt>
+File: grafi/curva_acept.png Graphic file (type png)
+<use grafi/curva_acept.png>
+Package pdftex.def Info: grafi/curva_acept.png  used on input line 367.
+(pdftex.def)             Requested size: 193.47577pt x 140.111pt.
+
+Underfull \hbox (badness 3199) in paragraph at lines 374--375
+ \OT1/ptm/b/n/10 2.3.2. Apro-xi-ma-ci[]on me-dian-te Boots-trap No Pa-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--375
+\OT1/ptm/b/n/10 ram[]etri-co.[][] \OT1/ptm/m/n/10 Otra forma de resolver es med
+iante
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--375
+\OT1/ptm/m/n/10 bootstrap no param[]etrico donde en general, se
+ []
+
+
+Underfull \hbox (badness 1270) in paragraph at lines 374--375
+\OT1/ptm/m/n/10 toma a la muestra c[]omo la poblaci[]on, y re-muestra
+ []
+
+
+Underfull \hbox (badness 1946) in paragraph at lines 374--375
+\OT1/ptm/m/n/10 nuevamente, repitiendo el proceso muchas veces de
+ []
+
+
+Underfull \hbox (badness 1831) in paragraph at lines 374--375
+\OT1/ptm/m/n/10 confianza. En particular se utiliza el bootstrap para
+ []
+
+
+Underfull \hbox (badness 6125) in paragraph at lines 374--375
+\OT1/ptm/m/n/10 estas estimaciones podremos graficar en el plano
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--375
+\OT1/ptm/m/n/10 costo-efectividad tantos puntos c[]omo iteraciones
+ []
+
+
+LaTeX Warning: Citation `willan_statistical_2006' on page 7 undefined on input 
+line 377.
+
+<grafi/boostrap.jpg, id=135, 526.96875pt x 325.215pt>
+File: grafi/boostrap.jpg Graphic file (type jpg)
+<use grafi/boostrap.jpg>
+Package pdftex.def Info: grafi/boostrap.jpg  used on input line 381.
+(pdftex.def)             Requested size: 217.6621pt x 134.33148pt.
+
+Underfull \hbox (badness 5696) in paragraph at lines 386--387
+\OT1/ptm/m/n/10 mil simulaciones de dos normales, es meramente
+ []
+
+File: XVII_SIEP.jpg Graphic file (type jpg)
+<use XVII_SIEP.jpg>
+Package pdftex.def Info: XVII_SIEP.jpg  used on input line 391.
+(pdftex.def)             Requested size: 495.07777pt x 41.62163pt.
+
+Overfull \hbox (264.61046pt too wide) has occurred while \output is active
+[][] 
+ []
+
+[7pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.391 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+4}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.391 
+       <./grafi/mil_sims.png> <./grafi/curva_acept.png>]
+Underfull \hbox (badness 1242) in paragraph at lines 392--393
+[]\OT1/ptm/m/n/10 Se propone trabajar con intervalos de confianza
+ []
+
+
+Underfull \hbox (badness 1571) in paragraph at lines 392--393
+\OT1/ptm/m/n/10 decisiones y replicables para el \OT1/ptm/m/it/10 INB \OT1/ptm/
+m/n/10 y la curva de
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 397--399
+ \OT1/ptm/b/n/10 2.4. Pro-pues-tas de Pla-nos de Efec-ti-vi-dad con
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 397--399
+
+ []
+
+<grafi/Frontera_Partida.jpg, id=149, 526.96875pt x 325.215pt>
+File: grafi/Frontera_Partida.jpg Graphic file (type jpg)
+<use grafi/Frontera_Partida.jpg>
+Package pdftex.def Info: grafi/Frontera_Partida.jpg  used on input line 412.
+(pdftex.def)             Requested size: 217.6621pt x 134.33148pt.
+<grafi/Frontera_No_Lineal.jpg, id=150, 526.96875pt x 325.215pt>
+File: grafi/Frontera_No_Lineal.jpg Graphic file (type jpg)
+<use grafi/Frontera_No_Lineal.jpg>
+Package pdftex.def Info: grafi/Frontera_No_Lineal.jpg  used on input line 431.
+(pdftex.def)             Requested size: 217.6621pt x 134.33148pt.
+
+Underfull \hbox (badness 1072) in paragraph at lines 439--446
+\OT1/ptm/m/n/10 distribuciones de referencia o aproximadas simuladas
+ []
+
+
+Underfull \hbox (badness 1424) in paragraph at lines 439--446
+\OT1/ptm/m/n/10 una perspectiva bayesiana, y como futuros pasos se
+ []
+
+File: XVII_SIEP_1.jpg Graphic file (type jpg)
+<use XVII_SIEP_1.jpg>
+Package pdftex.def Info: XVII_SIEP_1.jpg  used on input line 446.
+(pdftex.def)             Requested size: 495.07777pt x 41.76836pt.
+
+Overfull \hbox (253.22954pt too wide) has occurred while \output is active
+[] [] 
+ []
+
+[8pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
+has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.446 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+6}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.446 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+7}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.446 
+       <./grafi/boostrap.jpg> <./grafi/Frontera_Partida.jpg> <./grafi/Frontera_
+No_Lineal.jpg>] (./plantilla_MEES.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+[]| | \OT1/ptm/m/n/10 Gim[]enez, E., Garc[]^^Pa-P[]erez, L., M[]arquez, S.,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+\OT1/ptm/m/n/10 Evaluaci[]on. Calidad metodol[]ogica e impacto
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+\OT1/ptm/m/n/10 del coste-utilidad, \OT1/ptm/m/it/10 Gac Sa-nit \OT1/ptm/b/n/10
+ 34\OT1/ptm/m/n/10 : 326--333.
+ []
+
+
+Underfull \hbox (badness 1946) in paragraph at lines 13--13
+\OT1/ptm/m/n/10 Publisher: Sociedad Espa[]nola de Salud P[]ublica
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--13
+\OT1/ptm/m/n/10 URL:[]$\OT1/pcr/m/n/10 https : / / www . scielosp . org /
+ []
+
+
+Underfull \hbox (badness 2591) in paragraph at lines 19--19
+[]| | \OT1/ptm/m/n/10 Gray, A. (ed.) (2011).  \OT1/ptm/m/it/10 Ap-plied met-hod
+s of cost-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+\OT1/ptm/m/n/10 URL:[]$\OT1/pcr/m/n/10 http : / / doi . apa . org / getdoi . cf
+m ?
+ []
+
+
+Underfull \hbox (badness 1210) in paragraph at lines 43--43
+[]| | \OT1/ptm/m/n/10 Soto []Alvarez, J. (2012).  \OT1/ptm/m/it/10 Eva-lua-ci[]
+on econ[]omi-ca de
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 43--43
+\OT1/ptm/m/n/10 URL:[]$\OT1/pcr/m/n/10 http : / / link . springer . com / 10 .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+\OT1/ptm/m/n/10 C., Epstein, D., Perestelo-P[]erez, L.,
+ []
+
+
+Underfull \hbox (badness 1789) in paragraph at lines 57--57
+\OT1/ptm/m/n/10 Castellano-Fuentes, C. L., Escobar-Mart[]^^Pnez, A.
+ []
+
+
+Underfull \hbox (badness 1057) in paragraph at lines 57--57
+\OT1/ptm/m/n/10 dislocation in children with cerebral palsy, \OT1/ptm/m/it/10 G
+ac
+ []
+
+
+Underfull \hbox (badness 7273) in paragraph at lines 57--57
+\OT1/ptm/m/n/10 de Salud P[]ublica y Administraci[]on Sanitaria
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+\OT1/ptm/m/n/10 URL:[]$\OT1/pcr/m/n/10 https : / / www . scielosp . org /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--75
+\OT1/ptm/m/n/10 URL:[]$\OT1/pcr/m/n/10 http : / / www . scielo . cl / scielo .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--75
+\OT1/pcr/m/n/10 php ? script = sci _ abstract & pid =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--75
+\OT1/pcr/m/n/10 S0034-[]98872010001000007 & lng = es &
+ []
+
+)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 481.
+File: XVII_SIEP.jpg Graphic file (type jpg)
+<use XVII_SIEP.jpg>
+Package pdftex.def Info: XVII_SIEP.jpg  used on input line 481.
+(pdftex.def)             Requested size: 495.07777pt x 41.62163pt.
+
+Overfull \hbox (264.61046pt too wide) has occurred while \output is active
+[][] 
+ []
+
+[9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 481.
+ (./plantilla_MEES.aux
+LaTeX Info: Redefining \. on input line 27.
+LaTeX Info: Redefining \% on input line 27.
+)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 481.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 481.
+Package rerunfilecheck Info: File `plantilla_MEES.out' has not changed.
+(rerunfilecheck)             Checksum: 091B9586AA41015C0A9434152030E133;1287.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 481.
+ ) 
+Here is how much of TeX's memory you used:
+ 8533 strings out of 483048
+ 123627 string characters out of 5962772
+ 404512 words of memory out of 5000000
+ 23307 multiletter control sequences out of 15000+600000
+ 554786 words of font info for 70 fonts, out of 8000000 for 9000
+ 85 hyphenation exceptions out of 8191
+ 42i,12n,35p,1375b,484s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
+/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on plantilla_MEES.pdf (9 pages, 303137 bytes).
+PDF statistics:
+ 262 PDF objects out of 1000 (max. 8388607)
+ 216 compressed objects within 3 object streams
+ 59 named destinations out of 1000 (max. 500000)
+ 166 words of extra memory for PDF output out of 10000 (max. 10000000)
+

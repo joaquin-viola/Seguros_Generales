@@ -80,8 +80,8 @@ if (!dir.exists(output_dir)) {
 # Hook to save all plots as .jpg files
 knitr::opts_hooks$set(fig.keep = function(options) {
   if (options$fig.keep == "all") {
-    options$dev = "jpeg"
-    options$fig.path = file.path(output_dir, paste0(options$label, "-"))
+    options$dev = "pdf"
+    options$fig.path = file.path(output_dir,paste0(options$label, "-"))
   }
   options
 })

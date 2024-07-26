@@ -1,0 +1,307 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{graphicx}
+\usetheme{Madrid}
+\useoutertheme{miniframes} % Alternatively: miniframes, infolines, split
+\useinnertheme{circles}
+
+\definecolor{IITHorange}{RGB}{243, 130, 33} % UBC Blue (primary)
+\definecolor{IITHyellow}{RGB}{254, 203, 10} % UBC Grey (secondary)
+
+\setbeamercolor{palette primary}{bg=IITHorange,fg=white}
+\setbeamercolor{palette secondary}{bg=IITHorange,fg=white}
+\setbeamercolor{palette tertiary}{bg=IITHorange,fg=white}
+\setbeamercolor{palette quaternary}{bg=IITHorange,fg=white}
+\setbeamercolor{structure}{fg=IITHorange} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=IITHorange} % TOC sections
+
+% Override palette coloring with secondary
+\setbeamercolor{subsection in head/foot}{bg=IITHyellow,fg=white}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,   
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\title[Economía de la Salud]{Una Revisión de los Métodos de Evaluación Económica en Salud}
+\date{15 de Agosto de 2023}
+\author[J. Viola y R. Álvarez]
+{Joaquín Viola y Ramón Álvarez}
+\institute[IESTA]{\\IESTA - FCEA - UdelaR}
+
+\begin{document}
+	
+	\begin{frame}
+		\titlepage
+	\end{frame}
+
+    \begin{frame}{Contenidos}
+        \tableofcontents 
+    \end{frame}
+
+
+     \section{Introducción}
+
+
+    \begin{frame}{Introducción}
+   
+    
+    \begin{itemize}
+        \item Evaluación Económica
+        \begin{itemize}
+            \item Asignación Óptima de Recursos
+            \item Maximización del bienestar social
+            \item Recursos Limitados/Demandas (potencialmente) Ilimitadas
+        \end{itemize}
+        \item Evaliación Económica en la Salud
+        \begin{itemize}
+            \item Desde los 70's Aumento de la demanda en la salud pública
+            \item Aumento de diagnósticos
+            \item Australia 1994, obligación de Análisis de este tipo para la financiación de tratamientos
+        \end{itemize}
+    \end{itemize}
+    
+    \end{frame}
+
+    \section{Principales Métodos de Evaluación Económica}
+
+    \begin{frame}{Principales Métodos}
+
+    \begin{itemize}
+        \item Análisis Costo-Minimización
+        \item Análisis Costo-Beneficios
+        \item Análisis Costo-Utilidad
+        \item \textbf{Análisis Costo-Efectividad}
+    \end{itemize}
+    
+    \end{frame}
+
+\subsection{Análisis Costo-Minimización}
+    
+    \begin{frame}{Análisis Costo-Minimización}
+\begin{itemize}
+    \item Se debe demostrar que no haya diferencia significativa en los resultados obtenidos en dos tratamientos.\\
+   \item  Se elige aquel tratamiento que menores costos.
+  
+\end{itemize}
+    
+    \end{frame}
+
+\subsection{Análisis Costo-Beneficios}
+
+    \begin{frame}{Análisis Costo-Beneficio}
+        
+        \begin{itemize}
+            \item Compara los costos y los resultados en términos económicos
+            \item $Beneficios > Costos$ y maximizar $Beneficios - Costos$
+            \item Relación directa con la teoría económica del Bienestar
+            \item Contras:
+            \begin{itemize}
+                \item Dificultad para expresar resultados en términos económicos.
+            \end{itemize}
+            \item Ventajas:
+            \begin{itemize}
+                \item Poder comparar tratamientos con resultados medidos en diferentes unidades.
+            \end{itemize}
+            
+        \end{itemize}
+        
+    \end{frame}
+
+    \begin{frame}{Medición de los Beneficios}
+
+    Existen algunas técnicas para estimar medir el valor económico de los resultados, como puede ser las Encuestas de Preferencias para determinar valorización del estado de salud en los posibles pacientes, o también la remuneración que esperan recibir por empeorar su estado de salud.\\
+    
+    Otros casos cuentan el aumento de la productividad por un estado de salud favorable y los ahorros por los posibles costos de padecer una enfermedad, cómo por ejemplo dejar de tomar un medicamento al ser intervenido por un tratamiento.\\
+
+    También se puede conocer los costos asociados a padecer cierta enfermedad (costo de hospitalización) y se puede hacer un análisis bastante rápido. (Ejemplo)
+    
+    \end{frame}
+
+    \begin{frame}{Ejemplo Costo-Beneficio}
+
+    Aplicación de una vacuna con costo de \$12 por paciente, opción 1: vacunar a todos los escolares (con $\rho_1$ taza de hospitalización de una semana), opción 2: vacunar también a los liceales (con $\rho_2$). El costo de hospitalización por una semana es de \$700.
+
+    \begin{table}[ht]
+\centering
+\begin{tabular}{lcc}
+  \hline
+ & Escolares (1) & Liceales (2) \\ 
+  \hline
+Tamaño población (N) & 4.093.710 & 3.252.140 \\ 
+  Probabilidad de enfermar ($\rho$) & 0.1427 & 0.0548 \\ 
+ \hline
+\end{tabular}
+\end{table}
+
+\item $c_1$ = $N_1 \times 12 = \$49124520$
+\item $b_1$ = $N_1 \times \rho_1 \times \$700 = \$408920692$.
+
+\item $c_2$ = $\$12 \times (N_1+N_2)=\$88150200$
+\item $b_2$ = $\rho_1 \times N_1 \times \$700 + \rho_2 \times N_2 \times\$700=\$533672790 $
+    \end{frame}
+
+ \subsection{Análisis Costo-Utilidad}
+
+ \begin{frame}{Análisis Costo-Utilidad}
+    \begin{itemize}
+        \item Caso puntual de Análisis Costo-Efectividad
+        \item Comparación de resultados por \textit{Años de vida ganados}
+        \item Años de vida ganados \textbf{ajustados} por la calidad de los años (QALY)
+    \end{itemize}
+    
+ \end{frame}
+
+\begin{frame}{Obtención de QALYs}
+    Observar que al ajustar los años de vida ganados por la calidad, 2 años de vida ganados con una calidad óptima (QALY = $2\times1$) equivale a 4 años de vida ganados a una calidad media (QALY = $4\times0.5$)
+
+    Implementación de cuestionarios para medir la calidad de vida de los pacientes(EQ-5D, SF-6D), los cuestionarios incluyen:
+    \begin{itemize}
+        \item Dolor
+        \item Autonomía
+        \item Morbilidad
+        \item Estado de Ánimo
+    \end{itemize}
+Generan un índice donde 1 es un estado de vida óptimo y 0 la muerte, el EQ-5D genera valores negativos "peores que la muerte".\\
+Se aplican en varios momentos durante el tiempo de estudio.
+\end{frame}
+
+\section{Análisis Costo-Efectividad}
+
+\begin{frame}{Análisis Costo-Efectividad}
+
+\begin{itemize}
+      \item El más utilizado de los métodos de evaluación económica
+    \item Compara los tratamientos en término de efectividad y en términos económicos.
+    \item Efectividad medida según variable de interés:
+    \begin{itemize}
+        \item Colesterol
+        \item Dejar de fumar
+        \item Presión
+        \item Años de vida ganados
+        \item Años de vida ajustado por calidad (Costo-Utilidad)
+    \end{itemize}
+    \item "Plano Costo-Efectividad"
+    \item ICER (\textit{Incremental Cost-efectiveness ratio}) y INB (\textit{Incremento del Beneficio Neto})
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \item Caso simple: nuevo tratamiento (t=1) que reemplaza el actual (t=0).
+    \item Debemos comparar los cambios en los costos de ambos tratamientos($\gamma_0$  y  $\gamma_1$), y los cambios en sus resultados (efectividad) ($\epsilon_0$  y  $\epsilon_1$).
+    \item $\Delta_\gamma= \gamma_1-\gamma_0$ y $\Delta_\epsilon=\epsilon_0 - \epsilon_1$ ¿tienen cambios significativos?
+    \item $ICER_{1,0}= \frac{\Delta_\gamma}{\Delta_\epsilon}$: Costo por unidad extra de efectividad
+    \item Dado una "disposición" a pagar por una unidad extra de efectividad \textbf{R}
+    \item ¿$ICER_{1,2} \leq R$?
+\end{frame}
+
+\begin{frame}{Obtención de los datos}
+    No tenemos datos de la efectividad y los costos de cada tratamiento: los estimamos
+    \begin{itemize}
+        \item Los \textbf{Costos}: Aplicación, traslado, faltas al trabajo...\\
+        $\hat{\gamma_i} = \bar{c_i}$  (costo promedio de los pacientes en el tratamiento i)
+        \item La \textbf{Efectividad}: Según nuestra variable de interés (variación presión/colesterol, QALY's)\\
+        $\hat{\epsilon_i} = \bar{e_i}$  (efectividad promedio de los pacientes en el tratamiento i)
+        \item $\widehat{ICER_{1,0}} = \frac{\bar{c_1}-\bar{c_0}}{\bar{e_1}-\bar{e_0}}$
+    
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Plano Costo-Efectividad e ICER}
+    \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{grafiprese/Plano_Costo_Efectividad.png}
+    \caption{Plano Costo-Efectividad, Fuente: Elías Moreno, Bayesian Cost-Efectiveness Analysis of Medical Treatments}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Incremebto del Beneficio Neto y Curva de Aceptación}
+    
+    Intervalos de confianza para las diferencias de costo y efectividad ($\Delta_\gamma$ y $\Delta_\epsilon$)
+
+    $\Delta_\epsilon \sim N(\bar{e_1}-\bar{e_0},\frac{\sigma_1^2}{n_1}+\frac{\sigma_0^2}{n_0})$ Análogo para los costos \\
+
+    $INB_{1,0}=R(\Delta_\epsilon) - \Delta_\gamma$
+
+    Nuestra curva de aceptación tendrá distintos valores de R en el eje y graficaremos $Pr(INB>0)$
+
+\end{frame}
+
+\begin{frame}{Ejemplo librería BCEA}
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{grafiprese/milsimsej.jpg}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{grafiprese/Curva_Aceptacion_ej.jpg}
+\end{minipage}
+\end{frame}
+
+\subsection{Caso para dejar de fumar}
+
+
+En el libro de `Bayesian Cost-Effectiveness Analysis with R package BCEA´ (\cite{baio_bayesian_2017}) se presenta un segundo ejemplo, en donde se consideran $T=4$ distintos tratamientos para dejar de fumar, por lo que nuestro espacio de tratamientos será $\mathcal{T} = \{t=1,2,3,4\}$, en donde cada tratamiento será:
+
+\begin{itemize}
+    \item $t=1$, no intervenir (status quo)
+    \item $t=2$, auto ayuda.
+    \item $t=3$, asesoramiento individual
+    \item $t=4$, asesoramiento grupal.
+\end{itemize}
+
+En este caso se cuenta con resúmenes de $24$ ensayos clínicos en donde se han comparado tratamientos, en algunos casos se comparó entre 2 tratamientos, mientras que en otros ensayos se comparó entre 3, por lo que será un análisis costo-efectividad utilizando técnicas de ``Meta Análisis'', que son aquellos análisis o estudios que se hace con información obtenida a partir de varios análisis previos hechos por otros científicos. Una de las principales ventajas del ``Meta Análisis'' es que no es necesario hacer estudios primarios, y permite la utilización de datos publicados por otros para obtener conclusiones.\\
+
+Como ya se dijo anteriormente, en cada uno de los 24 estudios se comparan 2 o 3 tratamientos. Por lo que para el tratamiento $t_i$ en el estudio $s_i$ se tiene $n_i$ pacientes, y se considera $r_i$ a la cantidad de pacientes que dejaron de fumar (es decir, que les sirvió el tratamiento). Por lo que podemos modelar:
+
+\begin{equation}
+    r_i \sim Binomial(p_i,n_i)
+\end{equation}
+
+Para cada tratamiento en cada estudio, donde $p_i$ es la probabilidad específica de dejar de fumar. El objetivo del modelo es encontrar $\pi_t$ la probabilidad de dejar de fumar específica para cada tratamiento. En cada estudio se toma como tratamiento referencia a aquel que su número de etiqueta es más chico, por lo que siempre que el tratamiento $t=1$ sea parte del estudio será el tratamiento de referencia. Luego definimos el modelo que explica $p_i$ a través de la función \textit{logit}:
+
+\begin{equation}
+    logit(p_i) = log(\frac{p_i}{1-p_i}) = \mu_{s_i} + \delta_{s_i , t_i}(1-\mathbb{I}\{t_i = b_{s_i}\})
+\end{equation}
+
+En donde $\mu_{s_i}$ representa un valor de referencia específico para el estudio, por lo que el vector de valores \textbf{$\mu$} tendrá $24$ valores.\
+
+El parámetro $\delta_{s_i ,t_i}$ representa el efecto incremental del tratamiento $t_i$ respecto al tratamiento de referencia en el estudio $s_i$. La indicatriz hará que este término sea 0 cuando se está en el tratamiento de referencia.
+
+Los parámetros en \textbf{$\mu$} tendrán una previa mínimamente informativa con distribución $\mu_s \sim N(0,v)$ con $v$ un valor ``grande''. Mientras que los parámetros $\delta_{s_i ,t_i}$ que representan los efectos estructurados tendrán una distribución previa dada por:
+
+\begin{equation}
+    \delta_{s_i,t_i} \sim Normal(md_i, \sigma^2)
+\end{equation}
+
+con $md_i=d_{t_i}-d_{b_i}$, donde el vector $\textbf{d}=(d_1,\dots,d_T)$ representa los efectos agrupados de cada intervención. Y $md_i$ representa el promedio de la diferencia de los efectos entre la intervención de la fila $i$, contra el tratamiento de referencia en el estudio $s_i$.
+Asumimos que $d_1=0$, es decir que el tratamiento de referencia no tiene otro efecto más que el efecto base ($\mu$) y modelamos los efectos de los otros tratamientos $d_i \sim Normal(0,v)$ para $i=2,\dots,T$, que está definido en la escala logit.
+
+Definimos $\pi_0$ como el efecto para el tratamiento base en escala logit como el promedio de los efectos base (\textbf{$\mu$}) en los ensayos donde el tratamiento de referencia es el tratamiento $t=1$. Para el 
+
+
+\end{document}

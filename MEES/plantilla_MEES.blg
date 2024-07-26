@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: plantilla_MEES.aux
+The style file: dcu.bst
+Database file #1: biblio/evaluacion_economica_salud.bib
+Warning--I didn't find a database entry for "baio_bayesian_nodate"
+Warning--empty publisher in moreno_bayesian_nodate
+You've used 10 entries,
+            2921 wiz_defined-function locations,
+            701 strings with 7156 characters,
+and the built_in function-call counts, 56358 in all, are:
+= -- 9404
+> -- 640
+< -- 1
++ -- 4562
+- -- 196
+* -- 4947
+:= -- 11099
+add.period$ -- 22
+call.type$ -- 10
+change.case$ -- 136
+chr.to.int$ -- 10
+cite$ -- 11
+duplicate$ -- 144
+empty$ -- 302
+format.name$ -- 231
+if$ -- 10127
+int.to.chr$ -- 5
+int.to.str$ -- 0
+missing$ -- 13
+newline$ -- 50
+num.names$ -- 107
+pop$ -- 40
+preamble$ -- 1
+purify$ -- 150
+quote$ -- 0
+skip$ -- 111
+stack$ -- 0
+substring$ -- 13479
+swap$ -- 16
+text.length$ -- 141
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 32
+warning$ -- 1
+while$ -- 220
+width$ -- 0
+write$ -- 150
+(There were 2 warnings)

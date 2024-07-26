@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.19)  26 JUL 2024 10:53
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.7.19)  26 JUL 2024 11:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -793,8 +793,8 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 
 
 [4]
-File: graficos/unnamed-chunk-4-unnamed-chunk-4-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-4-unnamed-chunk-4-1.jpeg>
+File: graficos/unnamed-chunk-4-unnamed-chunk-4-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-4-unnamed-chunk-4-1.pdf>
 
 
 [5]
@@ -811,19 +811,19 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
 (Font)              scaled to size 5.00046pt on input line 372.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 4.99947pt on input line 372.
-File: graficos/unnamed-chunk-9-unnamed-chunk-9-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-9-unnamed-chunk-9-1.jpeg>
-File: graficos/unnamed-chunk-9-unnamed-chunk-9-2.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-9-unnamed-chunk-9-2.jpeg>
+File: graficos/unnamed-chunk-9-unnamed-chunk-9-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-9-unnamed-chunk-9-1.pdf>
+File: graficos/unnamed-chunk-9-unnamed-chunk-9-2.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-9-unnamed-chunk-9-2.pdf>
 
 
 [8]
 
 [9]
-File: graficos/unnamed-chunk-10-unnamed-chunk-10-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-10-unnamed-chunk-10-1.jpeg>
-File: graficos/unnamed-chunk-10-unnamed-chunk-10-2.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-10-unnamed-chunk-10-2.jpeg>
+File: graficos/unnamed-chunk-10-unnamed-chunk-10-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-10-unnamed-chunk-10-1.pdf>
+File: graficos/unnamed-chunk-10-unnamed-chunk-10-2.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-10-unnamed-chunk-10-2.pdf>
 
 Overfull \hbox (7.82283pt too wide) in paragraph at lines 464--464
 [][][][] 
@@ -860,15 +860,15 @@ Overfull \hbox (1.8726pt too wide) in paragraph at lines 675--692
  [][] 
  []
 
-File: graficos/unnamed-chunk-18-unnamed-chunk-18-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-18-unnamed-chunk-18-1.jpeg>
+File: graficos/unnamed-chunk-18-unnamed-chunk-18-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-18-unnamed-chunk-18-1.pdf>
 
 
 [13]
 
 [14]
-File: graficos/unnamed-chunk-19-unnamed-chunk-19-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-19-unnamed-chunk-19-1.jpeg>
+File: graficos/unnamed-chunk-19-unnamed-chunk-19-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-19-unnamed-chunk-19-1.pdf>
 
 
 [15]
@@ -893,10 +893,10 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 8.04909pt on input line 740.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 5.74937pt on input line 740.
-File: graficos/unnamed-chunk-23-unnamed-chunk-23-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-23-unnamed-chunk-23-1.jpeg>
-File: graficos/unnamed-chunk-23-unnamed-chunk-23-2.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-23-unnamed-chunk-23-2.jpeg>
+File: graficos/unnamed-chunk-23-unnamed-chunk-23-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-23-unnamed-chunk-23-1.pdf>
+File: graficos/unnamed-chunk-23-unnamed-chunk-23-2.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-23-unnamed-chunk-23-2.pdf>
 
 Overfull \hbox (7.82283pt too wide) in paragraph at lines 769--769
 [][][][] 
@@ -907,20 +907,20 @@ Overfull \hbox (7.82283pt too wide) in paragraph at lines 769--769
 [17]
 
 [18]
-File: graficos/unnamed-chunk-25-unnamed-chunk-25-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-25-unnamed-chunk-25-1.jpeg>
-File: graficos/unnamed-chunk-27-unnamed-chunk-27-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-27-unnamed-chunk-27-1.jpeg>
+File: graficos/unnamed-chunk-25-unnamed-chunk-25-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-25-unnamed-chunk-25-1.pdf>
+File: graficos/unnamed-chunk-27-unnamed-chunk-27-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-27-unnamed-chunk-27-1.pdf>
 
 
 [19]
-File: graficos/unnamed-chunk-28-unnamed-chunk-28-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-28-unnamed-chunk-28-1.jpeg>
+File: graficos/unnamed-chunk-28-unnamed-chunk-28-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-28-unnamed-chunk-28-1.pdf>
 
 
 [20]
-File: graficos/unnamed-chunk-30-unnamed-chunk-30-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-30-unnamed-chunk-30-1.jpeg>
+File: graficos/unnamed-chunk-30-unnamed-chunk-30-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-30-unnamed-chunk-30-1.pdf>
 
 
 [21]
@@ -937,8 +937,8 @@ Overfull \hbox (33.71301pt too wide) in paragraph at lines 984--988
 [24]
 
 [25]
-File: graficos/unnamed-chunk-36-unnamed-chunk-36-1.jpeg Graphic file (type bmp)
-<graficos/unnamed-chunk-36-unnamed-chunk-36-1.jpeg>
+File: graficos/unnamed-chunk-36-unnamed-chunk-36-1.pdf Graphic file (type pdf)
+<use graficos/unnamed-chunk-36-unnamed-chunk-36-1.pdf>
 
 
 [26]
@@ -964,12 +964,12 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 20529 strings out of 476238
- 392786 string characters out of 5785107
+ 20368 strings out of 476238
+ 384385 string characters out of 5785107
  1944560 words of memory out of 5000000
- 42791 multiletter control sequences out of 15000+600000
+ 42631 multiletter control sequences out of 15000+600000
  574177 words of font info for 151 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 90i,10n,123p,539b,458s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,10n,123p,540b,458s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on informe.pdf (30 pages).
