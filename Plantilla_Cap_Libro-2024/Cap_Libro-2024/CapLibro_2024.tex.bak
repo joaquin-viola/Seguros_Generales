@@ -1,0 +1,465 @@
+\documentclass[spanish]{report}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[spanish,activeacute, es-tabla]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{tocbibind}
+\usepackage{nopageno}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{float}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{chapter}{14}
+%%%%%%%%%%%%%%%%%%%%%%
+
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% aqui definimos el encabezado de las paginas pares e impares.
+\chead[kk]{Teoría y Aplicaciones en Probabilidad y Estad\'istica}
+%\rhead[hdhdhdh]{nada}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% aqui definimos el pie de pagina de las paginas pares e impares.
+
+\cfoot[\thepage]{\thepage}
+\rfoot[]{}
+
+\renewcommand{\footrulewidth}{0.5pt}
+
+%aqui definimos el encabezado y pie de pagina de la pagina inicial de un capitulo.
+\fancypagestyle{plain}{
+	\fancyhead[R]{ }
+	\fancyhead[L]{ }
+	\renewcommand{\headrulewidth}{0.5pt}
+	\renewcommand{\footrulewidth}{0.5pt}
+}
+
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Version=5.50.0.2890}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{Created=Saturday, April 28, 2007 15:13:13}
+%TCIDATA{LastRevised=Monday, January 27, 2014 20:17:17}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Style Editor\Article - LaTeX-like Article">}
+%TCIDATA{CSTFile=article.cst}
+
+\setlength{\topmargin}{-0.5in} \setlength{\textheight}{8.0in}
+\setlength{\textwidth}{5.0in}
+%BeginExpansion
+\selectlanguage{spanish}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algoritmo}
+\newtheorem{axiom}[theorem]{Suposici\'on}
+\newtheorem{case}[theorem]{Caso}
+\newtheorem{claim}[theorem]{Ayuda}
+\newtheorem{conclusion}[theorem]{Conclusi\'on}
+\newtheorem{condition}[theorem]{Condici\'on}
+\newtheorem{conjecture}[theorem]{Conjetura}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{criterion}[theorem]{Criterio}
+\newtheorem{definition}[theorem]{Definici\'on}
+\newtheorem{example}[theorem]{Ejemplo}
+\newtheorem{exercise}[theorem]{Ejercicio}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{notation}[theorem]{Notaci\'on}
+\newtheorem{problem}[theorem]{Problema}
+\newtheorem{proposition}[theorem]{Proposici\'on}
+\newtheorem{remark}[theorem]{Observaci\'on}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Demostraci\'on]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\unaccentedoperators \unspacedoperators \selectspanish
+%EndExpansion
+\hyphenation{cre-ci-mien-to pro-ble-ma de-ter-mi-nis-ta va-lor
+	va-lo-res di-fe-ren-cia-bi-li-dad si-guien-tes es-ta-cio-na-ria
+	pro-ba-bi-li-dad nues-tras nues-tros pro-ce-di-mien-to ge-ne-ral
+	fi-na-li-dad ne-ce-sa-ria-men-te ma-ne-ra e-va-lua-ra con-ti-nua
+	equi-va-len-te de-ter-mi-nis-tas e-jem-plos es-pe-ra-mos
+	in-de-pen-dien-tes re-com-pen-sas si-guien-te ge-ne-ra-les
+	re-com-pen-sa su-pon-ga-mos accio-nes nu-me-ra-ble sa-tis-fa-cen
+	eu-cli-dia-nos ti-tu-la-da par-ti-cu-lar si-guien-te con-fe-ren-ce
+	mo-dels es-ta-cio-na-rias ope-ra-dor ite-ra-ci-on de-sa-rro-lla-da}
+%\pagenumbering{gobble}
+
+
+\pagestyle{plain}
+
+\begin{document}
+
+\setcounter{page}{197}
+
+
+
+
+
+
+%\newline
+
+\begin{flushright}
+
+{\Huge Cap\'itulo 14}
+\end{flushright}
+%\\
+
+\rule{123mm}{.4mm}
+\\
+
+%\vspace{1cm}
+
+%\\
+%\\
+An\'alisis usando el factor de Bayes, para m\'ultiples puntos de cambio temporales de un conjunto de datos simulados de un proceso Poisson
+\\
+
+\textbf{Bulmaro Ju\'arez-Hern\'andez,  Lucila Mu\~niz-Merino y V\'ictor Hugo V\'azquez-Guevara}\\
+
+\rule{123mm}{.4mm}
+\begin{center}
+
+%\\
+
+
+%\\
+Facultad de Ciencias F\'isico Matem\'aticas,\\
+Benem\'erita Universidad Aut\'onoma de Puebla,\\
+bjuarez@fcfm.buap.mx, 216570304@alumnos.fcfm.buap.mx,\\ vvazquez@fcfm.buap.mx
+\end{center}
+
+
+
+\textbf{Resumen. }
+En este trabajo se realiza un an\'alisis de puntos de cambio utilizando el factor de Bayes. Para llevar a cabo este an\'alisis, se simularon datos de un proceso Poisson con un programa en el que se usaron instrucciones de las librer\'ias de los paquetes INLA y Poisson de R, a los datos de este proceso se les aplic\'o el m\'etodo de bisecci\'on y el factor de Bayes para detectar los puntos de cambio.
+\vspace{.5cm}
+\\
+
+\textbf{Abstract.} In this work, an analysis of change points is carried out using the Bayes factor. To bring about this analysis, data from a Poisson process was simulated with a program in which instructions from the INLA and Poisson package libraries of R was used, the bisection method and the Bayes factor was applied to the data of this process for detect change points.\\
+
+\emph{Palabras clave: } Factor de Bayes, Poisson y m\'etodo de bisecci\'on.
+
+\section{Introducci\'on}
+ Chen y Gupta \cite{Chen} definen a un punto de cambio, en una sucesi\'on de datos $\{x_{t_i} \}, \ \ i = 1, \ldots, n $ observados y ordenados respecto al tiempo, como aquel, para el cual las observaciones siguen una distribuci\'on $F_1$, antes de dicho punto, y en otro posterior la distribuci\'on es $F_2$. Es decir, desde el punto de vista estad\'istico, la sucesi\'on de observaciones muestra un comportamiento no homog\'eneo. El problema de punto de cambio es considerado como uno de los problemas centrales de inferencia estad\'istica, pues relaciona a la teor\'ia de control estad\'istico, a las pruebas de hip\'otesis (al detectar si existe alg\'un cambio en la sucesi\'on de variables aleatorias observadas), y a la teor\'ia de estimaci\'on (al estimar el n\'umero de cambios y sus correspondientes localizaciones). Esto bajo los enfoques cl\'asico y Bayesiano \cite{Chen}.
+
+Los problemas de puntos de cambio originalmente surgieron en control de calidad y en general pueden ser encontrados en la modelaci\'on matem\'atica de diversas disciplinas tales como Medio Ambiente, Epidemiologia, Procesos de se\~nal s\'ismica, Econom\'ia, Finanzas, Geolog\'ia, Medicina, Biolog\'ia, F\'isica, etc.
+
+En general el problema de puntos de cambio se visualiza de la forma siguiente \cite{Chen}:\\
+Sean $X_1, \ldots, X_n$ una colecci\'on de vectores (variables) aleatorios independientes con funciones de distribuci\'on de probabilidad $F_1, \ldots, F_n$, respectivamente. Entonces el problema de puntos de cambio consiste en probar la hip\'otesis nula $H_0$ de la no existencia de cambio contra la alternativa $H_a$ de que existe al menos un punto de cambio lo cual se expresa de la siguiente manera:
+\small{ \begin{gather*}
+  H_0: \ F_1 = F_2 = \cdots = F_n (\text{en todos los puntos})\\
+  \mathbf{vs} \\
+  H_a: \ F_1 = F_2 = \cdots = F_{k_1} \neq F_{k_1+1} = \cdots = F_{k_2} \neq F_{k_2+1} = \cdots = F_{k_q} \neq F_{k_q+1}= \cdots = F_{n}.
+\end{gather*}}
+\noindent Donde $1< k_1 < k_2, \ldots, k_q < n$, $q$ es el n\'umero desconocido de puntos de cambio y $k_1, k_2, \ldots, k_q$ son las posiciones desconocidas respectivas que tienen que ser estimadas. Si las distribuciones $F_1, F_2, \ldots, F_n$ pertenecen a una familia param\'etrica com\'un $F(\theta)$, donde $\theta \in \mathbb{R}^p$, entonces el problema de puntos de cambio consiste en probar la hip\'otesis nula $H_0$ sobre la no existencia de cambio en los par\'ametros $\theta_i, \ i=1, \ldots,n$ de la poblaci\'on contra la alternativa $H_a$ de que existe al menos un punto de cambio; lo cual se expresa de la siguiente forma:
+\small{ \begin{gather*}
+  H_0: \ \theta_1 = \theta_2 = \cdots = \theta_n = \theta, \ \text{desconocido} \\
+  \mathbf{vs} \\
+  H_a: \ \theta_1 =  \cdots = \theta_{k_1} \neq \theta_{k_1+1} = \cdots = \theta_{k_2} \neq \theta_{k_2+1} = \cdots = \theta_{k_q} \neq \theta_{k_q+1}= \cdots = \theta_{n}.
+  \end{gather*}}
+\noindent donde $q$ y $k_1,k_2, \ldots, k_n$ tienen que ser estimados. Estas hip\'otesis revelan los aspectos de inferencia de puntos de cambio para determinar si existe alg\'un punto de cambio en el proceso, estimar el n\'umero de ellos y sus respectivas posiciones.
+
+En este trabajo se desarrolla un programa para aplicar algunos procedimientos en la detecci\'on de puntos de cambio temporales, en particular usando el factor de Bayes. Para desarrollar este m\'etodo se tom\'o como base los conceptos presentados en Altieri \cite{tesisL}. Tambi\'en se utiliza el proceso Poisson homog\'eneo, con el prop\'osito de simular valores donde se encontrar\'an los puntos de cambio. Se analizan y comparan los resultados obtenidos. El mencionado programa fue creado utilizando algunas instrucciones del paquete INLA de R, el cual, se presenta en los libros de G\'omez \cite{Virgilio} y de Blangiarto y Cameleti \cite{Blangiardo} para lo cual se usaron las librer\'ias INLA y Poisson.
+
+\section{Factor de Bayes}
+Si se presenta un problema de selecci\'on de modelos, en el que, se debe elegir entre dos posibles modelos, en base a un conjunto de datos observados D, la plausibilidad de la diferencia de dos modelos $M_1$ y $M_2$, parametrizados por vectores de par\'ametros $\pmb{\theta}_1$ y $\pmb{\theta}_2$ se puede medir mediante el factor Bayes.\\
+
+El factor de bayes se define como:\\
+
+\[ B=\frac{P(D|M_1)}{P(D|M_2)}=\frac{\int_{\pmb{\theta}_1}P(D|\pmb{\theta}_1, M_1)\Pi(\pmb{\theta}_1|M_1)d\pmb{\theta}_1}{\int_{\pmb{\theta}_2}P(D|\pmb{\theta}_2, M_2)\Pi(\pmb{\theta}_2|M_2)d\pmb{\theta}_1}, \]
+
+\noindent donde $P(D|M_1)$ se denomina verosimilitud marginal o verosimilitud integrada. Esto es similar a lo que se hace en las pruebas de la raz\'on de verosimilitudes pero ahora, en lugar de  maximizar la verosimilitud, el factor Bayes realiza un promedio ponderado mediante la distribuci\'on de los par\'ametros. \\
+
+Un valor de $B > 1$ significa que $M_1$ es apoyado por los datos m\'as que $M_2$.\\
+
+En el caso del factor de Bayes, Jeffreys \cite{Jeffreys} estableci\'o una escala de interpretaci\'on de B, la cual se muestra en la Tabla \ref{tab_1}.
+
+ \begin{table}[H]
+\centering
+ \caption{Escala de interpretaci\'on de B, seg\'un Jeffreys.}\label{tab_1}
+ \label{table1}
+\begin{tabular}{|c|l|}
+\noalign{\hrule height 1.3pt}
+\multirow{2}{*}{B} & Fuerza de la evidencia \\
+   & a favor de $M_1$ \\
+\noalign{\hrule height 1.3pt}
+$B\leq 1$ & Negativa apoya $M_2$ \\ \hline
+$1 <B\leq 3$ & Muy escasa \\ \hline
+$3 <B \leq 10$ &Sustancial \\ \hline
+$10<B \leq 30$ & Fuerte \\  \hline
+$30<B \leq 100$ & Muy fuerte \\  \hline
+$>100$ & Decisiva\\  \hline
+\end{tabular}
+\end{table}
+
+Otra forma de considerar el factor de bayes es la siguiente: Sup\'ongase dos hip\'otesis $H_0$ y $H_1$, tales que, las densidades a priori son: $f_0=P(H_0)$ y $f_1=P(H_1)$.
+Despu\'es de observar una muestra aleatoria, las probabilidades a posteriori de ambas hip\'otesis son $\alpha_0=P(H_0|x)$ y  $\alpha_1=P(H_1|x)$. Se define el factor de Bayes a favor de $H_0$ como\\
+
+\[ B=\frac{\frac{\alpha_0}{\alpha_1}}{\frac{f_0}{f_1}}=\frac{\alpha_0 f_1}{\alpha_1 f_0}. \]
+
+As\'i, el factor de Bayes representa la plausibilidad a posteriori dividida entre la plausibilidad a priori. Nos informa de los cambios en nuestras creencias introducidas por los datos. Tiene la propiedad de que es casi objetivo y elimina parcialmente la influencia de la distribuci\'on a priori.
+
+Como ejemplo, sup\'ongase el contraste simple:\\
+
+\[ H_0: \theta=\theta_0 \ \ \  vs  \ \ \ H_0: \theta=\theta_1. \]
+
+Se tiene que las distribuciones a posteriori son:\\
+
+\[ \alpha_0=P(H_0|x)=\frac{f_0L(\theta_0|x)}{f_0L(\theta_0|x)+f_1L(\theta_1|x)}, \]
+
+\[ \alpha_1=P(H_1|x)=\frac{f_1L(\theta_1|x)}{f_0L(\theta_0|x)+f_1L(\theta_1|x)}. \]
+
+Entonces el factor de Bayes es:
+
+\[B=\frac{\alpha_0f_1}{\alpha_1f_0}=\frac{f_0L(\theta_0|x)f_1}{f_1L(\theta_1|x)f_0}=\frac{L(\theta_0|x)}{L(\theta_1|x)}. \]
+
+\noindent que coincide  con la raz\'on de verosimilitudes, de modo que, la distribuci\'on a priori no influir\'ia, en este caso, en el factor de Bayes.\\
+
+As\'i, el factor de Bayes para el punto de cambio cuando se divide en dos segmentos est\'a dado por la raz\'on de verosimilitudes:
+
+\[ \frac{L_0}{L_1}=\frac{Q_1 Q_2}{L_1}, \]
+
+\noindent donde $Q_1$ es la verosimilitud del segmento 1 y $Q_2$ es la verosimilitud del segmento 2  bajo la hip\'otesis alternativa y $L_1$ es la verosimilitud bajo la hip\'otesis nula.\\
+
+\noindent As\'i, aplicando logaritmos se tiene:\\
+
+\[ \ln{(B)}=\ln{(Q_1)}+\ln{(Q_2)}-\ln{(L_1)}. \]
+
+\section{Proceso de Poisson homog\'eneo}
+Para aplicar el factor de Bayes que determina cuales son los puntos de cambio, se simula un proceso Poisson homog\'eneo y se trabaja con los datos obtenidos. Ahora, un proceso de Poisson est\'a definido de la siguiente forma:\\
+
+{\bf Definici\'on}: Una colecci\'on de variables aleatorias $\{N(t):t \geq 0\}$ (definidas en un espacio de probabilidad $(\Omega, F,P)$) se llama proceso de Poisson (homog\'eneo) con intensidad $\lambda>0$ si satisfacen las siguientes propiedades:\\
+
+i) $P(N(0)=0)=1$.\\
+
+ii) Para todo $0<s<t$,  $N(t)-N(s)$ tiene distribuci\'on de Poisson de par\'ametro $\lambda(t-s)$.\\
+
+iii) Para todo  $0 \leq t_1 <\ldots <t_n$, $n \geq 1$ (es decir, para todo conjunto finito de tiempos), las variables aleatorias $N(t_n)-N(t_{n-1}),\ldots, N(t_2)-N(t_1), N(t_1)-N(0), N(0)$, son independientes. Esta propiedad se conoce como propiedad de incrementos independientes.\\
+
+\section{Resultados y discusi\'on}
+\subsection{An\'alisis de m\'ultiples puntos de cambio temporales con el factor de Bayes}
+Con el objetivo de detectar, analizar y comparar resultados de puntos de cambio, se hicieron programas para detectar m\'ultiples puntos de cambio, entre ellos, uno en el que se detectan 5 puntos de cambio, los datos utilizados fueron simulaciones de un proceso Poisson obteni\'endose un conjunto de 60 datos con 6 valores diferentes para el par\'ametro $\lambda$, otro en el que se detectan 6 puntos de cambio, aqu\'i los datos utilizados fueron simulaciones de un proceso Poisson obteni\'endose un conjunto de 60 datos con 7 valores diferentes para el par\'ametro $\lambda$. Se pretende, en este problema, detectar los cambios que se generan con los distintos valores para el par\'ametro de intensidad $\lambda$, utilizando el m\'etodo de bisecci\'on y el factor de Bayes, adem\'as, se hizo un comparativo de los resultados al utilizar las a priori: uniforme, log-gamma y Gaussiana.
+
+\subsubsection{An\'alis\'is del caso con 5 puntos de cambio}
+
+Se corri\'o un programa en R, el programa para detectar m\'ultiples puntos de cambio temporales, en total de 5 puntos de cambio, se utilizaron 60 datos y el segmento m\'as peque\~no fue de 4 puntos. Se simul\'o un proceso  Poisson uniforme con diferentes valores para el par\'ametro $\lambda$ y se aproxim\'o a la distribuci\'on posteriori con el paquete de R, INLA, el cual aproxima con series de Taylor. Para detectar los puntos de cambio se utiliz\'o el m\'etodo de bisecci\'on y el factor de Bayes.\\
+
+Se utilizaron tres distribuciones a priori una uniforme, una loggamma y una gausiana. Se muestra una gr\'afica con los 5 puntos de cambio en la Figura \ref{g5pts}.\\
+
+El m\'etodo de bisecci\'on consiste en dividir al conjunto de los datos en dos subconjuntos con la misma (o aproximada) cantidad de datos y busca puntos de cambio, enseguida se  va a la izquierda y tambi\'en se divide al subconjunto a la mitad y busca puntos de cambio, posteriormente se divide el lado derecho y as\'i se sigue sucesivamente yendo a la izquierda y a la derecha, dividiendo los respectivos subconjuntos. Para aplicar el m\'etodo se usan 60 datos simulados y se llega a la divisi\'on m\'as peque\~na que fue de cuatro datos, es decir se tienen dos pasos para hacer las divisiones y en cada paso, de las divisiones respectivas, se obtienen los posibles puntos de cambio en los subconjuntos, que en este caso resultaron ser 15, finalmente usando el factor de Bayes se determinan cuales son los puntos de cambio reales para este proceso, el resultado se muestra en la Tabla \ref{Tab_2}.\\
+
+Los puntos de cambio para cuando los datos son generados con valores del par\'ametro $\lambda=2,1,4,7,6,1$, cuyas divisiones del conjunto de datos  o segmentos cuando se utiliza una a priori uniforme quedan con los siguientes n\'umeros de datos $8,7,15,15,8,7$, respectivamente. El resultado para la detecci\'on de los puntos de cambio fueron, como se muestra en la Tabla \ref{Tab_2}, esto es, los puntos de cambio, en este caso, son los primeros cuatro y el s\'eptimo.\\
+
+Con los mismos puntos de cambio y con la distribuci\'on a priori  loggamma  con par\'ametro 0.01, el resultado se muestra en la Tabla \ref{Tab_2}. Se puede observar que en comparaci\'on con la uniforme las log-verosimilitudes de la loggamma son m\'as peque\~nas, sin embargo, tambi\'en detectan los mismos puntos de cambio.\\
+
+Con la distribuci\'o a priori  gaussiana con media cero y par\'ametro de precisi\'on 0.001, para el mismo n\'umero de puntos de cambio, se detectaron los cinco puntos de cambio, se  puede observar en los datos de la Tabla \ref{Tab_2}, son los primeros cuatro y el siete, aunque el valor de la log-verosimilitud del quinto punto de cambio que se encuentra en la s\'eptima posici\'on es menor en comparaci\'on con las siguientes log-verosimilitudes que se encuentran en las posiciones 8, 10, 12 y 14, como se puede observar en la Tabla \ref{Tab_2}.
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[scale=0.8]{graf_5_pts.jpg}
+  \caption{Gr\'afica de 5 puntos de cambio} \label{g5pts}
+\end{figure}
+
+\begin{table}[H]
+ \centering
+ \caption{Detenci\'on de cinco puntos de cambio.}
+ \vspace{2mm}
+ \label{Tab_2}
+ \begin{tabular}{|c|c|c|c|}
+   \noalign{\hrule height 1.3pt}
+   Num&uniforme& loggamma& Gaussiana \\
+   \noalign{\hrule height 1.3pt}
+   1&\textbf{49.565011}&\textbf{43.644575} &\textbf{42.972975}\\
+   2&\textbf{24.392282}&\textbf{25.829232} &\textbf{26.592785}\\
+   3&\textbf{13.940830}&\textbf{26.041694}  &\textbf{28.329433}\\
+   4&\textbf{16.000633}&\textbf{9.990938}  &\textbf{11.641769}\\
+   5&12.478724&2.387813   &4.477951\\
+   6&12.478724&2.387813  &4.477951\\
+   7&\textbf{12.572475}& \textbf{4.498905}   &\textbf{5.523642}\\
+   8&5.701123 &1.835601  &5.801758\\
+   9&4.732525 & 1.384310  & 4.912561 \\
+  10&5.701123 &1.835601 &5.801758\\
+  11&4.732525&1.384310 & 4.912561\\
+  12&5.701123 &1.835601  &5.801758\\
+  13&4.732525 &1.384310 & 4.912561\\
+  14&5.701123 & 1.835601 & 5.801758\\
+  15&4.732525&1.384310 &4.912561\\
+  \hline
+ \end{tabular}
+\end{table}
+
+Los puntos de cambio se muestran en la Figura \ref{g5pts} y se encuentran en 8, 15,30, 45 y 53.
+
+\subsubsection{An\'alis\'is del caso con 6 puntos de cambio}
+Tambi\'en para este caso, se corri\'o un programa en R, el programa para detectar m\'ultiples puntos de cambio, aqu\'i el n\'umero total de puntos de cambio es 6, se generaron y utilizaron 60 datos, y el segmento m\'as peque\~no fue de 3 puntos. Esto es, se simul\'o un proceso  Poisson uniforme con diferentes valores para el par\'ametro $\lambda$ y se aproxim\'o a la distribuci\'on a posteriori con el paquete de R, INLA. Para detectar los puntos de cambio, se utiliz\'o el m\'etodo de bisecci\'on y el factor de Bayes.\\
+
+Nuevamente se utilizaron las distribuciones a priori: uniforme, loggamma y gausiana. \\
+
+Para este caso y siguiendo el proceso descrito en la secci\'on anterior, so obtuvo que con el modelo uniforme se detectaron 6 puntos de cambio  para  $\lambda=2,1,4,7,6,1,2$ y en las divisiones de datos o segmentos de  $8,7,15,15,8,4,3$. Los puntos  de cambio que se detectaron son los primeros cuatro, el s\'eptimo y el \'ultimo. Los resultados se muestran en la segunda columna de la Tabla \ref{Tab_3}.\\
+
+Ahora con la distribuci\'on a priori  loggamma  con par\'ametro 0.01, el resultado se muestra en la Tabla \ref{Tab_3}. Se puede observar que en comparaci\'on con la uniforme las log-verosimilitudes de la loggamma son m\'as peque\~nas, sin embargo tambi\'en detectan los mismos puntos de cambio.\\
+
+Con la distribuci\'on a priori  gaussiana con media cero y par\'ametro de precisi\'on 0.001, se detectaron los seis puntos de cambio, son los primeros cuatro, el siete y el 15, como se puede observar, en la \'ultima columna de la Tabla \ref{Tab_3}. La diferencia entre esta y la uniforme es que, el \'ultimo punto de cambio, tiene el log-verosimilitud menor a los valores de los log-verosimilitud anteriores, en donde no hay punto de cambio.\\
+
+\begin{table}[!h]
+ \centering
+ \caption{Detenci\'on de seis puntos de cambio.}
+ \vspace{2mm}
+ \label{Tab_3}
+\begin{tabular}{|c|c|c|c|}
+\noalign{\hrule height 1.3pt}
+\textbf{Num}&\textbf{uniforme}& \textbf{loggamma}& \textbf{Gaussiana}\\
+\noalign{\hrule height 1.3pt}
+1&\textbf{37.382628}&\textbf{44.717137}&\textbf{38.258157}\\
+2&\textbf{23.107912}& \textbf{28.913661}&\textbf{26.506732}\\
+3& \textbf{22.987741}& \textbf{27.851420} &\textbf{26.529322}\\
+4&\textbf{16.466681}& \textbf{5.045601}& \textbf{11.798824}\\
+5& 12.478724 & 2.387813&4.477951\\
+6&12.478724 &2.387813 &4.477951\\\hline
+7&\textbf{16.555598} & \textbf{3.062915} &\textbf{12.572375}\\
+8&5.701123& 1.835601&5.801758\\
+9& 4.732525&1.384310& 4.912561 \\
+10& 5.701123&1.835601&5.801758\\
+11&  4.732525& 1.384310&4.912561\\
+12&  5.701123& 1.835601& 5.801758\\
+13& 4.732525&1.384310 &4.912561\\
+14& 5.701123&1.835601& 5.801758\\
+15& \textbf{4.733385}&\textbf{1.720949}& \textbf{4.280097}\\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent Los puntos de cambio se muestran en la Figura \ref{g6pts}, y se encuentran en los puntos: 8, 15 30, 45, 53 y 57.\\
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[scale=0.5]{graf_6_pts.jpg}
+  \caption{Gr\'afica con 6 puntos de cambio} \label{g6pts}
+\end{figure}
+
+El programa se hizo en R, es etiquetado como Programa 1 y se presenta al final, en el Ap\'endice A.
+
+\section{Conclusiones}
+Como el prop\'osito de este trabajo era verificar que el m\'etodo del factor de Bayes es una herramienta que funciona adecuadamente para detectar puntos de cambio, se procedi\'o a simular procesos de Poisson, obteni\'endose datos para valores diferentes del par\'ametro, despu\'es se elabor\'o un programa usando el m\'etodo de bisecci\'on y el factor de Bayes para detectar los puntos de cambio considerando los datos simulados y as\'i, num\'ericamente detectar los puntos de cambio y comparar los resultados de las distribuciones a priori utilizadas. De los resultados obtenidos se concluye que el m\'etodo del factor de Bayes detecta bien los puntos de cambio, pero su debilidad es que detecta cambios hasta una divisi\'on que contiene al menos cuatro datos, para menos datos en la divisi\'on ya no se detectan los puntos de cambio.
+
+\begin{thebibliography}{9}
+\bibitem{tesisL} Altieri Linda, {\em A Bayesian changepoint analysis on spatio-temporal point processes}, Tesis , 2015.
+
+\bibitem{Blangiardo} Blangiardo Marta y Cameletti Michela {\em Spatial and Spatio-temporal Bayesian Models with R-INLA}, John Wiley and Sons. 2015.\\
+
+\bibitem{Chen} Chen, J., y Gupta, A.  {\em Parametric Statistical Changepoint Analysis}, Bogota: Birkhauser. 2012.\\
+
+\bibitem{Virgilio} G\'omez Rubio Virgilio, {\em Bayesian inference with INLA}, Champman and Hall, 2020.\\
+
+\bibitem{Jeffreys} Jeffreys H., {\em Theory of probability}, Oxford: Oxford University Press; 1961. \\
+\end{thebibliography}
+
+\section{Ap\'endice }
+
+%\bibliography{amcs}
+\noindent \textbf{Programa}. \\
+
+\noindent $rm(list=ls())$\\
+$library(poisson)$\\
+$library(INLA)$\\
+$vector<-hpp.event.times(2, 15, num.sims = 1, t0 = 0)$\\
+$plot(vector)$\\
+$vector1<-hpp.event.times(1, 15, num.sims = 1, t0 = 0)$\\
+$vector2<-hpp.event.times(4, 15, num.sims = 1, t0 = 0)$\\
+$vector4<-hpp.event.times(6, 15, num.sims = 1, t0 = 0)$\\
+$datos<-c(vector,vector1,vector2,vector4)$\\
+$plot(datos,type="l")$\\
+$datosA=datos[1:30]$\\
+$datosB=datos[31:60]$\\
+$datos$\\
+$datosA$\\
+$datosB$\\
+$vec\_res=rep(0,20)$\\
+$factor_b<-function(datosA,datosB,datos)\{$\\
+  $p1<-data.frame("num"=seq(1,length(datosA),1),"datosA"=datosA)$\\
+ $ p2<-data.frame("num"=seq(1,length(datosB),1),"datosB"=datosB)$\\
+ $ mp1<-inla(num~f(datosA, model="ar1"),data=p1,family="poisson")$\\
+ $ mp2<-inla(num~f(datosB, model="ar1"),data=p2,family="poisson")$\\
+ $ midf <- data.frame( "num" = seq(1,length(datos),1),  "datos" = datos)$\\
+  $mp<-inla(num~f(datos, model="ar1"),data=midf,family="poisson")$\\
+   $ respuesta<- as.numeric(mp1\$mlik[1,1]) +as.numeric(mp2\$mlik[1,1])-as.numeric(mp\$mlik[1,1])$\\
+ $ return(respuesta)$\\
+$\}$\\
+
+\noindent $vec\_res[1]=factor\_b(datosA,datosB,datos)$\\
+$vec\_res$\\
+
+\noindent $datosC=datosA[1:15]$\\
+$datosD=datosA[16:30]$\\
+$vec\_res[2]=factor\_b(datosC,datosD,datosA)$\\
+$vec\_res$\\
+$datosE=datosB[1:15]$\\
+$datosF=datosB[16:30]$\\
+$vec\_res[3]=factor\_b(datosE,datosF,datosB)$\\
+$vec\_res$\\
+$datosG=datosC[1:8]$\\
+$datosH=datosC[9:15]$\\
+$vec\_res[4]=factor\_b(datosG,datosH,datosC)$\\
+$vec\_res$\\
+$datosI=datosD[1:8]$\\
+$datosJ=datosD[9:15]$\\
+$vec\_res[5]=factor\_b(datosI,datosJ,datosD)$\\
+$vec\_res$\\
+$datosK=datosE[1:8]$\\
+$datosL=datosE[9:15]$\\
+$vec\_res[6]=factor\_b(datosK,datosL,datosE)$\\
+$vec\_res$\\
+$datosM=datosF[1:8]$\\
+$datosN=datosF[9:15]$\\
+$vec\_res[7]=factor\_b(datosM,datosN,datosF)$\\
+$vec\_res$\\
+$datosO=datosG[1:4]$\\
+$datosP=datosG[5:8]$\\
+$vec\_res[8]=factor\_b(datosO,datosP,datosG)$\\
+$vec\_res$\\
+$datosQ=datosH[1:4]$\\
+$datosR=datosH[5:7]$\\
+$vec\_res[9]=factor\_b(datosQ,datosR,datosH)$\\
+$vec\_res$\\
+$datosS=datosI[1:4]$ \\
+$datosT=datosI[5:8]$\\
+$vec\_res[10]=factor\_b(datosS,datosT,datosI)$\\
+$vec\_res$\\
+$datosU=datosJ[1:4]$\\
+$datosV=datosJ[5:7]$\\
+$vec\_res[11]=factor\_b(datosU,datosV,datosJ)$\\
+$vec\_res$\\
+$datosX=datosK[1:4]$\\
+$datosY=datosK[5:8]$\\
+$vec\_res[12]=factor\_b(datosX,datosY,datosK)$\\
+$vec\_res$\\
+$datosW=datosL[1:4]$\\
+$datosZ=datosL[5:7]$\\
+$vec\_res[13]=factor\_b(datosW,datosZ,datosL)$\\
+$vec\_res$\\
+$datosAA=datosM[1:4]$\\
+$datosBB=datosM[5:8]$\\
+$vec\_res[14]=factor\_b(datosAA,datosBB,datosM)$\\
+$vec\_res$\\
+$datosCC=datosN[1:4]$\\
+$datosDD=datosN[5:7]$\\
+$vec\_res[15]=factor\_b(datosCC,datosDD,datosN)$\\
+$vec\_res$\\
+
+\noindent Para utilizar otra funci\'on apriori se cambia en el programa por la siguiente instrucci\'on, donde se incluye la distribuci\'on apriori a utilizar y sus par\'ametros, ya el paquete INLA tiene las distribuciones apriori a utilizar.\\
+
+
+\noindent $prec.prior<-list(prec=list(prior="logtgaussian", param=c(0,0.001)))$
+ $ mp1<-inla(num~f(datosA,model="ar1",hyper=prec.prior),data=p1, family="poisson")$\\
+
+\end{document}
