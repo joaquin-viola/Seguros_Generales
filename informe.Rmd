@@ -281,8 +281,8 @@ f.tail <- prod(tail)
 plot(100*(rev(1/cumprod(rev(c(q, tail))))), t="b",
      main="", xlab="Período, j", ylab="100*1/Q")
 
-plot(100*(rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
-     main="", xlab="Período, j", ylab="100*1/Q")
+plot((rev(1/cumprod(rev(c(q, tail[tail>1.0001]))))), t="b",
+     main="", xlab="Período, j", ylab="1/Q")
 ```
 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE}
